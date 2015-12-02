@@ -6,10 +6,10 @@ import java.util.LinkedList;
         
 public class Server implements Hello {   
 
-	public LinkedList<String> helpList
+  public LinkedList<String> helpList;
 	
 	public Server() {
-		 helpList = new Linkedlist();
+		 helpList = new LinkedList();
 	}
 
     public String sayHello() {
