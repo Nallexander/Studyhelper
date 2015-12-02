@@ -1,5 +1,4 @@
 // importa relevanta saker jag vet inte vad
-X
 public class HelpObject{
   private String courseName;
   private String title;
