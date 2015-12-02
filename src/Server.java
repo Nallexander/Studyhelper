@@ -5,8 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
         
 public class Server implements Hello {   
-  //public static String SERVER_IP = "130.242.106.55"; //serverns ip address mÂste ‰ndras n‰r vi kˆr pÂ olika datorer!" 
-  private LinkedList<String> helpList; //listan med requests TODO: just nu string, ‰ndra sen till vÂr objekt
+  //public static String SERVER_IP = "an ip adress"; //serverns ip address m√•ste √§ndras n√§r vi k√∂r p√• olika datorer!" 
+  private LinkedList<String> helpList; //listan med requests TODO: just nu string, √§ndra sen till v√•r objekt
 	
   public Server() {
     helpList = new LinkedList();
@@ -17,11 +17,11 @@ public class Server implements Hello {
   }
 
   public void PrintHelpList(){
-    //loopa helplist printInfo pÂ serverns lista eller nÂt sÂnt
+    //loopa helplist printInfo p√• serverns lista eller n√•t s√•nt
   }
 
   public void deleteHelpObject(int index, kanske client address)){
-  //TODO delete index check kolla om r‰tt person deletar
+  //TODO delete index check kolla om r√§tt person deletar
 
   public void addHelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress){
     HelpObject newHelpObject = new HelpObject(courseName, title, message, location, userName, other, clientAddress);
