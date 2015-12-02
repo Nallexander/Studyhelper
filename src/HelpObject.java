@@ -1,5 +1,5 @@
-import
-
+// importa relevanta saker jag vet inte vad
+X
 public class HelpObject{
   private String courseName;
   private String title;
@@ -7,28 +7,31 @@ public class HelpObject{
   private String location;
   private String userName;
   private String other;
+  private String clientAddress;
   private boolean claimed;
   
-  public HelpObject(String courseName, String title, String message, String location, String userName, String other){
-    self.courseName = courseName;
-    self.title = title;
-    self.message = message;
-    self.location = location;
+  public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress){
+    this.courseName = courseName;
+    this.title = title;
+    this.message = message;
+    this.location = location;
     if(userName != NULL){
-    self.userName = userName:
+    this.userName = userName:
     }
     else
-      self.userName = "Anonymous";
-    self.other = other;
+      this.userName = "Anonymous";
+    this.other = other;
     claimed = 0;
+    this.clientAddress = clientAddress;
   }
 
   public void printInfo(HelpObject o){
     //TODO Printa grejer snyggt 
   }
   public void claim(boolean claim){
-    self.claimed = claim;
-    //TODO skicka en callback
+    if(claim == 0)
+    this.claimed = claim;
+    //TODO skicka en callback kanske
   }
   
 }
