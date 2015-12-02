@@ -10,12 +10,28 @@ public class Server implements Hello {
 	
   public Server() {
     helpList = new LinkedList();
-
   }
 
+  public void claimHelpObject(int index){
+    //TODO claim the in the list
+  }
+
+  public void PrintHelpList(){
+    //loopa helplist printInfo på serverns lista eller nåt sånt
+  }
+
+  public void deleteHelpObject(int index, kanske client address)){
+  //TODO delete index check kolla om rätt person deletar
+
+  public void addHelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress){
+    HelpObject newHelpObject = new HelpObject(courseName, title, message, location, userName, other, clientAddress);
+    this.helpList.add(newHelpObject);
+  }
+  
   public String sayHello() {
     return "Hejhalloj";
   }
+  
   public void printSizeHelpList(){
     System.out.println("number of items in the list: " + helpList.size());
   }
