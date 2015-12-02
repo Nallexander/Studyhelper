@@ -3,5 +3,5 @@ import java.rmi.RemoteException;
 
 public interface Hello extends Remote {
     String sayHello() throws RemoteException;
-    Linkedlist<String> getHelpList() throws RemoteException;
+    void printSizeHelpList() throws RemoteException;
 }

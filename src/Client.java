@@ -1,6 +1,6 @@
 import java.rmi.registry.LocateRegistry;
+// private String host = "serverns ip";
 import java.rmi.registry.Registry;
-//private String host = "serverns ip";
 public class Client {
 
     private Client() {}
@@ -13,9 +13,10 @@ public class Client {
             Hello stub = (Hello) registry.lookup("Hello");
             String response = stub.sayHello();
             System.out.println("response: " + response);
+            stub.printSizeHelpList();
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
-        }
+        }	
     }
 }
