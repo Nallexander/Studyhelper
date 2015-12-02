@@ -1,6 +1,6 @@
 import java.rmi.registry.LocateRegistry;
+// private String host = "serverns ip";
 import java.rmi.registry.Registry;
-
 public class Client {
 
     private Client() {}
