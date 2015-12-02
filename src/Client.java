@@ -10,7 +10,7 @@ public class Client {
     public int get_input() {
     	Scanner scan = new Scanner(System.in);
     	int input = scan.nextInt();
-    	return input
+    	return input;
     }
     
     public void intface() {
@@ -19,25 +19,25 @@ public class Client {
     		switch(get_input()){
     		case 1: 
     			// TODO: add_question();
-    			System.out.prinln("Your question is now added to the system! Yaaay! :)");
+    			System.out.println("Your question is now added to the system! Yaaay! :)");
     			break;
     		case 2:
     			// TODO: answer_question();
-    			System.out.prinln("You have answered the question! Good job! :)");
+    			System.out.println("You have answered the question! Good job! :)");
     			break;
     		case 3: 
     			// TODO: show_questions();
     			break;
     		case 4:
     			// TODO: remove_question();
-    			System.out.prinln("Your question has now been removed from the system!");
+    			System.out.println("Your question has now been removed from the system!");
     			break;
     		case 5:
     			// TODO: should_quit = exit();
-    			System.out.prinln("Bye bye! :)");
+    			System.out.println("Bye bye! :)");
     			break;
     		default:
-    			System.out.prinln("Your choice could not be parsed, please try again! :)");
+    			System.out.println("Your choice could not be parsed, please try again! :)");
     		}
     	}	
     }
