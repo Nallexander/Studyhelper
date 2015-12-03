@@ -42,7 +42,7 @@ public class HelpObject{
       return exInfo;
   }
 
-  public String getIP(HelpObject o){
+  public String getIP(){
       String IP = this.clientAddress;
       return IP;
     }
