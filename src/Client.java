@@ -32,13 +32,13 @@ public class Client {
     int j;
     Scanner in = new Scanner(System.in);    	
     System.out.println("Press q to quit, press u if you want to redo last category");
-     String input = "initialize";
-     String courseName ="";
-     String title="";
-     String question="";
-     String location="";
-     String userName="";
-     String other="";
+    String input = "initialize";
+    String courseName ="";
+    String title="";
+    String question="";
+    String location="";
+    String userName="";
+    String other="";
     	
     while(i < 8){
     	
@@ -115,11 +115,11 @@ public class Client {
             input = confirmation;
             if (confirmation.equals("ok")){
               try{
-              stub.addHelpObject(courseName, title, question, location, userName, other);
+                stub.addHelpObject(courseName, title, question, location, userName, other);
               } catch (Exception e) {
-      System.err.println("Client exception: " + e.toString());
-      e.printStackTrace();
-    }
+                System.err.println("Client exception: " + e.toString());
+                e.printStackTrace();
+              }
               System.out.println("Question added");
               return;
            
@@ -172,7 +172,7 @@ public class Client {
     String host = (args.length < 1) ? null : args[0];
     try {
       Registry registry = LocateRegistry.getRegistry(host);
-      Hello stub = (Hello) registry.lookup("Hello");
+      Studyhelper stub = (Studyhelper) registry.lookup("Studyhelper");
       String response = stub.sayHello();
       System.out.println("response: " + response);
       stub.printSizeHelpList();
