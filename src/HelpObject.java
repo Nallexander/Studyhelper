@@ -8,6 +8,7 @@ public class HelpObject{
   private String other;
   private String clientAddress;
   private boolean claimed;
+  private String ip;
   
   public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress){
     this.courseName = courseName;
@@ -24,9 +25,20 @@ public class HelpObject{
     this.clientAddress = clientAddress;
   }
 
-  public void printInfo(HelpObject o){
-    //TODO Printa grejer snyggt 
+  public String BasicInfoString(HelpObject o){
+      String course = o.courseName;
+      String sub = o.title;
+      String info = "Course: " + course + "Subject: " + sub;
+      return info;
   }
+
+  public String ExtendInfoString(HelpObject o){
+      String course = o.courseName;
+      String sub = o.title;
+      String 
+
+  }
+
   public void claim(boolean claim){
     if(claim == false)
     this.claimed = claim;
