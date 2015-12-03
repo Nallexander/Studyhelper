@@ -24,6 +24,7 @@ public class Server extends RemoteServer implements Studyhelper{
     public void addHelpObject(String courseName, String title, String message, String location, String userName, String other){
 	try {
 	    String clientAddress = this.getClientHost();
+	    //String clientAddress = "hej";
 	    HelpObject newHelpObject = new HelpObject(courseName, title, message, location, userName, other, clientAddress);
 	    this.helpList.add(newHelpObject);
 	}
@@ -35,7 +36,9 @@ public class Server extends RemoteServer implements Studyhelper{
     }
   
     public String sayHello() {
-	return "Hejhalloj";
+	server.addHelpObject("Transformmetoder", "Projektet", "Omöjligt", "1111", "Alexander", "Hejhej");
+	String IP = server.helpList.get(0).getIP();
+	return IP;
     }
   
     public String printSizeHelpList(){
@@ -47,13 +50,15 @@ public class Server extends RemoteServer implements Studyhelper{
 	try {
 	    Server server = new Server();
 	    Studyhelper stub = (Studyhelper) UnicastRemoteObject.exportObject(server, 0);
+	    
+
             
                 
 	    // Bind the remote object's stub in the registry
 	    Registry registry = LocateRegistry.getRegistry();
 	    //System.setProperty("java.rmi.server.hostname", server.SERVER_IP); // simons ville ha denna rad
 	    registry.bind("Hello", stub);
-      
+	    
 	    System.err.println("Server ready");
             
 	} catch (Exception e) {

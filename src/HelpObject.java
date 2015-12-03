@@ -20,7 +20,7 @@ public class HelpObject{
     else
       this.userName = "Anonymous";
     this.other = other;
-    claimed = false;
+    this.claimed = false;
     this.clientAddress = clientAddress;
   }
 
