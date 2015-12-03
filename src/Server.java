@@ -16,16 +16,16 @@ public class Server implements Hello {
     //TODO claim the in the list
   }
 
-  public void PrintHelpList(){
+  public void printHelpList(){
     //loopa helplist printInfo på serverns lista eller nåt sånt
   }
 
-  public void deleteHelpObject(int index, kanske client address)){
+  public void deleteHelpObject(int index, String clientAddress){
   //TODO delete index check kolla om rätt person deletar
-
+  }
   public void addHelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress){
     HelpObject newHelpObject = new HelpObject(courseName, title, message, location, userName, other, clientAddress);
-    this.helpList.add(newHelpObject);
+    //this.helpList.add(newHelpObject);
   }
   
   public String sayHello() {

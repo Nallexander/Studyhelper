@@ -14,13 +14,13 @@ public class HelpObject{
     this.title = title;
     this.message = message;
     this.location = location;
-    if(userName != NULL){
-    this.userName = userName:
+    if(userName != ""){
+	this.userName = userName;
     }
     else
       this.userName = "Anonymous";
     this.other = other;
-    claimed = 0;
+    claimed = false;
     this.clientAddress = clientAddress;
   }
 
@@ -28,7 +28,7 @@ public class HelpObject{
     //TODO Printa grejer snyggt 
   }
   public void claim(boolean claim){
-    if(claim == 0)
+    if(claim == false)
     this.claimed = claim;
     //TODO skicka en callback kanske
   }
