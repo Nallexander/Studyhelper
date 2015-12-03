@@ -32,12 +32,12 @@ public class HelpObject{
       return info;
   }
 
-  public String ExtendInfoString(HelpObject o){
+    /* public String ExtendInfoString(HelpObject o){
       String course = o.courseName;
       String sub = o.title;
       String 
 
-  }
+      }*/
 
   public void claim(boolean claim){
     if(claim == false)
