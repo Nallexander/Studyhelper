@@ -32,8 +32,8 @@ public class Server implements Hello {
     return "Hejhalloj";
   }
   
-  public void printSizeHelpList(){
-    System.out.println("number of items in the list: " + helpList.size());
+  public String printSizeHelpList(){
+      return ("number of items in the list: " + helpList.size());
   }
         
   public static void main(String args[]) {
