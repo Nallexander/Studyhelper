@@ -16,9 +16,6 @@ public class Server implements Hello {
     //TODO claim the in the list
   }
 
-  public void printHelpList(){
-    //loopa helplist printInfo på serverns lista eller nåt sånt
-  }
 
   public void deleteHelpObject(int index, String clientAddress){
   //TODO delete index check kolla om rätt person deletar
