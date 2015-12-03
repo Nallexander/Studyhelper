@@ -8,7 +8,6 @@ public class HelpObject{
   private String other;
   private String clientAddress;
   private boolean claimed;
-  private String ip;
   
   public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress){
     this.courseName = courseName;
@@ -25,19 +24,28 @@ public class HelpObject{
     this.clientAddress = clientAddress;
   }
 
-  public String BasicInfoString(HelpObject o){
-      String course = o.courseName;
-      String sub = o.title;
+  public String BasicInfoString(){
+      String course = this.courseName;
+      String sub = this.title;
       String info = "Course: " + course + "Subject: " + sub;
       return info;
   }
 
-    /* public String ExtendInfoString(HelpObject o){
-      String course = o.courseName;
-      String sub = o.title;
-      String 
+  public String ExtendInfoString(){
+      String course = this.courseName;
+      String sub = this.title;
+      String message = this.message;
+      String user = this.userName;
+      String loc = this.location;
 
-      }*/
+      String exInfo = "Course: " + course + "\n\n" + "Subject: " + sub + "\n\n" + message + "\n\n" + "User: " + user + "\n\n" + "Location: " + loc;
+      return exInfo;
+  }
+
+  public String getIP(HelpObject o){
+      String IP = this.clientAddress;
+      return IP;
+    }
 
   public void claim(boolean claim){
     if(claim == false)
@@ -46,3 +54,4 @@ public class HelpObject{
   }
   
 }
+
