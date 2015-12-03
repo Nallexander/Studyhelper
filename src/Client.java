@@ -51,6 +51,8 @@ public class Client {
             String response = stub.sayHello();
             System.out.println("response: " + response);
             stub.printSizeHelpList();
+            String sizeHelpList = stub.printSizeHelpList();
+	    System.out.println("Size of helpList: " + sizeHelpList);
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
