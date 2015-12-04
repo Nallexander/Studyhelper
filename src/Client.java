@@ -6,12 +6,27 @@ import java.lang.String;
 public class Client {
 
   private Client() {}
-    
+  public boolean isNumeric(String str){
+      for (char c : str.toCharArray()) {
+          
+    	  if (!Character.isDigit(c)){
+        	  return false;
+          }
+      }
+      return true;
+  }
   public int getInput() {
     Scanner scan = new Scanner(System.in);
-    int input = scan.nextInt();
-    return input;
+    String  stringin=scan.nextLine();
+    if (isNumeric(stringin)){
+    	int input = Integer.parseInt(stringin);
+    return input ;
+    }
+    else {
+    	return 0;
+    }
   }
+  
   public void mainMenu(){
     System.out.print("What do you want to do?\n\n");
     System.out.println("To choose an option enter the corresponding number");
