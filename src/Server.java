@@ -46,10 +46,14 @@ public class Server extends RemoteServer implements Studyhelper{
     }
         
     public String printExtendedInfo(int index) {
-	return "Not implemented yet";
+	return this.helpList.get(index).extendedInfoString();
     }
     public String printHelpList() {
-	return "Not implemented yet";
+	String printedList = "";
+	for (int i=0; i+1 >= this.helpList.size(); i++){
+	    printedList = printedList + this.helpList.get(i).basicInfoString() + "\n";
+	}
+	return printedList;
     }
 
     public static void main(String args[]) {

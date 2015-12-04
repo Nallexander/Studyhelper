@@ -24,14 +24,14 @@ public class HelpObject{
     this.clientAddress = clientAddress;
   }
 
-  public String BasicInfoString(){
+  public String basicInfoString(){
       String course = this.courseName;
       String sub = this.title;
       String info = "Course: " + course + "Subject: " + sub;
       return info;
   }
 
-  public String ExtendInfoString(){
+  public String extendedInfoString(){
       String course = this.courseName;
       String sub = this.title;
       String message = this.message;
