@@ -171,102 +171,107 @@ public class Client {
       if(delete == true){System.out.println("Press corresponding number to delete your help request");}
       if(claim ==true){System.out.println("Press corresponding number to claim help request");}
       try{  
-      helpList = stub.printHelpList();
+        helpList = stub.printHelpList();
+      } catch (Exception e) {
+        System.err.println("Client exception: " + e.toString());
+        e.printStackTrace();
+      }
+  
+      System.out.print(helpList);
+
+      String input = in.nextLine();
+
+      if(isInteger(input)){
+        int intPut = Integer.parseInt(input);
+        String info = "";
+        if(show==true){
+          try{
+            info = stub.printExtendedInfo(intPut);
+          } catch (Exception e) {
+            System.err.println("Client exception: " + e.toString());
+            e.printStackTrace();
+          }
+          System.out.print(info);
+        }
+        if(delete == true){
+          String temp = ""; // change this later if we can use clientaddress as argument or not
+          try{
+            stub.deleteHelpObject(intPut, temp);
+          } catch (Exception e) {
+            System.err.println("Client exception: " + e.toString());
+            e.printStackTrace();
+          }
+   
+        }
+        if(claim ==true){
+          try{
+            stub.claimHelpObject(intPut);
+          } catch (Exception e) {
+            System.err.println("Client exception: " + e.toString());
+            e.printStackTrace();
+          }
+   
+        }
+      }
+      if (input.equals("b")) {
+        return;  
+      }
+      else
+        System.out.println("Invalid operation, please try again");
+    }
+ 
+  }
+  
+  public void intface(Studyhelper stub) {
+    boolean should_quit = false;
+    while (!should_quit) {
+      mainMenu();
+      switch(getInput()){
+        case 1: 
+          addQuestion(stub);
+          break;
+        case 2:
+          //  answer_question
+          HelpListOptions(stub, false, false, true);
+          System.out.println("You have answered the question! Good job! :)");
+          break;
+        case 3:
+          // show list
+          HelpListOptions(stub, true, false, false);
+          break;
+        case 4:
+          HelpListOptions(stub, false, true, false);
+          System.out.println("Your question has now been removed from the system!");
+          break;
+        case 5:
+          // TODO: should_quit = exit();
+          System.out.println("Bye bye! :)");
+          break;
+        default:
+          System.out.println("Your choice could not be parsed, please try again! :)");
+      }
+    }	
+  }
+
+  public static void main(String[] args) {
+
+    String host = (args.length < 1) ? null : args[0];
+    try {
+      Registry registry = LocateRegistry.getRegistry(host);
+      Studyhelper stub = (Studyhelper) registry.lookup("Studyhelper");
+      Client client  = new Client();
+      client.intface(stub);
+      String response = stub.sayHello();
+      System.out.println("response: " + response);
+      stub.printSizeHelpList();
+      String sizeHelpList = stub.printSizeHelpList();
+      System.out.println("Size of helpList: " + sizeHelpList);
     } catch (Exception e) {
       System.err.println("Client exception: " + e.toString());
       e.printStackTrace();
     }
-  
-    System.out.print(helpList);
-
-    String input = in.nextLine();
-
-    if(isInteger(input)){
-      int intPut = Integer.parseInt(input);
-      String info = "";
-      if(show==true){
-        try{
-          info = stub.printExtendedInfo(intPut);
-        } catch (Exception e) {
-          System.err.println("Client exception: " + e.toString());
-          e.printStackTrace();
-        }
-           System.out.print(info);
-      }
-      if(delete == true){
-        String temp = ""; // change this later if we can use clientaddress as argument or not
-        try{
-          stub.deleteHelpObject(intPut, temp);
-        } catch (Exception e) {
-          System.err.println("Client exception: " + e.toString());
-          e.printStackTrace();
-        }
-   
-      }
-      if(claim ==true){
-        try{
-          stub.claimHelpObject(intPut);
-        } catch (Exception e) {
-          System.err.println("Client exception: " + e.toString());
-          e.printStackTrace();
-        }
-   
-      }
-    }
-    if (input.equals("b")) {
-      return;  
-    }
-    else
-      System.out.println("Invalid operation, please try again");
   }
- 
-}
   
-public void intface(Studyhelper stub) {
-  boolean should_quit = false;
-  while (!should_quit) {
-    mainMenu();
-    switch(getInput()){
-      case 1: 
-        addQuestion(stub);
-        break;
-      case 2:
-        //  answer_question
-        HelpListOptions(stub, false, false, true);
-        System.out.println("You have answered the question! Good job! :)");
-        break;
-      case 3:
-        // show list
-        HelpListOptions(stub, true, false, false);
-        break;
-      case 4:
-        HelpListOptions(stub, false, true, false);
-        System.out.println("Your question has now been removed from the system!");
-        break;
-      case 5:
-        // TODO: should_quit = exit();
-        System.out.println("Bye bye! :)");
-        break;
-      default:
-        System.out.println("Your choice could not be parsed, please try again! :)");
-    }
-  }	
-}
 
-public static void main(String[] args) {
 
-  String host = (args.length < 1) ? null : args[0];
-  try {
-    Registry registry = LocateRegistry.getRegistry(host);
-    Studyhelper stub = (Studyhelper) registry.lookup("Studyhelper");
-    String response = stub.sayHello();
-    System.out.println("response: " + response);
-    stub.printSizeHelpList();
-    String sizeHelpList = stub.printSizeHelpList();
-    System.out.println("Size of helpList: " + sizeHelpList);
-  } catch (Exception e) {
-    System.err.println("Client exception: " + e.toString());
-    e.printStackTrace();
-  }	
-}
 }
