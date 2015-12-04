@@ -45,7 +45,7 @@ public class Client {
       input = input.toLowerCase();
       if(!(input.equals("u"))){
         j = i-1;
-        System.out.println("Question editor, you have entered" + j + " of 6 categories");
+        System.out.println("\nQuestion editor, you have entered " + j + " of 6 categories");
       }
       if (input.equals("q")){
         return;
@@ -54,11 +54,11 @@ public class Client {
         if (i <= 2){ //special fall vi kan inte undoa fran forsta caset
           System.out.println("Nothing to undo");
           i = i - 1;
-          System.out.println("Question editor, you have entered" + i + " of 6 categories");
+          System.out.println("\nQuestion editor, you have entered " + i + " of 6 categories");
         }
         else {
           i = i - 2;
-          System.out.println("Question editor, you have entered" + i + " of 6 categories");
+          System.out.println("\nQuestion editor, you have entered " + i + " of 6 categories");
         }
       }
     		
@@ -77,7 +77,7 @@ public class Client {
           i++;
           break;
         case 3:
-          System.out.println("Enter  your question");	
+          System.out.println("Enter your question");	
           question = in.nextLine();
           input = question;
           i++;
@@ -102,7 +102,7 @@ public class Client {
           break;	
         case 7:
           boolean loop = true;
-          System.out.println("you have now entered \n Coursename:" + courseName +
+          System.out.println("You have now entered \n Coursename:" + courseName +
                              "\n Title:" + title +
                              "\n Question:" + question + 
                              "\n Location:" + location +
