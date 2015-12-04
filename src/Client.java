@@ -40,7 +40,7 @@ public class Client {
     String userName = "";
     String other = "";
     	
-    while(i < 8){
+    while(i < 8 && i >=0){
     	
       input = input.toLowerCase();
       if(!(input.equals("u"))){
@@ -51,15 +51,14 @@ public class Client {
         return;
       }
       if (input.equals("u")){
-        if (i == 1){ //special fall vi kan inte undoa fran forsta caset
+        if (i <= 2){ //special fall vi kan inte undoa fran forsta caset
           System.out.println("Nothing to undo");
-          j = i-1;
-          System.out.println("Question editor, you have entered" + j + " of 6 categories");
+          i = i - 1;
+          System.out.println("Question editor, you have entered" + i + " of 6 categories");
         }
         else {
-          i--;
-          j = i-1;
-          System.out.println("Question editor, you have entered" + j + " of 6 categories");
+          i = i - 2;
+          System.out.println("Question editor, you have entered" + i + " of 6 categories");
         }
       }
     		
