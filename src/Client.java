@@ -247,6 +247,7 @@ public class Client {
         case 5:
           // TODO: should_quit = exit();
           System.out.println("Bye bye! :)");
+          System.exit(0);
           break;
         default:
           System.out.println("Your choice could not be parsed, please try again! :)");
