@@ -46,6 +46,13 @@ public class Server extends RemoteServer implements Studyhelper{
 	return ("number of items in the list: " + helpList.size());
     }
         
+    public String printExtendedInfo(int index) {
+	return "Not implemented yet";
+    }
+    public String printHelpList() {
+	return "Not implemented yet";
+    }
+
     public static void main(String args[]) {
     	
 	try {
