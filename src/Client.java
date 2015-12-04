@@ -40,12 +40,12 @@ public class Client {
     String userName = "";
     String other = "";
     	
-    while(i < 8 && i >=0){
+    while(i < 9 && i >=0){
     	
       input = input.toLowerCase();
       if(!(input.equals("u"))){
         j = i-1;
-        System.out.println("\nQuestion editor, you have entered " + j + " of 6 categories");
+        System.out.println("\nQuestion editor, you first have entered " + j + " of 6 categories");
       }
       if (input.equals("q")){
         return;
@@ -54,11 +54,12 @@ public class Client {
         if (i <= 2){ //special fall vi kan inte undoa fran forsta caset
           System.out.println("Nothing to undo");
           i = i - 1;
-          System.out.println("\nQuestion editor, you have entered " + i + " of 6 categories");
+          System.out.println("\nQuestion editor, you second have entered " + 0 + " of 6 categories");
         }
         else {
           i = i - 2;
-          System.out.println("\nQuestion editor, you have entered " + i + " of 6 categories");
+          j = i - 1;
+          System.out.println("\nQuestion editor, you third have entered " + j + " of 6 categories");
         }
       }
     		
@@ -101,6 +102,7 @@ public class Client {
           i++;
           break;	
         case 7:
+        	i++;
           boolean loop = true;
           System.out.println("You have now entered \n Coursename:" + courseName +
                              "\n Title:" + title +
