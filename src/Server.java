@@ -23,7 +23,7 @@ public class Server extends RemoteServer implements Studyhelper{
     }
     public void addHelpObject(String courseName, String title, String message, String location, String userName, String other){
 	try {
-	    String clientAddress = this.getClientHost();
+	    String clientAddress = RemoteServer.getClientHost();
 	    HelpObject newHelpObject = new HelpObject(courseName, title, message, location, userName, other, clientAddress);
 	    this.helpList.add(newHelpObject);
 	}

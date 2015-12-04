@@ -32,7 +32,7 @@ public class HelpObject{
   }
 
   public String extendedInfoString(){
-      String exInfo = "Course: " + this.courseName + "\n\n" + "Subject: " + this.title + "\n\n" + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
+      String exInfo = "IP"+ this.clientAddress + "\n\n" + " Course: " + this.courseName + "\n\n" + "Subject: " + this.title + "\n\n" + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
       return exInfo;
   }
 
