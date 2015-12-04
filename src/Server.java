@@ -36,8 +36,9 @@ public class Server extends RemoteServer implements Studyhelper{
     }
   
     public String sayHello() {
-	server.addHelpObject("Transformmetoder", "Projektet", "Omöjligt", "1111", "Alexander", "Hejhej");
+	this.addHelpObject("Transformmetoder", "Projektet", "Omöjligt", "1111", "Alexander", "Hejhej");
 	String IP = server.helpList.get(0).getIP();
+	//String IP = "Hej";
 	return IP;
     }
   
@@ -57,7 +58,7 @@ public class Server extends RemoteServer implements Studyhelper{
 	    // Bind the remote object's stub in the registry
 	    Registry registry = LocateRegistry.getRegistry();
 	    //System.setProperty("java.rmi.server.hostname", server.SERVER_IP); // simons ville ha denna rad
-	    registry.bind("Hello", stub);
+	    registry.bind("Studyhelper", stub);
 	    
 	    System.err.println("Server ready");
             
