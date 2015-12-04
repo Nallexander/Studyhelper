@@ -93,6 +93,7 @@ public class Client {
           System.out.println("Enter name (optional), leave empty if you want to be anonymous");	
           userName = in.nextLine();
           input = userName;
+          i++;
           break;
         case 6:
           System.out.println("Enter other info you want to share, leave blank if not");	
