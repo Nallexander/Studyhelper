@@ -50,7 +50,7 @@ public class Server extends RemoteServer implements Studyhelper{
     }
     public String printHelpList() {
 	String printedList = "";
-	for (int i=0; i+1 >= this.helpList.size(); i++){
+	for (int i=0; i >= this.helpList.size(); i++){
 	    printedList = printedList + this.helpList.get(i).basicInfoString() + "\n";
 	}
 	return printedList;
