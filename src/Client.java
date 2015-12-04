@@ -51,7 +51,7 @@ public class Client {
         return;
       }
       if (input.equals("u")){
-        if (i == 1){ //special fall vi kan inte undoa från första caset
+        if (i == 1){ //special fall vi kan inte undoa fran forsta caset
           System.out.println("Nothing to undo");
           j = i-1;
           System.out.println("Question editor, you have entered" + j + " of 6 categories");
