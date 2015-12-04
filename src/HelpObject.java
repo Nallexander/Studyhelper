@@ -27,18 +27,12 @@ public class HelpObject{
   public String basicInfoString(){
       String course = this.courseName;
       String sub = this.title;
-      String info = "Course: " + course + "Subject: " + sub;
+      String info = "Course: " + course + " Subject: " + sub;
       return info;
   }
 
   public String extendedInfoString(){
-      String course = this.courseName;
-      String sub = this.title;
-      String message = this.message;
-      String user = this.userName;
-      String loc = this.location;
-
-      String exInfo = "Course: " + course + "\n\n" + "Subject: " + sub + "\n\n" + message + "\n\n" + "User: " + user + "\n\n" + "Location: " + loc;
+      String exInfo = "Course: " + this.courseName + "\n\n" + "Subject: " + this.title + "\n\n" + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
       return exInfo;
   }
 
