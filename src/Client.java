@@ -32,7 +32,7 @@ public class Client {
     System.out.println("To choose an option enter the corresponding number");
     System.out.println("[1] Ask for help");
     System.out.println("[2] Help someone with a question");
-    System.out.println("[3] Show all unanswered questions ");
+    System.out.println("[3] Show all questions ");
     System.out.println("[4] Remove your Question");
     System.out.println("[5] Quit");
   }
@@ -181,6 +181,7 @@ public class Client {
   public void HelpListOptions(Studyhelper stub, boolean show, boolean delete, boolean claim){
     Scanner in = new Scanner(System.in);    	
     String helpList = "";
+    String notClaimedList="";
 
     while(true){
       System.out.println("Press 'b' to go back");
@@ -188,14 +189,18 @@ public class Client {
       if(delete == true){System.out.println("Press corresponding number to delete your help request");}
       if(claim ==true){System.out.println("Press corresponding number to claim help request");}
       try{  
+        notClaimedList =stub.printNotClaimedList();
         helpList = stub.printHelpList();
       } catch (Exception e) {
         System.err.println("Client exception: " + e.toString());
         e.printStackTrace();
       }
-  
+      if (show == true){
       System.out.print(helpList);
-
+      }
+      if(claim==true){
+    	  System.out.print(notClaimedList);
+      }
       String input = in.nextLine();
 
       if(isInteger(input)){

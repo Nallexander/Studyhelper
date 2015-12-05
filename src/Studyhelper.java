@@ -9,4 +9,5 @@ public interface Studyhelper extends Remote {
     void addHelpObject(String courseName, String title, String message, String location, String userName, String other) throws RemoteException;
     String printExtendedInfo(int index) throws RemoteException;
     String printHelpList() throws RemoteException;
+    String printNotClaimedList() throws RemoteException;
 }
