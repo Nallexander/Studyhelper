@@ -27,15 +27,29 @@ public class HelpObject{
   }
 
   public String basicInfoString(){
+	  String taken = "No";
 	  String qID = this.questionID;
       String course = this.courseName;
       String sub = this.title;
-      String info = "ID"+ qID+ "Course: " + course + " Subject: " + sub;
+      if (this.claimed){
+      taken = "Yes";
+      }
+      String info = "ID: "+ qID + " Claimed: " + taken + " Course: " + course + " Subject: " + sub + "\n";
       return info;
+  }
+  public String getQuestionID(){
+	  return this.questionID;
+  }
+  public boolean isClaimed(){
+	  return this.claimed;
   }
 
   public String extendedInfoString(){
-      String exInfo = "ID"+ this.questionID + "\n\n"+ "IP"+ this.clientAddress + "\n\n" + " Course: " + this.courseName + "\n\n" + "Subject: " + this.title + "\n\n" + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
+	  String taken = "No";
+	  if (this.claimed){
+	      taken = "Yes";
+	      }
+      String exInfo = " ID "+ this.questionID + " Claimed: " + taken + "\n\n"+ " IP "+ this.clientAddress + "\n\n" + " Course: " + this.courseName + "\n\n" + " Subject: " + this.title + "\n\n" + " Question: " this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
       return exInfo;
   }
 
@@ -45,7 +59,7 @@ public class HelpObject{
     }
 
   public void claim(boolean claim){
-    if(claim == false)
+    //if(claim == false)
     this.claimed = claim;
     //TODO skicka en callback kanske
   }

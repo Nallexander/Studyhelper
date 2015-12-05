@@ -201,6 +201,7 @@ public class Client {
       if(isInteger(input)){
         int intPut = Integer.parseInt(input);
         String info = "";
+        String claimedOrNot="";
         if(show==true){
           try{
             info = stub.printExtendedInfo(intPut);
@@ -222,12 +223,12 @@ public class Client {
         }
         if(claim ==true){
           try{
-            stub.claimHelpObject(input);
+            claimedOrNot=stub.claimHelpObject(input);
           } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
           }
-   
+          System.out.print(claimedOrNot);
         }
       }
       if (input.equals("b")) {
@@ -250,7 +251,7 @@ public class Client {
         case 2:
           //  answer_question
           HelpListOptions(stub, false, false, true);
-          System.out.println("You have answered the question! Good job! :)");
+          //System.out.println("You have answered the question! Good job! :)");
           break;
         case 3:
           // show list

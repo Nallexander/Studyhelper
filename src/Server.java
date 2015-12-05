@@ -15,9 +15,21 @@ public class Server extends RemoteServer implements Studyhelper{
 	
     }
 
-    public void claimHelpObject(String questionID){
-    	
+    public String claimHelpObject(String questionID){
+    for (int i = 0; i < this.helpList.size(); i++){
+    if (this.helpList.get(i).getQuestionID().equals(questionID)){
+    	if (!(this.helpList.get(i).isClaimed())){
+    	this.helpList.get(i).claim(true);
+    	return("The question is now claimed");
+    	}
+    	else{
+    		return("The question has already been claimed");
+    		
+    	}
+    }
 	//TODO claim the in the list
+    }
+    	return("This question ID does not exist");
     }
 
     public void deleteHelpObject(int index, String clientAddress){
