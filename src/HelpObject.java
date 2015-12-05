@@ -7,9 +7,10 @@ public class HelpObject{
   private String userName;
   private String other;
   private String clientAddress;
+  private String questionID;
   private boolean claimed;
   
-  public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress){
+  public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress, String questionID){
     this.courseName = courseName;
     this.title = title;
     this.message = message;
@@ -22,17 +23,19 @@ public class HelpObject{
     this.other = other;
     this.claimed = false;
     this.clientAddress = clientAddress;
+    this.questionID =questionID;
   }
 
   public String basicInfoString(){
+	  String qID = this.questionID;
       String course = this.courseName;
       String sub = this.title;
-      String info = "Course: " + course + " Subject: " + sub;
+      String info = "ID"+ qID+ "Course: " + course + " Subject: " + sub;
       return info;
   }
 
   public String extendedInfoString(){
-      String exInfo = "IP"+ this.clientAddress + "\n\n" + " Course: " + this.courseName + "\n\n" + "Subject: " + this.title + "\n\n" + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
+      String exInfo = "ID"+ this.questionID + "\n\n"+ "IP"+ this.clientAddress + "\n\n" + " Course: " + this.courseName + "\n\n" + "Subject: " + this.title + "\n\n" + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
       return exInfo;
   }
 

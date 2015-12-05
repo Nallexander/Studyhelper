@@ -222,7 +222,7 @@ public class Client {
         }
         if(claim ==true){
           try{
-            stub.claimHelpObject(intPut);
+            stub.claimHelpObject(input);
           } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();

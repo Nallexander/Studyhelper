@@ -8,13 +8,15 @@ public class Server extends RemoteServer implements Studyhelper{
     //public static String SERVER_IP = "an ip adress"; //serverns ip address måste ändras när vi kör på olika datorer!" 
     private LinkedList<HelpObject> helpList;
     private Server server;
+    private int globalQuestionID = 0;
 	
     public Server() {
 	helpList = new LinkedList();
 	
     }
 
-    public void claimHelpObject(int index){
+    public void claimHelpObject(String questionID){
+    	
 	//TODO claim the in the list
     }
 
@@ -24,7 +26,9 @@ public class Server extends RemoteServer implements Studyhelper{
     public void addHelpObject(String courseName, String title, String message, String location, String userName, String other){
 	try {
 	    String clientAddress = RemoteServer.getClientHost();
-	    HelpObject newHelpObject = new HelpObject(courseName, title, message, location, userName, other, clientAddress);
+	    String questionID = Integer.toString(this.globalQuestionID);
+	    HelpObject newHelpObject = new HelpObject(courseName, title, message, location, userName, other, clientAddress,questionID);
+	    this.globalQuestionID++;
 	    this.helpList.add(newHelpObject);
 	}
 	catch (Exception e) {
