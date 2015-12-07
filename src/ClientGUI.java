@@ -16,35 +16,95 @@ import java.awt.FlowLayout;
 
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
-
+import java.util.LinkedList;
 
 
 
 public class ClientGUI extends JFrame implements ActionListener{
-	final JButton addQuestion;
-	final JButton answerQuestion;
-	final JButton showQuestions;
-	final JButton removeQuestion;
-	final JButton quit;
-	public Studyhelper stub;
-   
+    final JButton addQuestion;
+    final JButton answerQuestion;
+    final JButton showQuestions;
+    final JButton removeQuestion;
+    final JButton quit;
+    public Studyhelper stub;
+    LinkedList<String> notClaimedLList;
     public ClientGUI(Studyhelper stubb){
-    super("Studyhelper");
-    addQuestion    = new JButton("Add Question");
-    answerQuestion = new JButton("Answer Question");
-    showQuestions  = new JButton ("Show All Questions");
-    removeQuestion = new JButton ("Remove Question");
-    quit           = new JButton ("Quit");
-    answerQuestion.addActionListener(this);
+	super("Studyhelper");
+	addQuestion    = new JButton("Add Question");
+	answerQuestion = new JButton("Answer Question");
+	showQuestions  = new JButton ("Show All Questions");
+	removeQuestion = new JButton ("Remove Question");
+	quit           = new JButton ("Quit");
+	answerQuestion.addActionListener(this);
 	addQuestion.addActionListener(this);
 	this.stub = stubb;
 	mainmenu();
     }
-    public void viewUnansweredQuestions(){
+    public LinkedList<String> cutString(String bigString){
+    	String littleString="";
+    	LinkedList<String> linkedL =new LinkedList();
     	
+    	int i =0;
+    	int j=0;
+    	while(i + 1 < bigString.length()){
+	    if (bigString.charAt(i)=='\n' && bigString.charAt(i+1)==('\n')){
+    	    	littleString=bigString.substring(j,i);
+    	    	linkedL.add(littleString);
+    	    	j=i+2;
+    	    	i=i+2;
+	    }
+	    else{
+		i++;
+	    }
+    	}
+    	return linkedL;
     }
-    
-	
+    public void viewNotClaimedQuestions(){
+    	
+	try {
+		String notClaimedList = "";
+    	JTextArea[] allTextArea;
+    	notClaimedList= this.stub.printNotClaimedList();
+	    LinkedList<String> linkedL2=cutString(notClaimedList);
+	    allTextArea = new JTextArea[linkedL2.size()];
+	    
+		
+	  for(int i = 0;i < linkedL2.size();i++)
+	    {
+		allTextArea[i] = new JTextArea();
+		allTextArea[i].append(linkedL2.get(i));
+    	
+	    }
+	  Object[] message = {
+   		   "Woop",allTextArea
+   					
+   		};
+   		int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
+	}
+    	
+    catch (Exception e) {
+	    System.err.println("Client exception: " + e.toString());
+	    e.printStackTrace();
+	}
+	return;
+    }
+public void viewNotClaimedQuestionsFul(){
+    	try{ String notClaimedList = "";
+    	notClaimedList= this.stub.printNotClaimedList();
+    	JTextArea jClaim = new JTextArea(10,10);
+    	Object[] message = {
+    		   "Woop",jClaim
+    					
+    		};
+    		int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
+    	//jClaim.append(notClaimedList);
+    	
+    	}
+    	catch (Exception e) {
+            System.err.println("Client exception: " + e.toString());
+            e.printStackTrace();
+    }
+        }
     public void mainmenu(){
 	setLayout(new FlowLayout());
 	add(this.addQuestion);
@@ -111,21 +171,22 @@ public class ClientGUI extends JFrame implements ActionListener{
 	//client.mainmenu();
 	//client.questionForm();
     }
-public void actionPerformed(ActionEvent event){	
-	  JButton pressed = (JButton)event.getSource();
-	  if (pressed.equals(addQuestion)){
-	   questionForm();
-}
-	  if(pressed.equals(answerQuestion)){
-		  System.out.println("Answer question button pressed");
-	  }
-	  else{
-		  System.out.println("Magicarp");
-	  }
-	    //questionForm(stub);
-	    //JOptionPane.showMessageDialog(null, "yolo");
+    public void actionPerformed(ActionEvent event){	
+	JButton pressed = (JButton)event.getSource();
+	if (pressed.equals(addQuestion)){
+	    questionForm();
+	}
+	if(pressed.equals(answerQuestion)){
+		System.out.println("Irun master");
+	    viewNotClaimedQuestions();
+	}
+	else{
+	    System.out.println("Magicarp");
+	}
+	//questionForm(stub);
+	//JOptionPane.showMessageDialog(null, "yolo");
 	//}
-  }
+    }
 }
 
   
