@@ -53,38 +53,49 @@ public class Client {
 	int stub1Tries = 0;
 	int stub2Tries = 0;
 	int stub3Tries = 0;
-	try{
-	    while (stub1Tries < stubTries) {
+
+	while (stub1Tries < stubTries) {
+	    try{
 		stub1.addHelpObject(courseName, title, question, location, userName, other);
+		stub1Tries = stubTries + 1;
 	    }
-	} catch (Exception e) {
-	    stub1Tries++;
+	    catch (Exception e) {
+		stub1Tries++;
+	    }
 	}
 	if (stub1Tries == stubTries) {
 	    server1Active = false;
 	}
 
-	try{
-	    while (stub2Tries < stubTries) {
+	while (stub2Tries < stubTries) {
+	    try{
 		stub2.addHelpObject(courseName, title, question, location, userName, other);
+		stub2Tries = stubTries + 1;
 	    }
-	} catch (Exception e) {
-	    stub2Tries++;
+	    catch (Exception e) {
+		stub2Tries++;
+	    }
 	}
 	if (stub2Tries == stubTries) {
 	    server2Active = false;
-	} 
+	}
 
-	try{
-	    while (stub3Tries < stubTries) {
+	while (stub3Tries < stubTries) {
+	    try{
 		stub3.addHelpObject(courseName, title, question, location, userName, other);
+		stub3Tries = stubTries + 1;
 	    }
-	} catch (Exception e) {
-	    stub3Tries++;
+	    catch (Exception e) {
+		stub3Tries++;
+	    }
 	}
 	if (stub3Tries == stubTries) {
 	    server3Active = false;
-	}  
+	}
+
+
+
+
     }
     
     
