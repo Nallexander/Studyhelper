@@ -32,8 +32,20 @@ public class Server extends RemoteServer implements Studyhelper{
     	return("This question ID does not exist");
     }
 
-    public void deleteHelpObject(int index, String clientAddress){
-	//TODO delete index check kolla om rätt person deletar
+    /* Returns true if item was successfully deleted */
+    public boolean deleteHelpObject(String questionID, String clientAddress){
+	for (int i = 0; i < this.helpList.size(); i++) {
+	    if (questionID.equals(this.helpList.get(i).getQuestionID())) {
+		if (clientAddress.equals(this.helpList.get(i).getIP())) {
+		    this.helpList.remove(i);
+		    return true;
+		}
+		break;
+		    
+		}
+	    }
+	}  
+    return false;
     }
     public void addHelpObject(String courseName, String title, String message, String location, String userName, String other){
 	try {

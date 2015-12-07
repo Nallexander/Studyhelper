@@ -6,6 +6,11 @@ import java.lang.String;
 public class Client {
 
     private Client() {}
+    private int stubTries = 3;
+    private boolean server1Active = true;
+    private boolean server2Active = true;
+    private boolean server3Active = true;
+
     public boolean isNumeric(String str){
 	for (char c : str.toCharArray()) {
           
@@ -37,10 +42,28 @@ public class Client {
 	System.out.println("[5] Quit");
     }
     	
-    private boolean compareString(String reply, String compareto){
+    private boolean compareString(String reply, String compareTo){
 	return reply.toLowerCase().equals(compareto);
     		
     }
+
+    /*
+    private void stubsVoidFunction(stub stub1, stub stub2, stub stub3, void function) {
+        int stub1Tries = 0;
+	int stub2Tries = 0;
+        int stub3Tries = 0;
+	try{
+	    while (stub1Tries < stubTries) {
+		stub1.function();
+	    }
+	} catch (Exception e) {
+	    stub1Tries++;
+	}
+	if (stub1Tries == stubTries) {
+	    server1Active = false;
+	} 
+    }
+    */
     
     public void addQuestion(Studyhelper stub){
 	int i = 1;
@@ -189,7 +212,7 @@ public class Client {
 	    if(delete == true){System.out.println("Press corresponding number to delete your help request");}
 	    if(claim ==true){System.out.println("Press corresponding number to claim help request");}
 	    try{  
-		notClaimedList =stub.printNotClaimedList();
+		notClaimedList = stub.printNotClaimedList();
 		helpList = stub.printHelpList();
 	    } catch (Exception e) {
 		System.err.println("Client exception: " + e.toString());
