@@ -54,43 +54,50 @@ public class Client {
 	int stub2Tries = 0;
 	int stub3Tries = 0;
 
-	while (stub1Tries < stubTries) {
-	    try{
-		stub1.addHelpObject(courseName, title, question, location, userName, other);
-		stub1Tries = stubTries + 1;
+
+	if (server1Active == true) {
+	    while (stub1Tries < stubTries) {
+		try{
+		    stub1.addHelpObject(courseName, title, question, location, userName, other);
+		    stub1Tries = stubTries + 1;
+		}
+		catch (Exception e) {
+		    stub1Tries++;
+		}
 	    }
-	    catch (Exception e) {
-		stub1Tries++;
+	    if (stub1Tries == stubTries) {
+		server1Active = false;
 	    }
-	}
-	if (stub1Tries == stubTries) {
-	    server1Active = false;
 	}
 
-	while (stub2Tries < stubTries) {
-	    try{
-		stub2.addHelpObject(courseName, title, question, location, userName, other);
-		stub2Tries = stubTries + 1;
+	if (server2Active == true) {
+	    while (stub2Tries < stubTries) {
+		try{
+		    stub2.addHelpObject(courseName, title, question, location, userName, other);
+		    stub2Tries = stubTries + 1;
+		}
+		catch (Exception e) {
+		    stub2Tries++;
+		}
 	    }
-	    catch (Exception e) {
-		stub2Tries++;
+	    if (stub2Tries == stubTries) {
+		server2Active = false;
 	    }
-	}
-	if (stub2Tries == stubTries) {
-	    server2Active = false;
 	}
 
-	while (stub3Tries < stubTries) {
-	    try{
-		stub3.addHelpObject(courseName, title, question, location, userName, other);
-		stub3Tries = stubTries + 1;
+	if (server3Active == true) {
+	    while (stub3Tries < stubTries) {
+		try{
+		    stub3.addHelpObject(courseName, title, question, location, userName, other);
+		    stub3Tries = stubTries + 1;
+		}
+		catch (Exception e) {
+		    stub3Tries++;
+		}
 	    }
-	    catch (Exception e) {
-		stub3Tries++;
+	    if (stub3Tries == stubTries) {
+		server3Active = false;
 	    }
-	}
-	if (stub3Tries == stubTries) {
-	    server3Active = false;
 	}
 
 
