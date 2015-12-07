@@ -6,6 +6,7 @@ import java.lang.String;
 public class Client {
 
     private Client() {}
+
     private int stubTries = 3;
     private boolean server1Active = true;
     private boolean server2Active = true;
@@ -47,25 +48,47 @@ public class Client {
     		
     }
 
-    /*
-    private void stubsVoidFunction(stub stub1, stub stub2, stub stub3, void function) {
-        int stub1Tries = 0;
+    
+    private void stubsMethod(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3, int method, String courseName, String title, String question, String location, String userName, String other) {
+	int stub1Tries = 0;
 	int stub2Tries = 0;
-        int stub3Tries = 0;
+	int stub3Tries = 0;
 	try{
 	    while (stub1Tries < stubTries) {
-		stub1.function();
+		stub1.addHelpObject(courseName, title, question, location, userName, other);
 	    }
 	} catch (Exception e) {
 	    stub1Tries++;
 	}
 	if (stub1Tries == stubTries) {
 	    server1Active = false;
+	}
+
+	try{
+	    while (stub2Tries < stubTries) {
+		stub2.addHelpObject(courseName, title, question, location, userName, other);
+	    }
+	} catch (Exception e) {
+	    stub2Tries++;
+	}
+	if (stub2Tries == stubTries) {
+	    server2Active = false;
 	} 
+
+	try{
+	    while (stub3Tries < stubTries) {
+		stub3.addHelpObject(courseName, title, question, location, userName, other);
+	    }
+	} catch (Exception e) {
+	    stub3Tries++;
+	}
+	if (stub3Tries == stubTries) {
+	    server3Active = false;
+	}  
     }
-    */
     
-    public void addQuestion(Studyhelper stub){
+    
+    public void addQuestion(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3){
 	int i = 1;
 	int j;
 	Scanner in = new Scanner(System.in);    	
@@ -155,7 +178,8 @@ public class Client {
 		    input = confirmation;
 		    if (confirmation.equals("ok")){
 			try{
-			    stub.addHelpObject(courseName, title, question, location, userName, other);
+			    //stub.addHelpObject(courseName, title, question, location, userName, other);
+			    this.stubsMethod(stub1, stub2, stub3, 1, courseName, title, question, location, userName, other);
 			} catch (Exception e) {
 			    System.err.println("Client exception: " + e.toString());
 			    e.printStackTrace();
@@ -218,7 +242,7 @@ public class Client {
 		System.err.println("Client exception: " + e.toString());
 		e.printStackTrace();
 	    }
-	    if ((show == true) or (delete == true)){
+	    if ((show == true) || (delete == true)){
 		System.out.print(helpList);
 	    }
 	    if (claim==true){
@@ -269,25 +293,25 @@ public class Client {
  
     }
   
-    public void intface(Studyhelper stub) {
+    public void intface(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3) {
 	boolean should_quit = false;
 	while (!should_quit) {
 	    mainMenu();
 	    switch(getInput()){
 	    case 1: 
-		addQuestion(stub);
+		addQuestion(stub1, stub2, stub3);
 		break;
 	    case 2:
 		//  answer_question
-		HelpListOptions(stub, false, false, true);
+		HelpListOptions(stub1, false, false, true);
 		//System.out.println("You have answered the question! Good job! :)");
 		break;
 	    case 3:
 		// show list
-		HelpListOptions(stub, true, false, false);
+		HelpListOptions(stub1, true, false, false);
 		break;
 	    case 4:
-		HelpListOptions(stub, false, true, false);
+		HelpListOptions(stub1, false, true, false);
 		System.out.println("Your question has now been removed from the system!");
 		break;
 	    case 5:
@@ -306,13 +330,20 @@ public class Client {
 	String host = (args.length < 1) ? null : args[0];
 	try {
 	    Registry registry = LocateRegistry.getRegistry(host);
-	    Studyhelper stub = (Studyhelper) registry.lookup("Studyhelper");
+	    Studyhelper stub1 = (Studyhelper) registry.lookup("Studyhelper");
+
+	    Registry registry2 = LocateRegistry.getRegistry(host, 50000);
+	    Studyhelper stub2 = (Studyhelper) registry2.lookup("Studyhelper");
+
+	    Registry registry3 = LocateRegistry.getRegistry(host, 50001);
+	    Studyhelper stub3 = (Studyhelper) registry3.lookup("Studyhelper");
+
 	    Client client  = new Client();
-	    client.intface(stub);
-	    String response = stub.sayHello();
+	    client.intface(stub1, stub2, stub3);
+	    String response = stub1.sayHello();
 	    System.out.println("response: " + response);
-	    stub.printSizeHelpList();
-	    String sizeHelpList = stub.printSizeHelpList();
+	    stub1.printSizeHelpList();
+	    String sizeHelpList = stub1.printSizeHelpList();
 	    System.out.println("Size of helpList: " + sizeHelpList);
 	} catch (Exception e) {
 	    System.err.println("Client exception: " + e.toString());
