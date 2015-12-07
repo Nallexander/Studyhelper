@@ -33,20 +33,33 @@ public class Server extends RemoteServer implements Studyhelper{
     }
 
     /* Returns true if item was successfully deleted */
-    public boolean deleteHelpObject(String questionID, String clientAddress){
-	for (int i = 0; i < this.helpList.size(); i++) {
-	    if (questionID.equals(this.helpList.get(i).getQuestionID())) {
-		if (clientAddress.equals(this.helpList.get(i).getIP())) {
-		    this.helpList.remove(i);
-		    return true;
-		}
-		break;
+    public boolean deleteHelpObject(String questionID){
+	try {
+	    for (int i = 0; i < this.helpList.size(); i++) {
+		if (questionID.equals(this.helpList.get(i).getQuestionID())) {
+		    if ((RemoteServer.getClientHost()).equals(this.helpList.get(i).getIP())) {
+			this.helpList.remove(i);
+			return true;
+		    }
+		    break;
 		    
 		}
 	    }
+	    return false;
+	}
+	catch (Exception e) {
+		
+	    System.err.println("Could not resolve client IP: " + e.toString());
+	    	
 	}  
-    return false;
+ return false;
     }
+
+    
+
+
+
+
     public void addHelpObject(String courseName, String title, String message, String location, String userName, String other){
 	try {
 	    String clientAddress = RemoteServer.getClientHost();

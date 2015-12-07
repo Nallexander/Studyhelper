@@ -43,7 +43,7 @@ public class Client {
     }
     	
     private boolean compareString(String reply, String compareTo){
-	return reply.toLowerCase().equals(compareto);
+	return reply.toLowerCase().equals(compareTo);
     		
     }
 
@@ -242,7 +242,7 @@ public class Client {
 		if(delete == true){
 		    String temp = ""; // change this later if we can use clientaddress as argument or not
 		    try{
-			stub.deleteHelpObject(intPut, temp);
+			stub.deleteHelpObject(input);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
