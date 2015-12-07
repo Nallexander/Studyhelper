@@ -2,43 +2,60 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.lang.String;
+
 import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JButton;
+
 import java.awt.FlowLayout;
+
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 
 
 
 
-public class ClientGUI extends JFrame{
+public class ClientGUI extends JFrame implements ActionListener{
+	final JButton addQuestion;
+	final JButton answerQuestion;
+	final JButton showQuestions;
+	final JButton removeQuestion;
+	final JButton quit;
+	public Studyhelper stub;
    
-    ClientGUI(Studyhelper stub){
-	super("Studyhelper");
-	mainmenu(stub);
+    public ClientGUI(Studyhelper stubb){
+    super("Studyhelper");
+    addQuestion    = new JButton("Add Question");
+    answerQuestion = new JButton("Answer Question");
+    showQuestions  = new JButton ("Show All Questions");
+    removeQuestion = new JButton ("Remove Question");
+    quit           = new JButton ("Quit");
+    answerQuestion.addActionListener(this);
+	addQuestion.addActionListener(this);
+	this.stub = stubb;
+	mainmenu();
     }
+    public void viewUnansweredQuestions(){
+    	
+    }
+    
 	
-    public void mainmenu(Studyhelper stub){
-	HandlerClass handler = new HandlerClass(stub);
-	JButton addQuestion;
-	JButton answerQuestion;
-	JButton showQuestions;
-	JButton removeQuestion;
-	JButton quit;
+    public void mainmenu(){
 	setLayout(new FlowLayout());
-	addQuestion=new JButton("Add question");
-	add(addQuestion);
-	addQuestion.addActionListener(handler);
+	add(this.addQuestion);
+	add(this.answerQuestion);
+	
     }
-    public void questionForm(Studyhelper stub){
-	JTextField jUsername = new JTextField();
-	JTextField jCourse = new JTextField();
-	JTextField jTitle = new JTextField();
-	JTextField jLocation = new JTextField();
+    public void questionForm(){
+	JTextArea jUsername = new JTextArea();
+	JTextArea jCourse = new JTextArea();
+	JTextArea jTitle = new JTextArea();
+	JTextArea jLocation = new JTextArea();
 	JTextArea jOther  = new JTextArea(3,10);
 	JTextArea jQuestion = new JTextArea(5,20);
 		
@@ -60,7 +77,7 @@ public class ClientGUI extends JFrame{
 	    String username=jUsername.getText();
 	    String other=jOther.getText();
 	    try{
-                stub.addHelpObject(courseName, title, question, location, username, other);
+                this.stub.addHelpObject(courseName, title, question, location, username, other);
 	    } catch (Exception e) {
                 System.err.println("Client exception: " + e.toString());
                 e.printStackTrace();
@@ -80,9 +97,9 @@ public class ClientGUI extends JFrame{
 	String host = (args.length < 1) ? null : args[0];
 	try {
 	    Registry registry = LocateRegistry.getRegistry(host);
-	    Studyhelper stub = (Studyhelper) registry.lookup("Studyhelper");
+	    Studyhelper stubb= (Studyhelper) registry.lookup("Studyhelper");
 		    
-	    ClientGUI client = new ClientGUI(stub);
+	    ClientGUI client = new ClientGUI(stubb);
 	    client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    client.setSize(300,200);
 	    client.setVisible(true);
@@ -94,15 +111,17 @@ public class ClientGUI extends JFrame{
 	//client.mainmenu();
 	//client.questionForm();
     }
-   public class HandlerClass implements ActionListener{
-	   public Studyhelper stubby;
-	   public HandlerClass(Studyhelper stub){
-	   this.stubby=stub;
-	   }
 public void actionPerformed(ActionEvent event){	
-	   System.out.println("Nothing");
-	   questionForm(this.stubby);
+	  JButton pressed = (JButton)event.getSource();
+	  if (pressed.equals(addQuestion)){
+	   questionForm();
 }
+	  if(pressed.equals(answerQuestion)){
+		  System.out.println("Answer question button pressed");
+	  }
+	  else{
+		  System.out.println("Magicarp");
+	  }
 	    //questionForm(stub);
 	    //JOptionPane.showMessageDialog(null, "yolo");
 	//}
