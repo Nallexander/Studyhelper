@@ -218,12 +218,13 @@ public class Client {
 		System.err.println("Client exception: " + e.toString());
 		e.printStackTrace();
 	    }
-	    if (show == true){
+	    if ((show == true) or (delete == true)){
 		System.out.print(helpList);
 	    }
-	    if(claim==true){
+	    if (claim==true){
 		System.out.print(notClaimedList);
 	    }
+
 	    String input = in.nextLine();
 
 	    if(isInteger(input)){
