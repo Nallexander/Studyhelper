@@ -17,6 +17,7 @@ import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.util.LinkedList;
+import javax.swing.JComboBox;
 
 
 
@@ -63,23 +64,48 @@ public class ClientGUI extends JFrame implements ActionListener{
     	
 	try {
 		String notClaimedList = "";
+		JComboBox<String> optionCombo = new JComboBox<String>();
+		JComboBox<String> questionCombo = new JComboBox<String>();
+		/*int textX = 150;
+		int textY = 30;
+		int textWidth = 500;
+		int textHeight = 70;
+		int buttonX = 100;
+		int buttonY = 30;
+		int buttonWidth = 10;
+		int buttonHeight = 10;
+		*/
     	JTextArea[] allTextArea;
+    	JButton[] allButtons;
     	notClaimedList= this.stub.printNotClaimedList();
 	    LinkedList<String> linkedL2=cutString(notClaimedList);
-	    allTextArea = new JTextArea[linkedL2.size()];
+	    /* allTextArea = new JTextArea[linkedL2.size()];
+	    allButtons = new JButton[linkedL2.size()];
+	    */
 	    
 		
 	  for(int i = 0;i < linkedL2.size();i++)
 	    {
+		questionCombo.addItem(linkedL2.get(i));
+		/*allButtons[i]= new JButton("Claim");
 		allTextArea[i] = new JTextArea();
+		allTextArea[i].setBounds(textX,textY,textWidth,textHeight);
+		allButtons[i].setBounds(buttonX,buttonY,buttonWidth,buttonHeight);
 		allTextArea[i].append(linkedL2.get(i));
-    	
+		allTextArea[i].setEditable(false);
+		add(allButtons[i]);
+    	textY = textY + textHeight + 5;
+    	buttonY = buttonY + buttonHeight + 5;
+    	*/
 	    }
-	  Object[] message = {
-   		   "Woop",allTextArea
+	    optionCombo.addItem("Claim");
+	    optionCombo.addItem("Expand");
+	Object[] message = {
+   		   "Woop",questionCombo,optionCombo
    					
    		};
-   		int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
+   		int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+   		
 	}
     	
     catch (Exception e) {
@@ -161,7 +187,7 @@ public void viewNotClaimedQuestionsFul(){
 		    
 	    ClientGUI client = new ClientGUI(stubb);
 	    client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    client.setSize(300,200);
+	    client.setSize(600,500);
 	    client.setVisible(true);
 	}
 	catch (Exception e) {
