@@ -64,31 +64,6 @@ public class ClientGUI extends JFrame implements ActionListener{
     	}
     	return linkedL;
     }
-    
-    public void viewNotClaimedQuestionsp(){
-    	setLayout(new FlowLayout());
-    	JButton test = new JButton("Test");
-    	JLabel label = new JLabel("hello");
-        label.setSize(150,30);
-        label.setLocation(0,0);
-        JTextField textField = new JTextField();
-        add(test);
-        add(textField);
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-    }
-    public String expandQuestion(String questionID){
-    	try{
-	    String expandedQuestion= this.stub.printExtendedInfoID(questionID);
-	    return expandedQuestion;
-    	}
-	catch (Exception e) {
-	    System.err.println("Client exception: " + e.toString());
-	    e.printStackTrace();
-	}
-    	return("");
-    }
     public String onlyStringID(String str){
 	String ID ="";
 	String s ="";
@@ -106,7 +81,8 @@ public class ClientGUI extends JFrame implements ActionListener{
     }
     
     public String findIDInString(String theString){
-    	String theSubstring = theString.substring(4,theString.length());
+    	int idBegins =4;
+    	String theSubstring = theString.substring(idBegins,theString.length());
     	System.out.println(theSubstring);
     	String foundID = onlyStringID(theSubstring);
     	return foundID;
@@ -208,7 +184,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 		System.out.println(anotherString);
 		String theID = findIDInString(anotherString);
 		System.out.println(theID);
-		String expandedQuestion =expandQuestion(theID);
+		String expandedQuestion =this.stub.printExtendedInfoID(theID);
 		System.out.println(expandedQuestion);
 		this.aBuffer.append("Yoloswag\n");
 		System.out.println("e");
@@ -239,22 +215,6 @@ public class ClientGUI extends JFrame implements ActionListener{
     	    e.printStackTrace();
     	}
     	return;
-    }
-    public void viewNotClaimedQuestionsFul(){
-    	try{ String notClaimedList = "";
-	    notClaimedList= this.stub.printNotClaimedList();
-	    JTextArea jClaim = new JTextArea(10,10);
-	    Object[] message = {
-		"Woop",jClaim
-    					
-	    };
-	    int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
-    	
-    	}
-    	catch (Exception e) {
-            System.err.println("Client exception: " + e.toString());
-            e.printStackTrace();
-	}
     }
     public void mainmenu(){
 	setLayout(new FlowLayout());
@@ -299,7 +259,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 		
 	}
 	else {
-	    System.out.println("No question added");
+		System.out.println("Adding question Canceled");
 	}
     }
 	
