@@ -109,7 +109,7 @@ public class Client {
     }
     
     
-    public void addQuestion(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3){
+    public void addQuestion(List<Studyhelper> stubList){
 	int i = 1;
 	int j;
 	Scanner in = new Scanner(System.in);    	
@@ -200,7 +200,8 @@ public class Client {
 		    if (confirmation.equals("ok")){
 			try{
 			    //stub.addHelpObject(courseName, title, question, location, userName, other);
-			    this.stubsMethod(stub1, stub2, stub3, 1, courseName, title, question, location, userName, other);
+			    Replication servers = new Replication(3, 3);
+			    servers.replicatedAddHelpObject(stubList, 1, courseName, title, question, location, userName, other);
 			} catch (Exception e) {
 			    System.err.println("Client exception: " + e.toString());
 			    e.printStackTrace();
@@ -315,25 +316,25 @@ public class Client {
  
     }
   
-    public void intface(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3) {
+    public void intface(List<Studyhelper> stubList) {
 	boolean should_quit = false;
 	while (!should_quit) {
 	    mainMenu();
 	    switch(getInput()){
 	    case 1: 
-		addQuestion(stub1, stub2, stub3);
+		addQuestion(stubList);
 		break;
 	    case 2:
 		//  answer_question
-		HelpListOptions(stub1, false, false, true);
+		HelpListOptions(stubList.get(0), false, false, true);
 		//System.out.println("You have answered the question! Good job! :)");
 		break;
 	    case 3:
 		// show list
-		HelpListOptions(stub1, true, false, false);
+		HelpListOptions(stubList.get(0), true, false, false);
 		break;
 	    case 4:
-		HelpListOptions(stub1, false, true, false);
+		HelpListOptions(stubList.get(0), false, true, false);
 		System.out.println("Your question has now been removed from the system!");
 		break;
 	    case 5:
@@ -359,9 +360,14 @@ public class Client {
 
 	    Registry registry3 = LocateRegistry.getRegistry(host, 50001);
 	    Studyhelper stub3 = (Studyhelper) registry3.lookup("Studyhelper");
+	    
+	    List<Studyhelper> stubList = new List();
+	    stubList.add(stub1);
+	    stubList.add(stub2);
+	    stubList.add(stub3);
 
 	    Client client  = new Client();
-	    client.intface(stub1, stub2, stub3);
+	    client.intface(stubList);
 	} catch (Exception e) {
 	    System.err.println("Client exception: " + e.toString());
 	    e.printStackTrace();
