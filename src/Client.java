@@ -1,7 +1,7 @@
 import java.rmi.registry.LocateRegistry;
 // private String host = "serverns ip";
 import java.rmi.registry.Registry;
-import java.util.Scanner;
+import java.util.*;
 import java.lang.String;
 
 public class Client {
@@ -361,7 +361,7 @@ public class Client {
 	    Registry registry3 = LocateRegistry.getRegistry(host, 50001);
 	    Studyhelper stub3 = (Studyhelper) registry3.lookup("Studyhelper");
 	    
-	    List<Studyhelper> stubList = new List();
+	    LinkedList<Studyhelper> stubList = new LinkedList();
 	    stubList.add(stub1);
 	    stubList.add(stub2);
 	    stubList.add(stub3);
