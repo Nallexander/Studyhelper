@@ -75,15 +75,24 @@ public class ClientGUI extends JFrame implements ActionListener{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     }
-    public void expandNotClaimedQuestions(){
-     
+    public String expandNotClaimedQuestion(String questionID){
+    	try{
+    	String expandedQuestion= this.stub.printExtendedInfoID(questionID);
+    	return expandedQuestion;
+    	}
+    		catch (Exception e) {
+    		    System.err.println("Client exception: " + e.toString());
+    		    e.printStackTrace();
+    		}
+    	return("");
     }
     public void viewNotClaimedQuestions(){
     	
 	try {
 		String notClaimedList = "";
-		JComboBox<String> optionCombo = new JComboBox<String>();
+		//JComboBox<String> optionCombo = new JComboBox<String>();
 		JComboBox<String> questionCombo = new JComboBox<String>();
+		JTextArea expandedQuestion= new JTextArea(13,37);
 		/*
 		int textX = 100;
 		int textY = 50;
@@ -100,7 +109,6 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    LinkedList<String> linkedL2=cutString(notClaimedList);
 	    //allTextArea = new JTextArea[linkedL2.size()];
 	    //allButtons = new JButton[linkedL2.size()];
-	    
 	    
 		
 	  for(int i = 0;i < linkedL2.size();i++)
@@ -120,15 +128,22 @@ public class ClientGUI extends JFrame implements ActionListener{
     	*/
     	
 	    }
-	    optionCombo.addItem("Claim");
-	    optionCombo.addItem("Expand");
+	    //optionCombo.addItem("Claim");
+	    //optionCombo.addItem("Expand");
 	    setVisible(true);
+	    expandedQuestion.setVisible(false);
 	Object[] message = {
-   		   "Woop",questionCombo,optionCombo
+   		   "Woop",questionCombo,expandedQuestion
    					
    		};
-   		int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
-   		
+	    //JOptionPane optionsOWN = new JOptionPane();
+	    String[] options = new String[] {"Expand", "Claim", "Cancel"};
+   		int option= JOptionPane.showOptionDialog(null, message, "Send question", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
+   	     //questionCombo.getSelectedIndex();
+   		/*
+   		 TODO: If expand is pressed , view a textarea below with exppanded question that is marked (getselectedindex)
+   		 If claim, take get index and try to claim   the question 
+   		 */
 	}
     	
     catch (Exception e) {
