@@ -54,9 +54,9 @@ public void  claimCallback(){
   }
   else
     System.out.println("You have already received a callback, ERROR?");
-  //kör denna i claimhelpobject, måste göra en lookup på rätt klient
-  // som är helpobjectets ip address.
-  //servern måste köra claimcallback på rätt klient(some är server)
+  //kor denna i claimhelpobject, maste gora en lookup pa ratt klient
+  // som ar helpobjectets ip address.
+  //servern maste kora claimcallback pa ratt klient(some ar server)
   //
 }
 
