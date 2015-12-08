@@ -8,12 +8,12 @@ import java.rmi.server.RemoteServer;
 
 public class Client extends RemoteServer implements Servercallback {
   
-  private int stubTries = 3;
-  private boolean server1Active = true;
-  private boolean server2Active = true;
-  private boolean server3Active = true;
-  private boolean callback = false; //false = not received callback, ture = received callback
-      private Client() {}
+    private int stubTries = 3;
+    private boolean server1Active = true;
+    private boolean server2Active = true;
+    private boolean server3Active = true;
+    private boolean callback = false; //false = not received callback, ture = received callback
+    private Client() {}
 
 
     public boolean isNumeric(String str){
@@ -48,38 +48,36 @@ public class Client extends RemoteServer implements Servercallback {
     }
 
 
-public void  claimCallback(){
-  if(callback = false){
-  this.callback = true;
-  }
-  else
-    System.out.println("You have already received a callback, ERROR?");
-  //kor denna i claimhelpobject, maste gora en lookup pa ratt klient
-  // som ar helpobjectets ip address.
-  //servern maste kora claimcallback pa ratt klient(some ar server)
-  //
-}
-
-void startCallback(Client clientCallback){ //starts the server, the client is now a server and will wait for a callback from the "real server"
-  try{
-  Servercallback callbackStub = (Servercallback) UnicastRemoteObject.exportObject(clientCallback, 0);
-  Registry callbackRegistry = LocateRegistry.getRegistry();
-  callbackRegistry.bind("Servercallback", callbackStub);
-  System.out.println("Waiting for Callback");
-  boolean loop = true;
-  while(loop){ //loop until we get a callback
-    if(callback = true){// if callback was changed by the server.
-      loop = false;     // exit since we received a callback
+    public void  claimCallback(){
+	if(callback = false){
+	    this.callback = true;
+	}
+	else
+	    System.out.println("You have already received a callback, ERROR?");
+	//kor denna i claimhelpobject, maste gora en lookup pa ratt klient
+	// som ar helpobjectets ip address.
+	//servern maste kora claimcallback pa ratt klient(some ar server)
+	//
     }
-  }
-  System.out.println("Your question has been claimed");
-  //  exitCallback();
-  }
-  catch(Exception e){
-    System.out.println("startCallback error");  e.printStackTrace();
 
-  }
-}
+    public void startCallback(Client clientCallback){ //starts the server, the client is now a server and will wait for a callback from the "real server"
+	try{
+	    Servercallback callbackStub = (Servercallback) UnicastRemoteObject.exportObject(clientCallback, 0);
+	    Registry callbackRegistry = LocateRegistry.getRegistry();
+	    callbackRegistry.bind("Servercallback", callbackStub);
+	    System.out.println("Waiting for Callback");
+
+	    while(!callback){} //loop until we get a callback
+	    System.out.println("Your question has been claimed");
+	}
+	
+	//  exitCallback();
+    
+	catch(Exception e){
+	    System.out.println("startCallback error");  e.printStackTrace();
+
+	}
+    }
   
     private boolean compareString(String reply, String compareTo){
 	return reply.toLowerCase().equals(compareTo);
@@ -144,7 +142,7 @@ void startCallback(Client clientCallback){ //starts the server, the client is no
     }
     
     
-  public void addQuestion(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3, Client clientCallback){
+    public void addQuestion(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3, Client clientCallback){
 	int i = 1;
 	int j;
 	Scanner in = new Scanner(System.in);    	
@@ -352,13 +350,13 @@ void startCallback(Client clientCallback){ //starts the server, the client is no
  
     }
   
-  public void intface(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3, Client clientCallback) {
+    public void intface(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3, Client clientCallback) {
 	boolean should_quit = false;
 	while (!should_quit) {
 	    mainMenu();
 	    switch(getInput()){
 	    case 1: 
-              addQuestion(stub1, stub2, stub3, clientCallback);
+		addQuestion(stub1, stub2, stub3, clientCallback);
 		break;
 	    case 2:
 		//  answer_question
