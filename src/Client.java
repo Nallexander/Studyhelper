@@ -3,14 +3,18 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.lang.String;
-public class Client {
+import java.rmi.server.UnicastRemoteObject;
+import java.rmi.server.RemoteServer;
 
-    private Client() {}
+public class Client extends RemoteServer implements Servercallback {
+  
+  private int stubTries = 3;
+  private boolean server1Active = true;
+  private boolean server2Active = true;
+  private boolean server3Active = true;
+  private boolean callback = false; //false = not received callback, ture = received callback
+      private Client() {}
 
-    private int stubTries = 3;
-    private boolean server1Active = true;
-    private boolean server2Active = true;
-    private boolean server3Active = true;
 
     public boolean isNumeric(String str){
 	for (char c : str.toCharArray()) {
@@ -42,7 +46,41 @@ public class Client {
 	System.out.println("[4] Remove your Question");
 	System.out.println("[5] Quit");
     }
-    	
+
+
+public void  claimCallback(){
+  if(callback = false){
+  this.callback = true;
+  }
+  else
+    System.out.println("You have already received a callback, ERROR?");
+  //kör denna i claimhelpobject, måste göra en lookup på rätt klient
+  // som är helpobjectets ip address.
+  //servern måste köra claimcallback på rätt klient(some är server)
+  //
+}
+
+void startCallback(Client clientCallback){ //starts the server, the client is now a server and will wait for a callback from the "real server"
+  try{
+  Servercallback callbackStub = (Servercallback) UnicastRemoteObject.exportObject(clientCallback, 0);
+  Registry callbackRegistry = LocateRegistry.getRegistry();
+  callbackRegistry.bind("Servercallback", callbackStub);
+  System.err.println("Waiting for Callback");
+  boolean loop = true;
+  while(loop){ //loop until we get a callback
+    if(callback = true){// if callback was changed by the server.
+      loop = false;     // exit since we received a callback
+    }
+  }
+  System.out.println("Your question has been claimed");
+  //  exitCallback();
+  }
+  catch(Exception e){
+    System.out.println("startCallback error");  e.printStackTrace();
+
+  }
+}
+  
     private boolean compareString(String reply, String compareTo){
 	return reply.toLowerCase().equals(compareTo);
     		
@@ -106,7 +144,7 @@ public class Client {
     }
     
     
-    public void addQuestion(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3){
+  public void addQuestion(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3, Client clientCallback){
 	int i = 1;
 	int j;
 	Scanner in = new Scanner(System.in);    	
@@ -202,7 +240,10 @@ public class Client {
 			    System.err.println("Client exception: " + e.toString());
 			    e.printStackTrace();
 			}
-			System.out.println("Question added");
+                        
+			System.out.println("Question added, please wait for someone to claim your question");
+                        startCallback(clientCallback); // wait for server to you a callback
+                        
 			return;
            
 		    }
@@ -311,13 +352,13 @@ public class Client {
  
     }
   
-    public void intface(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3) {
+  public void intface(Studyhelper stub1, Studyhelper stub2, Studyhelper stub3, Client clientCallback) {
 	boolean should_quit = false;
 	while (!should_quit) {
 	    mainMenu();
 	    switch(getInput()){
 	    case 1: 
-		addQuestion(stub1, stub2, stub3);
+              addQuestion(stub1, stub2, stub3, clientCallback);
 		break;
 	    case 2:
 		//  answer_question
@@ -357,7 +398,7 @@ public class Client {
 	    Studyhelper stub3 = (Studyhelper) registry3.lookup("Studyhelper");
 
 	    Client client  = new Client();
-	    client.intface(stub1, stub2, stub3);
+	    client.intface(stub1, stub2, stub3, client);
 	    String response = stub1.sayHello();
 	    System.out.println("response: " + response);
 	    stub1.printSizeHelpList();

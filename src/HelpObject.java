@@ -40,6 +40,9 @@ public class HelpObject{
   public String getQuestionID(){
 	  return this.questionID;
   }
+  public String getClientAddress(){
+    return this.clientAddress;
+  }
   public boolean isClaimed(){
 	  return this.claimed;
   }

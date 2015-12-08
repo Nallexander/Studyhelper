@@ -18,21 +18,32 @@ public class Server extends RemoteServer implements Studyhelper{
     public String claimHelpObject(String questionID){
     for (int i = 0; i < this.helpList.size(); i++){
     if (this.helpList.get(i).getQuestionID().equals(questionID)){
-    	if (!(this.helpList.get(i).isClaimed())){
-    	this.helpList.get(i).claim(true);
-    	return("The question is now claimed");
-    	}
-    	else{
-    		return("The question has already been claimed");
-    		
-    	}
+      if (!(this.helpList.get(i).isClaimed())){ //if object can be claimed then claim
+          this.helpList.get(i).claim(true);
+          try{
+            String clientAddress = this.helpList.get(i).getClientAddress();//client address to send callback
+            Registry registry = LocateRegistry.getRegistry(clientAddress); 
+            Servercallback stub = (Servercallback) registry.lookup("Servercallback");
+            
+            stub.claimCallback();//send callback by chaning the callback variable in client
+          }catch(Exception e){
+            System.err.println("CALLBACK DIDNOT WORK");
+          }
+                  return("The question is now claimed by claimhelpobject");
+  
+          
+      }
+      else{
+        return("The question has already been claimed");
+        
+      }
     }
-	//TODO claim the in the list
+    //TODO claim the in the list
     }
-    	return("This question ID does not exist");
+    return("This question ID does not exist");
     }
-
-    /* Returns true if item was successfully deleted */
+  
+  /* Returns true if item was successfully deleted */
     public boolean deleteHelpObject(String questionID){
 	try {
 	    for (int i = 0; i < this.helpList.size(); i++) {
@@ -112,11 +123,7 @@ public class Server extends RemoteServer implements Studyhelper{
     	
 	try {
 	    Server server = new Server();
-	    Studyhelper stub = (Studyhelper) UnicastRemoteObject.exportObject(server, 0);
-	    
-
-            
-                
+	    Studyhelper stub = (Studyhelper) UnicastRemoteObject.exportObject(server, 0);	                
 	    // Bind the remote object's stub in the registry
 	    Registry registry = LocateRegistry.getRegistry();
 	    //System.setProperty("java.rmi.server.hostname", server.SERVER_IP); // simons ville ha denna rad
