@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import java.awt.FlowLayout;
@@ -39,7 +40,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	answerQuestion.addActionListener(this);
 	addQuestion.addActionListener(this);
 	this.stub = stubb;
-	mainmenu();
+	//mainmenu();
     }
     public LinkedList<String> cutString(String bigString){
     	String littleString="";
@@ -60,46 +61,68 @@ public class ClientGUI extends JFrame implements ActionListener{
     	}
     	return linkedL;
     }
+    
+    public void viewNotClaimedQuestionsp(){
+    	setLayout(new FlowLayout());
+    	JButton test = new JButton("Test");
+    	JLabel label = new JLabel("hello");
+        label.setSize(150,30);
+        label.setLocation(0,0);
+        JTextField textField = new JTextField();
+        add(test);
+        add(textField);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+    }
+    public void expandNotClaimedQuestions(){
+     
+    }
     public void viewNotClaimedQuestions(){
     	
 	try {
 		String notClaimedList = "";
 		JComboBox<String> optionCombo = new JComboBox<String>();
 		JComboBox<String> questionCombo = new JComboBox<String>();
-		/*int textX = 150;
-		int textY = 30;
-		int textWidth = 500;
-		int textHeight = 70;
-		int buttonX = 100;
-		int buttonY = 30;
-		int buttonWidth = 10;
-		int buttonHeight = 10;
+		/*
+		int textX = 100;
+		int textY = 50;
+		int textWidth = 200;
+		int textHeight = 30;
+		int buttonX = 20;
+		int buttonY = 50;
+		int buttonWidth = 50;
+		int buttonHeight = 30;
 		*/
-    	JTextArea[] allTextArea;
-    	JButton[] allButtons;
+    	//JTextArea[] allTextArea;
+    	//JButton[] allButtons;
     	notClaimedList= this.stub.printNotClaimedList();
 	    LinkedList<String> linkedL2=cutString(notClaimedList);
-	    /* allTextArea = new JTextArea[linkedL2.size()];
-	    allButtons = new JButton[linkedL2.size()];
-	    */
+	    //allTextArea = new JTextArea[linkedL2.size()];
+	    //allButtons = new JButton[linkedL2.size()];
+	    
 	    
 		
 	  for(int i = 0;i < linkedL2.size();i++)
 	    {
 		questionCombo.addItem(linkedL2.get(i));
-		/*allButtons[i]= new JButton("Claim");
+		/*
+		allButtons[i]= new JButton("Claim");
 		allTextArea[i] = new JTextArea();
 		allTextArea[i].setBounds(textX,textY,textWidth,textHeight);
 		allButtons[i].setBounds(buttonX,buttonY,buttonWidth,buttonHeight);
 		allTextArea[i].append(linkedL2.get(i));
 		allTextArea[i].setEditable(false);
 		add(allButtons[i]);
+		add(allTextArea[i]);
     	textY = textY + textHeight + 5;
     	buttonY = buttonY + buttonHeight + 5;
     	*/
+    	
 	    }
 	    optionCombo.addItem("Claim");
 	    optionCombo.addItem("Expand");
+	    setVisible(true);
 	Object[] message = {
    		   "Woop",questionCombo,optionCombo
    					
@@ -187,14 +210,15 @@ public void viewNotClaimedQuestionsFul(){
 		    
 	    ClientGUI client = new ClientGUI(stubb);
 	    client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    client.setSize(600,500);
+	    client.setSize(800,800);
 	    client.setVisible(true);
+	    client.mainmenu();
 	}
 	catch (Exception e) {
 	    System.err.println("Client exception: " + e.toString());
 	    e.printStackTrace();
 	}
-	//client.mainmenu();
+	
 	//client.questionForm();
     }
     public void actionPerformed(ActionEvent event){	
