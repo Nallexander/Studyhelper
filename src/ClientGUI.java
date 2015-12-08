@@ -17,7 +17,9 @@ import java.awt.FlowLayout;
 
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+
 import java.util.LinkedList;
+
 import javax.swing.JComboBox;
 
 
@@ -28,6 +30,7 @@ public class ClientGUI extends JFrame implements ActionListener{
     final JButton showQuestions;
     final JButton removeQuestion;
     final JButton quit;
+    public JTextArea aBuffer = new JTextArea(13,37);
     public Studyhelper stub;
     LinkedList<String> notClaimedLList;
     public ClientGUI(Studyhelper stubb){
@@ -86,13 +89,34 @@ public class ClientGUI extends JFrame implements ActionListener{
     		}
     	return("");
     }
+    public String onlyStringID(String str){
+		String ID ="";
+		String s ="";
+		for (char c : str.toCharArray()) {
+	          
+		    if (Character.isDigit(c)){
+		    	s="" + c;
+		    	ID = ID  + s;
+		    }
+		    else{
+		    	return ID;
+		    }
+	    }
+		return ID;
+}
+    
+    public String findIDInString(String theString){
+    	String theSubstring = theString.substring(4,theString.length());
+    	System.out.println(theSubstring);
+    	String foundID = onlyStringID(theSubstring);
+    	return foundID;
+    }
     public void viewNotClaimedQuestions(){
     	
 	try {
 		String notClaimedList = "";
 		//JComboBox<String> optionCombo = new JComboBox<String>();
 		JComboBox<String> questionCombo = new JComboBox<String>();
-		JTextArea expandedQuestion= new JTextArea(13,37);
 		/*
 		int textX = 100;
 		int textY = 50;
@@ -131,14 +155,50 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    //optionCombo.addItem("Claim");
 	    //optionCombo.addItem("Expand");
 	    setVisible(true);
-	    expandedQuestion.setVisible(false);
 	Object[] message = {
-   		   "Woop",questionCombo,expandedQuestion
+   		   "Woop",questionCombo
    					
    		};
 	    //JOptionPane optionsOWN = new JOptionPane();
 	    String[] options = new String[] {"Expand", "Claim", "Cancel"};
-   		int option= JOptionPane.showOptionDialog(null, message, "Send question", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
+   		int option= JOptionPane.showOptionDialog(null, message, "Send question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
+   		   if (option==JOptionPane.YES_OPTION){
+   			int selectedIndex = questionCombo.getSelectedIndex();
+   			System.out.println(selectedIndex);
+   			String anotherString =linkedL2.get(selectedIndex);
+   			System.out.println(anotherString);
+   			String theID = findIDInString(anotherString);
+   			System.out.println(theID);
+   			String expandedQuestion =expandNotClaimedQuestion(theID);
+   			System.out.println(expandedQuestion);
+   			this.aBuffer.append("Yoloswag\n");
+   			System.out.println("e");
+   			this.aBuffer.setText("");
+   			this.aBuffer.append(expandedQuestion);
+   			System.out.println("f");
+   			System.out.println("g");
+	}
+   		   if(option ==JOptionPane.NO_OPTION){
+   			int selectedIndex = questionCombo.getSelectedIndex();
+   			System.out.println(selectedIndex);
+   			String anotherString =linkedL2.get(selectedIndex);
+   			System.out.println(anotherString);
+   			String theID = findIDInString(anotherString);
+   			System.out.println(theID);
+   		 try{
+   			 String claimedOrNot ="";
+ 			claimedOrNot=this.stub.claimHelpObject(theID);
+ 			System.out.println(claimedOrNot);
+ 			this.aBuffer.setText("");
+   			this.aBuffer.append(claimedOrNot);
+ 		    } 
+   		 catch (Exception e) {
+ 			System.err.println("Client exception: " + e.toString());
+ 			e.printStackTrace();
+ 		    }
+   			
+   			 
+   		   }
    	     //questionCombo.getSelectedIndex();
    		/*
    		 TODO: If expand is pressed , view a textarea below with exppanded question that is marked (getselectedindex)
@@ -173,6 +233,7 @@ public void viewNotClaimedQuestionsFul(){
 	setLayout(new FlowLayout());
 	add(this.addQuestion);
 	add(this.answerQuestion);
+	add(this.aBuffer);
 	
     }
     public void questionForm(){
