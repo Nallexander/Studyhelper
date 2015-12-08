@@ -48,7 +48,7 @@ public class Client extends RemoteServer implements Servercallback {
     }
 
 
-    public void  claimCallback(){
+    public void claimCallback(){
 	if(callback = false){
 	    this.callback = true;
 	}
