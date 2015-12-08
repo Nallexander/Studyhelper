@@ -20,25 +20,13 @@ public class Server extends RemoteServer implements Studyhelper{
     if (this.helpList.get(i).getQuestionID().equals(questionID)){
       if (!(this.helpList.get(i).isClaimed())){ //if object can be claimed then claim
           this.helpList.get(i).claim(true);
-          try{
-            String clientAddress = this.helpList.get(i).getClientAddress();//client address to send callback
-            Registry registry = LocateRegistry.getRegistry(clientAddress); 
-            Servercallback stub = (Servercallback) registry.lookup("Servercallback");
-            
-            stub.claimCallback();//send callback by chaning the callback variable in client
-          }catch(Exception e){
-            System.err.println("CALLBACK DIDNOT WORK");
           }
                   return("The question is now claimed by claimhelpobject");
-  
-          
-      }
+        }
       else{
         return("The question has already been claimed");
-        
       }
-    }
-    //TODO claim the in the list
+
     }
     return("This question ID does not exist");
     }
