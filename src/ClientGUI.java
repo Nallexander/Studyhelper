@@ -33,6 +33,7 @@ public class ClientGUI extends JFrame implements ActionListener{
     public JTextArea aBuffer = new JTextArea(13,37);
     public Studyhelper stub;
     LinkedList<String> notClaimedLList;
+    public String show = "";
     public ClientGUI(Studyhelper stubb){
 	super("Studyhelper");
 	addQuestion    = new JButton("Add Question");
@@ -87,17 +88,22 @@ public class ClientGUI extends JFrame implements ActionListener{
     	String foundID = onlyStringID(theSubstring);
     	return foundID;
     }
-    public void viewNotClaimedQuestions(){
+    public void viewTheQuestions(){
     	
 	try {
-	    String notClaimedList = "";
+	    String questionList = "";
 	    JComboBox<String> questionCombo = new JComboBox<String>();
-	    notClaimedList= this.stub.printNotClaimedList();
-	    LinkedList<String> linkedL2=cutString(notClaimedList);
+	    if (this.show.equals("NOTCLAIMED")){
+	    questionList= this.stub.printNotClaimedList();
+	    }
+	    else{
+	    	questionList= this.stub.printHelpList();
+	    }
+	    LinkedList<String> questionsLinkedL=cutString(questionList);
 		
-	    for(int i = 0;i < linkedL2.size();i++)
+	    for(int i = 0;i < questionsLinkedL.size();i++)
 		{
-		    questionCombo.addItem(linkedL2.get(i));
+		    questionCombo.addItem(questionsLinkedL.get(i));
 		}
 	    setVisible(true);
 	    Object[] message = {
@@ -109,39 +115,27 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    if (option==JOptionPane.YES_OPTION){
 		int selectedIndex = questionCombo.getSelectedIndex();
 		System.out.println(selectedIndex);
-		String anotherString =linkedL2.get(selectedIndex);
+		String anotherString =questionsLinkedL.get(selectedIndex);
 		System.out.println(anotherString);
 		String theID = findIDInString(anotherString);
 		System.out.println(theID);
 		String expandedQuestion =this.stub.printExtendedInfoID(theID);
 		System.out.println(expandedQuestion);
-		this.aBuffer.append("Yoloswag\n");
-		System.out.println("e");
 		this.aBuffer.setText("");
 		this.aBuffer.append(expandedQuestion);
-		System.out.println("f");
-		System.out.println("g");
 	    }
 	    if(option ==JOptionPane.NO_OPTION){
 		int selectedIndex = questionCombo.getSelectedIndex();
 		System.out.println(selectedIndex);
-		String anotherString =linkedL2.get(selectedIndex);
+		String anotherString =questionsLinkedL.get(selectedIndex);
 		System.out.println(anotherString);
 		String theID = findIDInString(anotherString);
 		System.out.println(theID);
-		try{
 		    String claimedOrNot ="";
 		    claimedOrNot=this.stub.claimHelpObject(theID);
 		    System.out.println(claimedOrNot);
 		    this.aBuffer.setText("");
-		    this.aBuffer.append(claimedOrNot);
-		} 
-		catch (Exception e) {
-		    System.err.println("Client exception: " + e.toString());
-		    e.printStackTrace();
-		}
-   			
-   			 
+		    this.aBuffer.append(claimedOrNot);  			 
 	    }
 	}
     	
@@ -150,71 +144,6 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    e.printStackTrace();
 	}
 	return;
-    }
-    
-    
-    public void viewAllQuestions(){
-    	try {
-	    String allQuestionsList = "";
-	    JComboBox<String> questionCombo = new JComboBox<String>();
-    		
-	    allQuestionsList= this.stub.printHelpList();
-    	    LinkedList<String> linkedL2=cutString(allQuestionsList);
-    	 
-    	    
-    		
-	    for(int i = 0;i < linkedL2.size();i++)
-		{
-		    questionCombo.addItem(linkedL2.get(i));
-    	
-    	
-      	
-		}
-    	    setVisible(true);
-	    Object[] message = {
-		"Woop",questionCombo
-       					
-	    };
-    	    String[] options = new String[] {"Expand", "Claim", "Cancel"};
-	    int option= JOptionPane.showOptionDialog(null, message, "Send question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
-	    if (option==JOptionPane.YES_OPTION){
-		int selectedIndex = questionCombo.getSelectedIndex();
-		System.out.println(selectedIndex);
-		String anotherString =linkedL2.get(selectedIndex);
-		System.out.println(anotherString);
-		String theID = findIDInString(anotherString);
-		System.out.println(theID);
-		String expandedQuestion =this.stub.printExtendedInfoID(theID);
-		System.out.println(expandedQuestion);
-		this.aBuffer.append("Yoloswag\n");
-		System.out.println("e");
-		this.aBuffer.setText("");
-		this.aBuffer.append(expandedQuestion);
-		System.out.println("f");
-		System.out.println("g");
-	    }
-	    if(option ==JOptionPane.NO_OPTION){
-		int selectedIndex = questionCombo.getSelectedIndex();
-		System.out.println(selectedIndex);
-		String anotherString =linkedL2.get(selectedIndex);
-		System.out.println(anotherString);
-		String theID = findIDInString(anotherString);
-		System.out.println(theID);
-       		
-		String claimedOrNot ="";
-		claimedOrNot=this.stub.claimHelpObject(theID);
-		System.out.println(claimedOrNot);
-		this.aBuffer.setText("");
-		this.aBuffer.append(claimedOrNot);
- 
-	    }
-    	}
-        	
-        catch (Exception e) {
-    	    System.err.println("Client exception: " + e.toString());
-    	    e.printStackTrace();
-    	}
-    	return;
     }
     public void mainmenu(){
 	setLayout(new FlowLayout());
@@ -287,10 +216,12 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    questionForm();
 	}
 	if(pressed.equals(answerQuestion)){
-	    viewNotClaimedQuestions();
+		this.show="NOTCLAIMED";
+	    viewTheQuestions();
 	}
 	if(pressed.equals(showQuestions)){
-	    viewAllQuestions();
+		this.show="ALL";
+	    viewTheQuestions();
 	}
 
 	else{
