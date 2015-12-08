@@ -65,7 +65,7 @@ void startCallback(Client clientCallback){ //starts the server, the client is no
   Servercallback callbackStub = (Servercallback) UnicastRemoteObject.exportObject(clientCallback, 0);
   Registry callbackRegistry = LocateRegistry.getRegistry();
   callbackRegistry.bind("Servercallback", callbackStub);
-  System.err.println("Waiting for Callback");
+  System.out.println("Waiting for Callback");
   boolean loop = true;
   while(loop){ //loop until we get a callback
     if(callback = true){// if callback was changed by the server.
