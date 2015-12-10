@@ -372,8 +372,8 @@ public class Client {
 	stubList.addStubs(args);
 	
 	Client client  = new Client(args.length/2);
-	Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
-	thread.start();	 
+	//Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
+	//thread.start();	 
 	client.intface(stubList);
 
     }
