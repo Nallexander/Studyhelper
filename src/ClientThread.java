@@ -1,6 +1,6 @@
 import java.lang.*;
 
-public class ClientThread extends Thread  implements Runnable{
+public class ClientThread extends Thread implements Runnable{
   public Client client;
   
   public ClientThread(Client client){
