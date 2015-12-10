@@ -90,12 +90,12 @@ public class Server extends RemoteServer implements Studyhelper{
 	}
 	int size = helpList.size();
 	for (int i = 0; i < size; i++){
-	    if (clientAddress == helpList.get(i).getClientAddress() && helpList.get(i).isClaimed() && helpList.get(i).isPolled()){
+	    if (clientAddress == helpList.get(i).getClientAddress() && helpList.get(i).isClaimed() && !(helpList.get(i).isPolled())){
 		helpList.get(i).setPolledTrue();
 		return helpList.get(i).getQuestionID();
 	    } 
 	}
-	return "";
+	return "TEST";
     }
   
   public String printSizeHelpList(){
