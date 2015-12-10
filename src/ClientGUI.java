@@ -1,19 +1,11 @@
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Scanner;
-import java.lang.String;
-import javax.swing.JOptionPane;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import java.util.LinkedList;
-import javax.swing.JComboBox;
+import java.lang.*;
+import java.awt.*;
+import javax.swing.*;
+import java.util.*;
+import java.awt.event.*;
+import javax.swing.border.*;
 
 
 
@@ -28,7 +20,7 @@ public class ClientGUI extends JFrame implements ActionListener{
     LinkedList<String> notClaimedLList;
     public String operation = "";
     public ClientGUI(Studyhelper stubb){
-	super("Studyhelper");
+    super("Studyhelper");
 	addQuestion    = new JButton("Add Question");
 	answerQuestion = new JButton("Answer Question");
 	showQuestions  = new JButton("Show All Questions");
@@ -38,6 +30,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	addQuestion.addActionListener(this);
 	showQuestions.addActionListener(this);
 	removeQuestion.addActionListener(this);
+	this.aBuffer.append("Weolcome to StudyHelper, what do you want to do?\n Press the corresponding button above ");
 	this.stub = stubb;
     }
     public LinkedList<String> cutString(String bigString){
@@ -84,12 +77,14 @@ public class ClientGUI extends JFrame implements ActionListener{
     }
     
     public void mainmenu(){
+    
     	setLayout(new FlowLayout());
     	add(this.addQuestion);
     	add(this.answerQuestion);
     	add(this.showQuestions);
     	add(this.removeQuestion);
-    	add(this.aBuffer);
+        
+        add(this.aBuffer);
     }
     
     public void viewTheQuestions(){
@@ -152,12 +147,22 @@ public class ClientGUI extends JFrame implements ActionListener{
     }
    
     public void questionForm(){
-	JTextArea jUsername = new JTextArea();
-	JTextArea jCourse   = new JTextArea();
-	JTextArea jTitle    = new JTextArea();
-	JTextArea jLocation = new JTextArea();
-	JTextArea jOther    = new JTextArea(3,10);
-	JTextArea jQuestion = new JTextArea(5,20);
+	JTextArea jUsername = new JTextArea(1,1);
+	enableNormalTabbing(jUsername);
+	JTextArea jCourse   = new JTextArea(1,1);
+	enableNormalTabbing(jCourse);
+	JTextArea jTitle    = new JTextArea(1,1);
+	enableNormalTabbing(jTitle);
+	JTextArea jLocation = new JTextArea(1,1);
+	enableNormalTabbing(jLocation);
+	JTextArea jOther    = new JTextArea(3,1);
+	enableNormalTabbing(jOther);
+	JTextArea jQuestion = new JTextArea(5,1);
+	enableNormalTabbing(jQuestion);
+	 Object paneBG = UIManager.get("OptionPane.background");
+	    Object panelBG = UIManager.get("Panel.background");
+	    UIManager.put("OptionPane.background", new Color(0,200,0));
+	    UIManager.put("Panel.background", new Color(0,200,0));
 		
 	Object[] message = {
 	    "Username", jUsername,
@@ -168,7 +173,9 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    "Other",    jOther
 				
 	};
-	int option = JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
+	int option = JOptionPane.showConfirmDialog(null, message,"Send question", JOptionPane.OK_CANCEL_OPTION);
+	UIManager.put("OptionPane.background", paneBG);
+    UIManager.put("Panel.background", panelBG);
 	if (option == JOptionPane.OK_OPTION) {
 	    String courseName=jCourse.getText();
 	    String title=jTitle.getText();
@@ -207,7 +214,10 @@ public class ClientGUI extends JFrame implements ActionListener{
 	}
 	
     }
-    
+    public void enableNormalTabbing(Component component){
+    	component.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,null);
+    	component.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,null);
+    }
     public void actionPerformed(ActionEvent event){	
 	JButton pressed = (JButton)event.getSource();
 	if (pressed.equals(addQuestion)){
