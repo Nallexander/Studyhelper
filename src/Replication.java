@@ -47,13 +47,14 @@ public class Replication  {
 	}
     }
 
-    protected void replicatedDeleteHelpObject(List<Studyhelper> stubList, String questionID) {
-	
+    protected boolean replicatedDeleteHelpObject(List<Studyhelper> stubList, String questionID) {
+
+	boolean return_bool = false;
 	for (int i = 0; i < this.serverUpList.size(); i++) {
 	    if (this.serverUpList.get(i) == true) {
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
-			stubList.get(i).deleteHelpObject(questionID);
+			return_bool = stubList.get(i).deleteHelpObject(questionID);
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {
@@ -65,15 +66,17 @@ public class Replication  {
 		}
 	    }
 	}
+	return return_bool;
     }
 
-    protected void replicatedClaimHelpObject(List<Studyhelper> stubList, String questionID) {
-	
+    protected String replicatedClaimHelpObject(List<Studyhelper> stubList, String questionID) {
+
+	String return_stri = "";
 	for (int i = 0; i < this.serverUpList.size(); i++) {
 	    if (this.serverUpList.get(i) == true) {
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
-			stubList.get(i).claimHelpObject(questionID);
+			return_stri = stubList.get(i).claimHelpObject(questionID);
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {
@@ -85,15 +88,17 @@ public class Replication  {
 		}
 	    }
 	}
+	return return_stri;
     }
 
-    protected void replicatedPrintHelpList(List<Studyhelper> stubList) {
-	
+    protected String replicatedPrintHelpList(List<Studyhelper> stubList) {
+
+	String return_stri = "";
 	for (int i = 0; i < this.serverUpList.size(); i++) {
 	    if (this.serverUpList.get(i) == true) {
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
-			stubList.get(i).printHelpList();
+			return_stri = stubList.get(i).printHelpList();
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {
@@ -105,15 +110,17 @@ public class Replication  {
 		}
 	    }
 	}
+	return return_stri;
     }
 
-    protected void replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
+    protected String replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
 	
+	String return_stri = "";
 	for (int i = 0; i < this.serverUpList.size(); i++) {
 	    if (this.serverUpList.get(i) == true) {
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
-			stubList.get(i).printNotClaimedList();
+			return_stri = stubList.get(i).printNotClaimedList();
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {
@@ -125,15 +132,17 @@ public class Replication  {
 		}
 	    }
 	}
+	return return_stri;
     }
 
-    protected void replicatedPrintExtendedInfo(List<Studyhelper> stubList, int index) {
-	
+    protected String replicatedPrintExtendedInfo(List<Studyhelper> stubList, int index) {
+
+	String return_stri = "";
 	for (int i = 0; i < this.serverUpList.size(); i++) {
 	    if (this.serverUpList.get(i) == true) {
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
-			stubList.get(i).printExtendedInfo(index);
+			return_stri = stubList.get(i).printExtendedInfo(index);
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {
@@ -145,6 +154,7 @@ public class Replication  {
 		}
 	    }
 	}
+	return return_stri;
     }
 
 
