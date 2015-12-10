@@ -28,6 +28,8 @@ public class HelpObject{
     this.polled = false;
   }
 
+
+  
   public String basicInfoString(){
 	  String taken = "No";
 	  String qID = this.questionID;
@@ -48,7 +50,12 @@ public class HelpObject{
   public boolean isClaimed(){
 	  return this.claimed;
   }
-
+  public boolean isPolled(){
+    return this.polled;
+      }
+  public void setPolledTrue(){
+    this.polled = true;
+  }
   public String extendedInfoString(){
 	  String taken = "No";
 	  if (this.claimed){
