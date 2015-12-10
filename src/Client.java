@@ -12,10 +12,11 @@ public class Client {
 
   
     private Client(int numServers) {
-	this.numberOfServers = numServers + 1;
+
+	this.numberOfServers = numServers;
 	this.numberOfQuestions = 0;
     }
-    private Replication servers = new Replication(numberOfServers, serverTries);
+    private Replication servers = new Replication(this.numberOfServers, this.serverTries);
 
 
 
@@ -370,6 +371,8 @@ public class Client {
     public static void main(String[] args) {
 	LinkedList<Studyhelper> stubList = new LinkedList();
 	Client client  = new Client(args.length/2);
+	client.servers.updateReplicas(client.numberOfServers, client.serverTries);
+
 	try {
 	    if (args.length == 0) { //No argument given
 		Registry registry = LocateRegistry.getRegistry();
