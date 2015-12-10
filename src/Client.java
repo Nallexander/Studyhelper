@@ -270,8 +270,8 @@ public class Client {
 	    if(delete == true){System.out.println("Press corresponding number to delete your help request");}
 	    if(claim ==true){System.out.println("Press corresponding number to claim help request");}
 	    try{  
-		notClaimedList = stub.printNotClaimedList();
-		helpList = stub.printHelpList();
+		notClaimedList = servers.replicatedPrintNotClaimedList();
+		helpList = servers.replicatedPrintHelpList();
 	    } catch (Exception e) {
 		System.err.println("Client exception: " + e.toString());
 		e.printStackTrace();
@@ -291,7 +291,7 @@ public class Client {
 		String claimedOrNot="";
 		if(show==true){
 		    try{
-			info = stub.printExtendedInfo(intPut);
+			info = servers.replicatedPrintExtendedInfo(intPut);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
@@ -301,7 +301,7 @@ public class Client {
 		if(delete == true){
 		    String temp = ""; // change this later if we can use clientaddress as argument or not
 		    try{
-			stub.deleteHelpObject(input);
+			servers.replicatedDeleteHelpObject(input);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
@@ -310,7 +310,7 @@ public class Client {
 		}
 		if(claim ==true){
 		    try{
-			claimedOrNot=stub.claimHelpObject(input);
+			claimedOrNot = servers.replicatedClaimHelpObject(input);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
@@ -404,4 +404,3 @@ public class Client {
   
 
 }
-
