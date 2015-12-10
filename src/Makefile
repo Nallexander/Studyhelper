@@ -1,9 +1,9 @@
 JCC = javac
 
-Compile:
+compile:
 	$(JCC) Client.java Server.java Studyhelper.java HelpObject.java ClientGUI.java Replication.java ClientThread.java
 
-Server:
+server:
 	make Compile
 	rmiregistry &
 	java -Djava.rmi.server.codebase=file: Server &
