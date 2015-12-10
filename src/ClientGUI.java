@@ -10,16 +10,19 @@ import javax.swing.border.*;
 
 
 public class ClientGUI extends JFrame implements ActionListener{
+	private int serverTries = 3;
+    private int numberOfServers = 1;
     public JButton addQuestion;
     public JButton answerQuestion;
     public JButton showQuestions;
     public JButton removeQuestion;
     public JButton quit;
+    public Replication servers = new Replication(numberOfServers, serverTries);
     public JTextArea aBuffer = new JTextArea(13,37);
-    public Studyhelper stub;
+    public LinkedList<Studyhelper> theStubList;
     LinkedList<String> notClaimedLList;
     public String operation = "";
-    public ClientGUI(Studyhelper stubb){
+    public ClientGUI(LinkedList<Studyhelper> stubb){
     super("Studyhelper");
 	addQuestion    = new JButton("Add Question");
 	answerQuestion = new JButton("Answer Question");
@@ -31,7 +34,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	showQuestions.addActionListener(this);
 	removeQuestion.addActionListener(this);
 	this.aBuffer.append("Weolcome to StudyHelper, what do you want to do?\n Press the corresponding button above ");
-	this.stub = stubb;
+	this.theStubList = stubb;
     }
     public LinkedList<String> cutString(String bigString){
     	String littleString = "";
@@ -91,12 +94,13 @@ public class ClientGUI extends JFrame implements ActionListener{
     	
 	try {
 	    String questionList = "";
+	    String title = "";
 	    JComboBox<String> questionCombo = new JComboBox<String>();
 	    if (this.operation.equals("NOTCLAIMED")){
-		questionList = this.stub.printNotClaimedList();
+		questionList = servers.replicatedPrintNotClaimedList(theStubList);
 	    }
 	    else{
-	    	questionList = this.stub.printHelpList();
+	    	questionList = servers.replicatedPrintHelpList(theStubList);
 	    }
 	    LinkedList<String> questionsLinkedL=cutString(questionList);
 		
@@ -110,16 +114,18 @@ public class ClientGUI extends JFrame implements ActionListener{
    					
 	    };
 	    String[] options = new String[] {"Expand", "Claim", "Cancel"};
+	    title = "Select question to view or claim";
 	    if(this.operation.equals("REMOVE")){
+	    	title = "Select question to view or remove";
 	      options[1] = "Remove";
 	    }
 	    
-	    int option = JOptionPane.showOptionDialog(null, message, "Send question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
+	    int option = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
 	    if (option == JOptionPane.YES_OPTION){ 
 		int selectedIndex = questionCombo.getSelectedIndex();
 		String anotherString =questionsLinkedL.get(selectedIndex);
 		String theID = findIDInString(anotherString);
-		String expandedQuestion =this.stub.printExtendedInfoID(theID);
+		String expandedQuestion =servers.replicatedPrintExtendedInfoID(theStubList, theID);
 		this.aBuffer.setText("");
 		this.aBuffer.append(expandedQuestion);
 	    }
@@ -128,11 +134,11 @@ public class ClientGUI extends JFrame implements ActionListener{
 		String anotherString =questionsLinkedL.get(selectedIndex);
 		String theID = findIDInString(anotherString);
 		if(this.operation.equals("REMOVE")){
-			this.stub.deleteHelpObject(theID);	
+			servers.replicatedDeleteHelpObject(theStubList,theID);	
     	}
     	else{
 		String claimedOrNot = "";
-		claimedOrNot = this.stub.claimHelpObject(theID);
+		claimedOrNot = servers.replicatedClaimHelpObject(theStubList,theID);
 		this.aBuffer.setText("");
 		this.aBuffer.append(claimedOrNot);  			 
 	    }
@@ -184,7 +190,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    String username=jUsername.getText();
 	    String other=jOther.getText();
 	    try{
-                this.stub.addHelpObject(courseName, title, question, location, username, other);
+                servers.replicatedAddHelpObject(theStubList,1,courseName, title, question, location, username, other);
 	    } catch (Exception e) {
                 System.err.println("Client exception: " + e.toString());
                 e.printStackTrace();
@@ -197,12 +203,60 @@ public class ClientGUI extends JFrame implements ActionListener{
     }
 	
     public static void main(String[] args){
-	String host = (args.length < 1) ? null : args[0];
-	try {
-	    Registry registry = LocateRegistry.getRegistry(host);
-	    Studyhelper stubb = (Studyhelper) registry.lookup("Studyhelper");
-		    
-	    ClientGUI client = new ClientGUI(stubb);
+    	LinkedList<Studyhelper> stubList = new LinkedList();
+    	try {
+    	    if (args.length == 0) { //No argument given
+    		Registry registry = LocateRegistry.getRegistry();
+    		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
+    		//Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
+    		//thread.start();	 
+    		ClientGUI client =new ClientGUI(stubList);
+    		client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	    client.setSize(700,700);
+    	    client.setVisible(true);
+    	    client.mainmenu();
+
+    	    }
+    	
+    	    else if (args.length == 1){ //One  argument given
+    		String host = args[0];
+    		Registry registry = LocateRegistry.getRegistry(host);   
+    		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
+    		ClientGUI client =new ClientGUI(stubList);
+    		client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	    client.setSize(700,700);
+    	    client.setVisible(true);
+    	    client.mainmenu();
+
+
+    	    }
+    	    System.out.println("Before args.length > 1");
+    	    if (args.length > 1) { //More than one argument given
+    	    
+
+    		for (int i = 0; i < args.length; i = i+2) {
+    		    System.out.println("for");
+    		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
+    		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
+    		}
+    		ClientGUI client =new ClientGUI(stubList);
+    		client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	    client.setSize(700,700);
+    	    client.setVisible(true);
+    	    client.mainmenu();
+
+
+    		
+    		
+    	    }
+
+    	} catch (Exception e) {
+    	    System.err.println("Client exception: " + e.toString());
+    	    e.printStackTrace();
+    	}
+/*try {
+		Stublist leStub = new Stublist(args);
+	    ClientGUI client = new ClientGUI(leStub.list);
 	    client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    client.setSize(700,700);
 	    client.setVisible(true);
@@ -212,7 +266,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    System.err.println("Client exception: " + e.toString());
 	    e.printStackTrace();
 	}
-	
+	*/
     }
     public void enableNormalTabbing(Component component){
     	component.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,null);
