@@ -141,7 +141,8 @@ public class Server extends RemoteServer implements Studyhelper{
       Server server = new Server();
       Studyhelper stub = (Studyhelper) UnicastRemoteObject.exportObject(server, 0);	                
       // Bind the remote object's stub in the registry
-      Registry registry = LocateRegistry.getRegistry((args.length != 0) ? args[0] : null );
+      System.out.println("argument: " + args[0]);
+      Registry registry = LocateRegistry.getRegistry((args.length != 0) ? Integer.parseInt(args[0]) : null );
       
 
       //System.setProperty("java.rmi.server.hostname", server.SERVER_IP); // simons ville ha denna rad
