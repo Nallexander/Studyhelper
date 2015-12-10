@@ -7,8 +7,9 @@ import java.lang.*;
 
 public class Client {
     private int serverTries = 3;
-    private int numberOfServers = 1;
+    private int numberOfServers = 1; //TODO
     private int numberOfQuestions;
+
   
     private Client(int numServers) {
       this.numberOfServers = numServers + 1;
@@ -126,7 +127,7 @@ public class Client {
 	  }
     
     */  
-    public void addQuestion(List<Studyhelper> stubList){
+    public void addQuestion(Stublist stubList){
 	int i = 1;
 	int j;
 	Scanner in = new Scanner(System.in);    	
@@ -266,7 +267,7 @@ public class Client {
 	}
 	return true;
     }
-    public void HelpListOptions(List<Studyhelper> stubList, boolean show, boolean delete, boolean claim){
+    public void HelpListOptions(Stublist stubList, boolean show, boolean delete, boolean claim){
 	Scanner in = new Scanner(System.in);    	
 	String helpList = "";
 	String notClaimedList="";
@@ -334,7 +335,7 @@ public class Client {
  
     }
   
-    public void intface(List<Studyhelper> stubList) {
+    public void intface(Stublist stubList) {
 	boolean should_quit = false;
 	while (!should_quit) {
 	    mainMenu();
@@ -367,55 +368,14 @@ public class Client {
     }
 
     public static void main(String[] args) {
-
-	LinkedList<Studyhelper> stubList = new LinkedList();
-	try {
-	    if (args.length == 0) { //No argument given
-		Registry registry = LocateRegistry.getRegistry();
-		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-		Client client  = new Client(0);
-		Thread thread = new Thread(new ClientThread(client, stubList.get(0)));
-		thread.start();	 
-		client.intface(stubList);
-	    
-	    }
+	Stublist stubList = new Stublist();
+	stubList.addStubs(args);
 	
-	    else if (args.length == 1){ //One  argument given
-		String host = args[0];
-		Registry registry = LocateRegistry.getRegistry(host);   
-		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-		Client client  = new Client(0);
+	Client client  = new Client(args.length/2);
+	Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
+	thread.start();	 
+	client.intface(stubList);
 
-		Thread thread = new Thread(new ClientThread(client, stubList.get(0)));
-		thread.start();
-		client.intface(stubList);
-
-	    }
-	    System.out.println("Before args.length > 1");
-	    if (args.length > 1) { //More than one argument given
-	    
-
-		for (int i = 0; i < args.length; i = i+2) {
-		    System.out.println("for");
-		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
-		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-		}
-		
-		
-		Client client  = new Client(args.length/2);
-
-		
-		// STARTING A THREAD SEND THE CLIENT IN
-		Thread thread = new Thread(new ClientThread(client,stubList.get(0)));
-		thread.start();
-
-		client.intface(stubList);
-	    }
-
-	} catch (Exception e) {
-	    System.err.println("Client exception: " + e.toString());
-	    e.printStackTrace();
-	}
     }
   
 
