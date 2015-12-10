@@ -52,7 +52,7 @@ public class HelpObject{
 	  if (this.claimed){
 	      taken = "Yes";
 	      }
-      String exInfo = " ID "+ this.questionID + "\n\n" +" Claimed: " + taken + "\n\n"+ " IP "+ this.clientAddress + "\n\n" + " Course: " + this.courseName + "\n\n" + " Subject: " + this.title + "\n\n" + " Question: " + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
+      String exInfo = " ID "+ this.questionID + "\n\n" +" Claimed: " + taken + "\n\n"+ "\n\n" + " Course: " + this.courseName + "\n\n" + " Subject: " + this.title + "\n\n" + " Question: " + this.message + "\n\n" + "User: " + this.userName + "\n\n" + "Location: " + this.location + "\n\n" + "Other: " + this.other + "\n\n";
       return exInfo;
   }
 
