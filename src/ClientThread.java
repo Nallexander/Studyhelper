@@ -19,7 +19,7 @@ public class ClientThread extends Thread implements Runnable{
     // polla number of questions om > 0 
     // polla check claimed om   > 1
     // decrementera number of questions om nanting blev claimed
-
+    String claimedID = "";
     while(running){
       try {
         Thread.sleep(3000);
@@ -32,17 +32,19 @@ public class ClientThread extends Thread implements Runnable{
       System.out.println(Thread.currentThread().getId() + " THE THREAD ID");
 
       
-      if(this.client.getNumberOfQuestions() > 0){
-        String claimedID = "";
+      if(this.client.getNumberOfQuestions() > 0){  
         try{
           claimedID = this.stub.helpObjectClaimedID();
         }
         catch(Exception e){
           System.err.println("helpObjectClaimedID FAILED");
         }
+        
+        if(!(claimedID.equals("TEST"))){
         System.out.println("Your question [" + claimedID + "]Has been claimed!");
         this.client.decrementNumberOfQuestions();
-      }
+        }
+             }
       
     }
   }
