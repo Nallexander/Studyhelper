@@ -2,19 +2,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.lang.String;
-
 import javax.swing.JOptionPane;
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-
 import java.awt.FlowLayout;
-
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.util.LinkedList;
@@ -23,37 +18,40 @@ import javax.swing.JComboBox;
 
 
 public class ClientGUI extends JFrame implements ActionListener{
-    final JButton addQuestion;
-    final JButton answerQuestion;
-    final JButton showQuestions;
-    final JButton removeQuestion;
-    final JButton quit;
+    public JButton addQuestion;
+    public JButton answerQuestion;
+    public JButton showQuestions;
+    public JButton removeQuestion;
+    public JButton quit;
+    public JTextArea aBuffer = new JTextArea(13,37);
     public Studyhelper stub;
     LinkedList<String> notClaimedLList;
+    public String operation = "";
     public ClientGUI(Studyhelper stubb){
 	super("Studyhelper");
 	addQuestion    = new JButton("Add Question");
 	answerQuestion = new JButton("Answer Question");
-	showQuestions  = new JButton ("Show All Questions");
-	removeQuestion = new JButton ("Remove Question");
-	quit           = new JButton ("Quit");
+	showQuestions  = new JButton("Show All Questions");
+	removeQuestion = new JButton("Remove Question");
+	quit           = new JButton("Quit");
 	answerQuestion.addActionListener(this);
 	addQuestion.addActionListener(this);
+	showQuestions.addActionListener(this);
+	removeQuestion.addActionListener(this);
 	this.stub = stubb;
-	//mainmenu();
     }
     public LinkedList<String> cutString(String bigString){
-    	String littleString="";
+    	String littleString = "";
     	LinkedList<String> linkedL =new LinkedList();
     	
-    	int i =0;
-    	int j=0;
+    	int i = 0;
+    	int j = 0;
     	while(i + 1 < bigString.length()){
 	    if (bigString.charAt(i)=='\n' && bigString.charAt(i+1)==('\n')){
     	    	littleString=bigString.substring(j,i);
     	    	linkedL.add(littleString);
-    	    	j=i+2;
-    	    	i=i+2;
+    	    	j = i + 2;
+    	    	i = i + 2;
 	    }
 	    else{
 		i++;
@@ -62,122 +60,115 @@ public class ClientGUI extends JFrame implements ActionListener{
     	return linkedL;
     }
     
-    public void viewNotClaimedQuestionsp(){
+    public String onlyStringID(String str){
+	String ID ="";
+	String s  = "";
+	for (char c : str.toCharArray()) {
+	          
+	    if (Character.isDigit(c)){
+		s  = ""  + c;
+		ID = ID  + s;
+	    }
+	    else{
+		return ID;
+	    }
+	}
+	return ID;
+    }
+    
+    public String findIDInString(String theString){
+    	int idBegins = 4;
+    	String theSubstring = theString.substring(idBegins,theString.length());
+    	String foundID = onlyStringID(theSubstring);
+    	return foundID;
+    }
+    
+    public void mainmenu(){
     	setLayout(new FlowLayout());
-    	JButton test = new JButton("Test");
-    	JLabel label = new JLabel("hello");
-        label.setSize(150,30);
-        label.setLocation(0,0);
-        JTextField textField = new JTextField();
-        add(test);
-        add(textField);
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+    	add(this.addQuestion);
+    	add(this.answerQuestion);
+    	add(this.showQuestions);
+    	add(this.removeQuestion);
+    	add(this.aBuffer);
     }
-    public void expandNotClaimedQuestions(){
-     
-    }
-    public void viewNotClaimedQuestions(){
+    
+    public void viewTheQuestions(){
     	
 	try {
-		String notClaimedList = "";
-		JComboBox<String> optionCombo = new JComboBox<String>();
-		JComboBox<String> questionCombo = new JComboBox<String>();
-		/*
-		int textX = 100;
-		int textY = 50;
-		int textWidth = 200;
-		int textHeight = 30;
-		int buttonX = 20;
-		int buttonY = 50;
-		int buttonWidth = 50;
-		int buttonHeight = 30;
-		*/
-    	//JTextArea[] allTextArea;
-    	//JButton[] allButtons;
-    	notClaimedList= this.stub.printNotClaimedList();
-	    LinkedList<String> linkedL2=cutString(notClaimedList);
-	    //allTextArea = new JTextArea[linkedL2.size()];
-	    //allButtons = new JButton[linkedL2.size()];
-	    
-	    
-		
-	  for(int i = 0;i < linkedL2.size();i++)
-	    {
-		questionCombo.addItem(linkedL2.get(i));
-		/*
-		allButtons[i]= new JButton("Claim");
-		allTextArea[i] = new JTextArea();
-		allTextArea[i].setBounds(textX,textY,textWidth,textHeight);
-		allButtons[i].setBounds(buttonX,buttonY,buttonWidth,buttonHeight);
-		allTextArea[i].append(linkedL2.get(i));
-		allTextArea[i].setEditable(false);
-		add(allButtons[i]);
-		add(allTextArea[i]);
-    	textY = textY + textHeight + 5;
-    	buttonY = buttonY + buttonHeight + 5;
-    	*/
-    	
+	    String questionList = "";
+	    JComboBox<String> questionCombo = new JComboBox<String>();
+	    if (this.operation.equals("NOTCLAIMED")){
+		questionList = this.stub.printNotClaimedList();
 	    }
-	    optionCombo.addItem("Claim");
-	    optionCombo.addItem("Expand");
+	    else{
+	    	questionList = this.stub.printHelpList();
+	    }
+	    LinkedList<String> questionsLinkedL=cutString(questionList);
+		
+	    for(int i = 0;i < questionsLinkedL.size();i++)
+		{
+		    questionCombo.addItem(questionsLinkedL.get(i));
+		}
 	    setVisible(true);
-	Object[] message = {
-   		   "Woop",questionCombo,optionCombo
+	    Object[] message = {
+		"Woop",questionCombo
    					
-   		};
-   		int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
-   		
+	    };
+	    String[] options = new String[] {"Expand", "Claim", "Cancel"};
+	    if(this.operation.equals("REMOVE")){
+	      options[1] = "Remove";
+	    }
+	    
+	    int option = JOptionPane.showOptionDialog(null, message, "Send question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
+	    if (option == JOptionPane.YES_OPTION){ 
+		int selectedIndex = questionCombo.getSelectedIndex();
+		String anotherString =questionsLinkedL.get(selectedIndex);
+		String theID = findIDInString(anotherString);
+		String expandedQuestion =this.stub.printExtendedInfoID(theID);
+		this.aBuffer.setText("");
+		this.aBuffer.append(expandedQuestion);
+	    }
+	    if(option == JOptionPane.NO_OPTION){	
+		int selectedIndex = questionCombo.getSelectedIndex();
+		String anotherString =questionsLinkedL.get(selectedIndex);
+		String theID = findIDInString(anotherString);
+		if(this.operation.equals("REMOVE")){
+			this.stub.deleteHelpObject(theID);	
+    	}
+    	else{
+		String claimedOrNot = "";
+		claimedOrNot = this.stub.claimHelpObject(theID);
+		this.aBuffer.setText("");
+		this.aBuffer.append(claimedOrNot);  			 
+	    }
+	    }
 	}
     	
-    catch (Exception e) {
+	catch (Exception e) {
 	    System.err.println("Client exception: " + e.toString());
 	    e.printStackTrace();
 	}
 	return;
     }
-public void viewNotClaimedQuestionsFul(){
-    	try{ String notClaimedList = "";
-    	notClaimedList= this.stub.printNotClaimedList();
-    	JTextArea jClaim = new JTextArea(10,10);
-    	Object[] message = {
-    		   "Woop",jClaim
-    					
-    		};
-    		int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
-    	//jClaim.append(notClaimedList);
-    	
-    	}
-    	catch (Exception e) {
-            System.err.println("Client exception: " + e.toString());
-            e.printStackTrace();
-    }
-        }
-    public void mainmenu(){
-	setLayout(new FlowLayout());
-	add(this.addQuestion);
-	add(this.answerQuestion);
-	
-    }
+   
     public void questionForm(){
 	JTextArea jUsername = new JTextArea();
-	JTextArea jCourse = new JTextArea();
-	JTextArea jTitle = new JTextArea();
+	JTextArea jCourse   = new JTextArea();
+	JTextArea jTitle    = new JTextArea();
 	JTextArea jLocation = new JTextArea();
-	JTextArea jOther  = new JTextArea(3,10);
+	JTextArea jOther    = new JTextArea(3,10);
 	JTextArea jQuestion = new JTextArea(5,20);
 		
 	Object[] message = {
 	    "Username", jUsername,
-	    "Course",jCourse,
-	    "Title",jTitle,
-	    "Location",jLocation,
-	    "Question",jQuestion,
-	    "Other",jOther
+	    "Course",   jCourse,
+	    "Title",    jTitle,
+	    "Location", jLocation,
+	    "Question", jQuestion,
+	    "Other",    jOther
 				
 	};
-	int option= JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
+	int option = JOptionPane.showConfirmDialog(null, message, "Send question", JOptionPane.OK_CANCEL_OPTION);
 	if (option == JOptionPane.OK_OPTION) {
 	    String courseName=jCourse.getText();
 	    String title=jTitle.getText();
@@ -191,26 +182,22 @@ public void viewNotClaimedQuestionsFul(){
                 System.err.println("Client exception: " + e.toString());
                 e.printStackTrace();
 	    }
-			
-	    //System.out.println(question.getText());
+		
 	}
 	else {
-	    System.out.println("No question added");
+	    System.out.println("Adding question Canceled");
 	}
-	//String course =JOptionPane.showInputDialog("Enter coursename");
-	//String title =JOptionPane.showInputDialog("Enter question title");
-		
     }
 	
     public static void main(String[] args){
 	String host = (args.length < 1) ? null : args[0];
 	try {
 	    Registry registry = LocateRegistry.getRegistry(host);
-	    Studyhelper stubb= (Studyhelper) registry.lookup("Studyhelper");
+	    Studyhelper stubb = (Studyhelper) registry.lookup("Studyhelper");
 		    
 	    ClientGUI client = new ClientGUI(stubb);
 	    client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    client.setSize(800,800);
+	    client.setSize(700,700);
 	    client.setVisible(true);
 	    client.mainmenu();
 	}
@@ -219,23 +206,25 @@ public void viewNotClaimedQuestionsFul(){
 	    e.printStackTrace();
 	}
 	
-	//client.questionForm();
     }
+    
     public void actionPerformed(ActionEvent event){	
 	JButton pressed = (JButton)event.getSource();
 	if (pressed.equals(addQuestion)){
 	    questionForm();
 	}
 	if(pressed.equals(answerQuestion)){
-		System.out.println("Irun master");
-	    viewNotClaimedQuestions();
+	    this.operation = "NOTCLAIMED";
+	    viewTheQuestions();
 	}
-	else{
-	    System.out.println("Magicarp");
+	if(pressed.equals(showQuestions)){
+	    this.operation = "SHOWALL";
+	    viewTheQuestions();
 	}
-	//questionForm(stub);
-	//JOptionPane.showMessageDialog(null, "yolo");
-	//}
+	if(pressed.equals(removeQuestion)){
+	    this.operation = "REMOVE";
+	    viewTheQuestions();
+	}
     }
 }
 

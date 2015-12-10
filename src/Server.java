@@ -20,13 +20,12 @@ public class Server extends RemoteServer implements Studyhelper{
       if (this.helpList.get(i).getQuestionID().equals(questionID)){
         if (!(this.helpList.get(i).isClaimed())){ //if object can be claimed then claim
           this.helpList.get(i).claim(true);
+          return("The question is now claimed by claimhelpobject");
         }
-        return("The question is now claimed by claimhelpobject");
-      }
       else{
         return("The question has already been claimed");
       }
-
+      }
     }
     return("This question ID does not exist");
   }
