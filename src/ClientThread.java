@@ -29,9 +29,10 @@ public class ClientThread extends Thread implements Runnable{
         Thread.currentThread().interrupt();
       }
       System.out.println(Thread.currentThread().getId() + " THE THREAD ID");
-      if(client.getNumberOfQuestions() > 0){
-        //        String isClaimed = this.stub.helpObjectClaimedID();
-        //        System.out.println(isClaimed);
+      if(this.client.getNumberOfQuestions() > 0){
+        //        String claimedID = this.stub.helpObjectClaimedID();
+        //        System.out.println(claimedID);
+        this.client.decrementNumberOfQuestions();
       }
       
     }
