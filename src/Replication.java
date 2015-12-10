@@ -73,7 +73,7 @@ public class Replication  {
 	    if (this.serverUpList.get(i) == true) {
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
-			stubList.get(i).calimHelpObject(questionID);
+			stubList.get(i).claimHelpObject(questionID);
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {
