@@ -28,10 +28,19 @@ public class ClientThread extends Thread implements Runnable{
         System.err.println("sleep did not work");
         Thread.currentThread().interrupt();
       }
+
       System.out.println(Thread.currentThread().getId() + " THE THREAD ID");
+
+      
       if(this.client.getNumberOfQuestions() > 0){
-        //        String claimedID = this.stub.helpObjectClaimedID();
-        //        System.out.println(claimedID);
+        String claimedID = "";
+        try{
+          claimedID = this.stub.helpObjectClaimedID();
+        }
+        catch(Exception e){
+          System.err.println("helpObjectClaimedID FAILED");
+        }
+        System.out.println("Your question [" + claimedID + "]Has been claimed!");
         this.client.decrementNumberOfQuestions();
       }
       
