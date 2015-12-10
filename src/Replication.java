@@ -47,10 +47,105 @@ public class Replication  {
 	}
     }
 
+    protected void replicatedDeleteHelpObject(List<Studyhelper> stubList, String questionID) {
+	
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			stubList.get(i).deleteHelpObject(questionID);
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+    }
 
+    protected void replicatedClaimHelpObject(List<Studyhelper> stubList, String questionID) {
+	
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			stubList.get(i).calimHelpObject(questionID);
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+    }
 
+    protected void replicatedPrintHelpList(List<Studyhelper> stubList) {
+	
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			stubList.get(i).printHelpList();
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+    }
 
+    protected void replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
+	
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			stubList.get(i).printNotClaimedList();
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+    }
 
+    protected void replicatedPrintExtendedInfo(List<Studyhelper> stubList, int index) {
+	
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			stubList.get(i).printExtendedInfo(index);
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+    }
 
 
 }
