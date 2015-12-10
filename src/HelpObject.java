@@ -9,6 +9,7 @@ public class HelpObject{
   private String clientAddress;
   private String questionID;
   private boolean claimed;
+  private boolean polled;
   
   public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress, String questionID){
     this.courseName = courseName;
@@ -24,6 +25,7 @@ public class HelpObject{
     this.claimed = false;
     this.clientAddress = clientAddress;
     this.questionID =questionID;
+    this.polled = false;
   }
 
   public String basicInfoString(){
