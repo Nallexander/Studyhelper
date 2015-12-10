@@ -299,7 +299,7 @@ public class Client {
 		String claimedOrNot="";
 		if(show==true){
 		    try{
-			info = servers.replicatedPrintExtendedInfo(stubList, intPut);
+			info = servers.replicatedPrintExtendedInfoID(stubList, input);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();

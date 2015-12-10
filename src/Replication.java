@@ -140,14 +140,14 @@ protected String replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
     return return_stri;
 }
 
-protected String replicatedPrintExtendedInfo(List<Studyhelper> stubList, int index) {
+protected String replicatedPrintExtendedInfoID(List<Studyhelper> stubList, String ID) {
     setTriesToZero();
     String return_stri = "";
     for (int i = 0; i < this.serverUpList.size(); i++) {
 	if (this.serverUpList.get(i) == true) {
 	    while (this.serverTriesList.get(i) < serverTimeout) {
 		try{
-		    return_stri = stubList.get(i).printExtendedInfo(index);
+		    return_stri = stubList.get(i).printExtendedInfoID(ID);
 		    this.serverTriesList.set(i, serverTimeout + 1);
 		}
 		catch (Exception e) {
