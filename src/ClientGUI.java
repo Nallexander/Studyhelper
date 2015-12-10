@@ -10,6 +10,7 @@ import javax.swing.border.*;
 
 
 public class ClientGUI extends JFrame implements ActionListener{
+	private int numberOfQuestions =0;
 	private int serverTries = 3;
     private int numberOfServers = 1;
     public JButton addQuestion;
@@ -22,6 +23,8 @@ public class ClientGUI extends JFrame implements ActionListener{
     public LinkedList<Studyhelper> theStubList;
     LinkedList<String> notClaimedLList;
     public String operation = "";
+    
+    
     public ClientGUI(LinkedList<Studyhelper> stubb){
     super("Studyhelper");
 	addQuestion    = new JButton("Add Question");
@@ -36,6 +39,21 @@ public class ClientGUI extends JFrame implements ActionListener{
 	this.aBuffer.append("Weolcome to StudyHelper, what do you want to do?\n Press the corresponding button above ");
 	this.theStubList = stubb;
     }
+    public synchronized int getNumberOfQuestions(){
+    	return this.numberOfQuestions;
+        }
+        public synchronized void decrementNumberOfQuestions(){
+    	this.numberOfQuestions = this.numberOfQuestions - 1;
+        }
+
+        public synchronized void incrementNumberOfQuestions(){
+    	this.numberOfQuestions = this.numberOfQuestions + 1;
+        }
+        
+     public void getClaimedIDFromThread(String clientID){
+    	 this.aBuffer.append(clientID);
+     }
+	
     public LinkedList<String> cutString(String bigString){
     	String littleString = "";
     	LinkedList<String> linkedL =new LinkedList();
@@ -191,6 +209,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    String other=jOther.getText();
 	    try{
                 servers.replicatedAddHelpObject(theStubList,1,courseName, title, question, location, username, other);
+                incrementNumberOfQuestions();
 	    } catch (Exception e) {
                 System.err.println("Client exception: " + e.toString());
                 e.printStackTrace();
@@ -215,6 +234,8 @@ public class ClientGUI extends JFrame implements ActionListener{
     	    client.setSize(700,700);
     	    client.setVisible(true);
     	    client.mainmenu();
+    	    Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
+    		thread.start();	 
 
     	    }
     	
@@ -227,6 +248,8 @@ public class ClientGUI extends JFrame implements ActionListener{
     	    client.setSize(700,700);
     	    client.setVisible(true);
     	    client.mainmenu();
+    	    Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
+    		thread.start();	 
 
 
     	    }
@@ -244,6 +267,8 @@ public class ClientGUI extends JFrame implements ActionListener{
     	    client.setSize(700,700);
     	    client.setVisible(true);
     	    client.mainmenu();
+    	    Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
+    		thread.start();	 
 
 
     		
