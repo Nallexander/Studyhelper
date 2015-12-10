@@ -29,7 +29,6 @@ public class ClientThread extends Thread implements Runnable{
         Thread.currentThread().interrupt();
       }
 
-      System.out.println(Thread.currentThread().getId() + " THE THREAD ID");
 
       
       if(this.client.getNumberOfQuestions() > 0){  
