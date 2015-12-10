@@ -11,7 +11,7 @@ public class ClientThread extends Thread  implements Runnable{
     // TODO:
     // polla number of questions om > 0 
     // polla check claimed om   > 1
-    // decrementera number of questions om nånting blev claimed
+    // decrementera number of questions om nanting blev claimed
     System.out.println(Thread.currentThread().getId() + " THE THREAD ID");
   }
 }
