@@ -37,6 +37,7 @@ protected void replicatedAddHelpObject(List<Studyhelper> stubList, int method, S
     for (int i = 0; i < this.serverUpList.size(); i++) {
 	if (this.serverUpList.get(i) == true) {
 	    while (this.serverTriesList.get(i) < serverTimeout) {
+		System.out.println("while-loop " + i + " " + this.serverTriesList.get(i));
 		try{
 		    stubList.get(i).addHelpObject(courseName, title, question, location, userName, other);
 		    this.serverTriesList.set(i, serverTimeout + 1);
