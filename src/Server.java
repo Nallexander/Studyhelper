@@ -79,6 +79,24 @@ public class Server extends RemoteServer implements Studyhelper{
     //String IP = "Hej";
     return IP;
   }
+
+    public String helpObjectClaimedID(){
+	String clientAddress = "";
+	try{
+	    clientAddress = RemoteServer.getClientHost();
+	} 
+	catch (Exception e){
+	    System.err.println("Could not resolve client IP: " + e.toString());
+	}
+	int size = helpList.size();
+	for (int i = 0; i < size; i++){
+	    if (clientAddress == helpList.get(i).getClientAddress() && helpList.get(i).isClaimed() && helpList.get(i).isPolled()){
+		helpList.get(i).setPolledTrue();
+		return helpList.get(i).getQuestionID();
+	    } 
+	}
+	return "";
+    }
   
   public String printSizeHelpList(){
     return ("number of items in the list: " + helpList.size());
