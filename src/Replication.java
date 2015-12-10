@@ -32,7 +32,7 @@ public class Replication  {
     }
 }
 
-protected void replicatedAddHelpObject(List<Studyhelper> stubList, int method, String courseName, String title, String question, String location, String userName, String other) {
+protected void replicatedAddHelpObject(Stublist stubList, int method, String courseName, String title, String question, String location, String userName, String other) {
     setTriesToZero();
     for (int i = 0; i < this.serverUpList.size(); i++) {
 	if (this.serverUpList.get(i) == true) {
@@ -52,7 +52,7 @@ protected void replicatedAddHelpObject(List<Studyhelper> stubList, int method, S
     }
 }
 
-protected boolean replicatedDeleteHelpObject(List<Studyhelper> stubList, String questionID) {
+protected boolean replicatedDeleteHelpObject(Stublist stubList, String questionID) {
     setTriesToZero();
     boolean return_bool = false;
     for (int i = 0; i < this.serverUpList.size(); i++) {
@@ -74,7 +74,7 @@ protected boolean replicatedDeleteHelpObject(List<Studyhelper> stubList, String 
     return return_bool;
 }
 
-protected String replicatedClaimHelpObject(List<Studyhelper> stubList, String questionID) {
+protected String replicatedClaimHelpObject(Stublist stubList, String questionID) {
     setTriesToZero();
     String return_stri = "";
     for (int i = 0; i < this.serverUpList.size(); i++) {
@@ -96,7 +96,7 @@ protected String replicatedClaimHelpObject(List<Studyhelper> stubList, String qu
     return return_stri;
 }
 
-protected String replicatedPrintHelpList(List<Studyhelper> stubList) {
+protected String replicatedPrintHelpList(Stublist stubList) {
     setTriesToZero();
     String return_stri = "Error";
     for (int i = 0; i < this.serverUpList.size(); i++) {
@@ -118,7 +118,7 @@ protected String replicatedPrintHelpList(List<Studyhelper> stubList) {
     return return_stri;
 }
 
-protected String replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
+protected String replicatedPrintNotClaimedList(Stublist stubList) {
     setTriesToZero();	
     String return_stri = "";
     for (int i = 0; i < this.serverUpList.size(); i++) {
@@ -140,7 +140,7 @@ protected String replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
     return return_stri;
 }
 
-protected String replicatedPrintExtendedInfoID(List<Studyhelper> stubList, String ID) {
+protected String replicatedPrintExtendedInfoID(Stublist stubList, String ID) {
     setTriesToZero();
     String return_stri = "";
     for (int i = 0; i < this.serverUpList.size(); i++) {
