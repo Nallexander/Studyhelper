@@ -9,22 +9,28 @@ public class Client {
     private int serverTries = 3;
     private int numberOfServers = 1;
     private int numberOfQuestions;
+  
     private Client(int numServers) {
-	numberOfServers = numServers + 1;
+      this.numberOfServers = numServers + 1;
+      this.numberOfQuestions = 0;
     }
     private Replication servers = new Replication(numberOfServers, serverTries);
 
 
 
-  
-    public synchronized void decrementNumberOfQuestions(){
+  public synchronized int getNumberOfQuestions(){
+    return this.numberOfQuestions;
+  }
+  public synchronized void decrementNumberOfQuestions(){
 	this.numberOfQuestions = this.numberOfQuestions - 1;
     }
 
     public synchronized void incrementNumberOfQuestions(){
 	this.numberOfQuestions = this.numberOfQuestions + 1;
     }
-    
+
+  
+  
     public boolean isNumeric(String str){
 	for (char c : str.toCharArray()) {
           
@@ -219,7 +225,7 @@ public class Client {
 			}
                         
 			System.out.println("Question added, please wait for someone to claim your question");
-			this.numberOfQuestions = numberOfQuestions + 1; // Client added antoehr question
+                        incrementNumberOfQuestions(); //Client added another question
 			return;
            
 		    }
@@ -368,7 +374,7 @@ public class Client {
 		Registry registry = LocateRegistry.getRegistry();
 		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
 		Client client  = new Client(0);
-		Thread thread = new Thread(new ClientThread(client));
+		Thread thread = new Thread(new ClientThread(client, stubList.get(0)));
 		thread.start();	 
 		client.intface(stubList);
 	    
@@ -380,7 +386,7 @@ public class Client {
 		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
 		Client client  = new Client(0);
 
-		Thread thread = new Thread(new ClientThread(client));
+		Thread thread = new Thread(new ClientThread(client, stubList.get(0)));
 		thread.start();
 		client.intface(stubList);
 
@@ -400,7 +406,7 @@ public class Client {
 
 		
 		// STARTING A THREAD SEND THE CLIENT IN
-		Thread thread = new Thread(new ClientThread(client));
+		Thread thread = new Thread(new ClientThread(client,stubList.get(0)));
 		thread.start();
 
 		client.intface(stubList);
