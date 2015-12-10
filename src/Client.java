@@ -368,8 +368,8 @@ public class Client {
 		Registry registry = LocateRegistry.getRegistry();
 		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
 		Client client  = new Client(0);
-		//Thread thread = new Thread(new ClientThread(client));
-		//thread.start();	 
+		Thread thread = new Thread(new ClientThread(client));
+		thread.start();	 
 		client.intface(stubList);
 	    
 	    }
@@ -380,8 +380,8 @@ public class Client {
 		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
 		Client client  = new Client(0);
 
-		//Thread thread = new Thread(new ClientThread(client));
-		//thread.start();
+		Thread thread = new Thread(new ClientThread(client));
+		thread.start();
 		client.intface(stubList);
 
 	    }
@@ -400,8 +400,8 @@ public class Client {
 
 		
 		// STARTING A THREAD SEND THE CLIENT IN
-		//Thread thread = new Thread(new ClientThread(client));
-		//thread.start();
+		Thread thread = new Thread(new ClientThread(client));
+		thread.start();
 
 		client.intface(stubList);
 	    }
