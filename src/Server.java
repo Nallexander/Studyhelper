@@ -90,7 +90,7 @@ public class Server extends RemoteServer implements Studyhelper{
 	}
 	int size = helpList.size();
 	for (int i = 0; i < size; i++){
-	    if (clientAddress == helpList.get(i).getClientAddress() && helpList.get(i).isClaimed() && !(helpList.get(i).isPolled())){
+          if (clientAddress.equals(helpList.get(i).getClientAddress()) && helpList.get(i).isClaimed() && !(helpList.get(i).isPolled())){
 		helpList.get(i).setPolledTrue();
 		return helpList.get(i).getQuestionID();
 	    } 
@@ -145,7 +145,7 @@ public class Server extends RemoteServer implements Studyhelper{
 	  System.err.println("Could not resolve client IP: " + e.toString());
       }
       for (int i = 0; i < this.helpList.size(); i++) {
-	  if (address == this.helpList.get(i).getClientAddress()){
+        if (address.equals(this.helpList.get(i).getClientAddress())){
 	      printedList = (printedList + this.helpList.get(i).basicInfoString() + "\n");
 	  }
       }
