@@ -2,9 +2,12 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.lang.*;
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.util.*;
 import java.awt.event.*;
+
 import javax.swing.border.*;
 
 
@@ -18,15 +21,16 @@ public class ClientGUI extends JFrame implements ActionListener{
     public JButton showQuestions;
     public JButton removeQuestion;
     public JButton quit;
-    public Replication servers = new Replication(numberOfServers, serverTries);
     public JTextArea aBuffer = new JTextArea(13,37);
     public LinkedList<Studyhelper> theStubList;
     LinkedList<String> notClaimedLList;
     public String operation = "";
     
     
-    public ClientGUI(LinkedList<Studyhelper> stubb){
+    public ClientGUI(LinkedList<Studyhelper> stubb, int numServers){
     super("Studyhelper");
+    this.numberOfServers = numServers;
+	this.numberOfQuestions = 0;
 	addQuestion    = new JButton("Add Question");
 	answerQuestion = new JButton("Answer Question");
 	showQuestions  = new JButton("Show All Questions");
@@ -39,6 +43,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	this.aBuffer.append("Weolcome to StudyHelper, what do you want to do?\n Press the corresponding button above ");
 	this.theStubList = stubb;
     }
+    public Replication servers = new Replication(this.numberOfServers, this.serverTries);
     public synchronized int getNumberOfQuestions(){
     	return this.numberOfQuestions;
         }
@@ -118,6 +123,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 		questionList = servers.replicatedPrintNotClaimedList(theStubList);
 	    }
 	    else{
+	    	System.out.println("LINE 121 ClientGUI");
 	    	questionList = servers.replicatedPrintHelpList(theStubList);
 	    }
 	    LinkedList<String> questionsLinkedL=cutString(questionList);
@@ -201,6 +207,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	UIManager.put("OptionPane.background", paneBG);
     UIManager.put("Panel.background", panelBG);
 	if (option == JOptionPane.OK_OPTION) {
+		System.out.println("LINE 205 ClientGUI");
 	    String courseName=jCourse.getText();
 	    String title=jTitle.getText();
 	    String question=jQuestion.getText();
@@ -208,8 +215,12 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    String username=jUsername.getText();
 	    String other=jOther.getText();
 	    try{
-                servers.replicatedAddHelpObject(theStubList,1,courseName, title, question, location, username, other);
+	    	    //servers.AddHelpObject(this.theBestStub,courseName, title, question, location, username, other);
+	    	this.aBuffer.setText("");
+			this.aBuffer.append(username);
+	    	    servers.replicatedAddHelpObject(theStubList,1,courseName, title, question, location, username, other);
                 incrementNumberOfQuestions();
+                System.out.println("Number of questions" + this.numberOfQuestions);
 	    } catch (Exception e) {
                 System.err.println("Client exception: " + e.toString());
                 e.printStackTrace();
@@ -223,33 +234,36 @@ public class ClientGUI extends JFrame implements ActionListener{
 	
     public static void main(String[] args){
     	LinkedList<Studyhelper> stubList = new LinkedList();
+    	ClientGUI client =new ClientGUI(stubList,args.length/2);
     	try {
     	    if (args.length == 0) { //No argument given
     		Registry registry = LocateRegistry.getRegistry();
     		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
     		//Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
-    		//thread.start();	 
-    		ClientGUI client =new ClientGUI(stubList);
+    		//thread.start();
+    		//ClientGUI client =new ClientGUI(stubList);
+    		client.servers.updateReplicas(client.numberOfServers, client.serverTries);
     		client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	    client.setSize(700,700);
     	    client.setVisible(true);
     	    client.mainmenu();
-    	    Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
-    		thread.start();	 
+    	    //Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
+    		//thread.start();	 
 
     	    }
     	
-    	    else if (args.length == 1){ //One  argument given
+    	    if (args.length == 1){ //One  argument given
     		String host = args[0];
     		Registry registry = LocateRegistry.getRegistry(host);   
     		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-    		ClientGUI client =new ClientGUI(stubList);
+    		//ClientGUI client =new ClientGUI(stubList);
+    		client.servers.updateReplicas(client.numberOfServers, client.serverTries);
     		client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	    client.setSize(700,700);
     	    client.setVisible(true);
     	    client.mainmenu();
-    	    Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
-    		thread.start();	 
+    	    //Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
+    		//thread.start();	 
 
 
     	    }
@@ -262,13 +276,14 @@ public class ClientGUI extends JFrame implements ActionListener{
     		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
     		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
     		}
-    		ClientGUI client =new ClientGUI(stubList);
+    		//ClientGUI client =new ClientGUI(stubList);
+    		client.servers.updateReplicas(client.numberOfServers, client.serverTries);
     		client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	    client.setSize(700,700);
     	    client.setVisible(true);
     	    client.mainmenu();
-    	    Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
-    		thread.start();	 
+    	    //Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
+    		//thread.start();	 
 
 
     		
@@ -279,19 +294,6 @@ public class ClientGUI extends JFrame implements ActionListener{
     	    System.err.println("Client exception: " + e.toString());
     	    e.printStackTrace();
     	}
-/*try {
-		Stublist leStub = new Stublist(args);
-	    ClientGUI client = new ClientGUI(leStub.list);
-	    client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    client.setSize(700,700);
-	    client.setVisible(true);
-	    client.mainmenu();
-	}
-	catch (Exception e) {
-	    System.err.println("Client exception: " + e.toString());
-	    e.printStackTrace();
-	}
-	*/
     }
     public void enableNormalTabbing(Component component){
     	component.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,null);
@@ -316,5 +318,3 @@ public class ClientGUI extends JFrame implements ActionListener{
 	}
     }
 }
-
-  
