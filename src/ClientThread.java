@@ -19,14 +19,16 @@ public class ClientThread extends Thread implements Runnable{
 	
 	int claimedInt = Integer.parseInt(claimedString);
 	for (int i = 0; i <= claimedInt; i++) {
-	    if (this.client.claimedList.size() < i) {
+	    if (this.client.claimedList.size() < i+1) {
 		this.client.claimedList.add(false);
 	    }	
 	}
-	if (!this.client.claimedList.get(claimedInt-1)) {
-	    this.client.claimedList.set(claimedInt-1, true);
+	if (!this.client.claimedList.get(claimedInt)) {
+	    this.client.claimedList.set(claimedInt, true);
+	    System.out.println("not claimed, claimedInt: " + claimedInt);
 	    return true;
 	}
+	System.out.println("claimed, claimedInt: " + claimedInt);
 	return false;
     }
 
@@ -34,6 +36,7 @@ public class ClientThread extends Thread implements Runnable{
 	for (int i = 0; i < this.client.servers.numberOfServers; i++) {
 	    if (this.client.stubList.get(i) == stub) {
 		if (!this.client.servers.serverUpList.get(i)) {
+		    Thread.currentThread().interrupt();
 		    return false;
 		}
 	    }
@@ -58,9 +61,11 @@ public class ClientThread extends Thread implements Runnable{
 	    if(this.client.getNumberOfQuestions() > 0){  
 		try{
 		    if (this.checkIfServerIsUp()) {
+			System.out.println("Server up");
 			claimedID = this.stub.helpObjectClaimedID();
 		    }
 		    else {
+			System.out.println("Server down");
 			claimedID = "TEST";
 		    }
 		}

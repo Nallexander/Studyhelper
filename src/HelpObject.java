@@ -50,10 +50,10 @@ public class HelpObject{
   public boolean isClaimed(){
 	  return this.claimed;
   }
-  public boolean isPolled(){
+  public synchronized boolean isPolled(){
     return this.polled;
       }
-  public void setPolledTrue(){
+  public synchronized void setPolledTrue(){
     this.polled = true;
   }
   public String extendedInfoString(){
