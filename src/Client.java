@@ -60,8 +60,9 @@ public class Client {
 	System.out.println("[1] Ask for help");
 	System.out.println("[2] Help someone with a question");
 	System.out.println("[3] Show all questions ");
-	System.out.println("[4] Remove your Question");
-	System.out.println("[5] Quit");
+	System.out.println("[4] Show your questions only");
+	System.out.println("[5] Remove your Question");
+	System.out.println("[6] Quit");
     }
 
   
@@ -268,19 +269,22 @@ public class Client {
 	}
 	return true;
     }
-    public void HelpListOptions(LinkedList<Studyhelper> stubList, boolean show, boolean delete, boolean claim){
+    public void HelpListOptions(LinkedList<Studyhelper> stubList, boolean show, boolean delete, boolean claim, boolean showOwn){
 	Scanner in = new Scanner(System.in);    	
 	String helpList = "";
-	String notClaimedList="";
+	String notClaimedList = "";
+	String own = "";
 
 	while(true){
 	    System.out.println("Press 'b' to go back");
 	    if(show==true){System.out.println("Press corresponding number to show extended info");}
 	    if(delete == true){System.out.println("Press corresponding number to delete your help request");}
 	    if(claim ==true){System.out.println("Press corresponding number to claim help request");}
+	    if(showOwn == true){System.out.println("These are your questions");}
 	    try{  
 		notClaimedList = servers.replicatedPrintNotClaimedList(stubList);
 		helpList = servers.replicatedPrintHelpList(stubList);
+		own = servers.replicatedPrintOwnQuestionsOnly(stubList);
 	    } catch (Exception e) {
 		System.err.println("Client exception: " + e.toString());
 		e.printStackTrace();
@@ -288,8 +292,11 @@ public class Client {
 	    if ((show == true) || (delete == true)){
 		System.out.print(helpList);
 	    }
-	    if (claim==true){
+	    if (claim == true){
 		System.out.print(notClaimedList);
+	    }
+	    if (showOwn == true){
+		System.out.print(own);
 	    }
 
 	    String input = in.nextLine();
@@ -298,7 +305,7 @@ public class Client {
 		int intPut = Integer.parseInt(input);
 
 		String claimedOrNot="";
-		if(show==true){
+		if(show == true){
 		    try{
 			info = servers.replicatedPrintExtendedInfoID(stubList, input);
 		    } catch (Exception e) {
@@ -317,7 +324,7 @@ public class Client {
 		    }
    
 		}
-		if(claim ==true){
+		if(claim == true){
 		    try{
 			claimedOrNot = servers.replicatedClaimHelpObject(stubList, input);
 		    } catch (Exception e) {
@@ -349,18 +356,21 @@ public class Client {
 		break;
 	    case 2:
 		//  answer_question
-		HelpListOptions(stubList, false, false, true);
+		HelpListOptions(stubList, false, false, true, false);
 		//System.out.println("You have answered the question! Good job! :)");
 		break;
 	    case 3:
 		// show list
-		HelpListOptions(stubList, true, false, false);
+		HelpListOptions(stubList, true, false, false, false);
 		break;
 	    case 4:
-		HelpListOptions(stubList, false, true, false);
-		System.out.println("Your question has now been removed from the system!");
+		HelpListOptions(stubList, false, false, false, true);
 		break;
 	    case 5:
+		HelpListOptions(stubList, false, true, false, false);
+		System.out.println("Your question has now been removed from the system!");
+		break;
+	    case 6:
 		// TODO: should_quit = exit();
 		System.out.println("Bye bye! :)");
 		System.exit(0);
