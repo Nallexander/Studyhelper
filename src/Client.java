@@ -89,8 +89,9 @@ public class Client {
 	System.out.println("[2] Help someone with a question");
 	System.out.println("[3] Show all questions ");
 	System.out.println("[4] Show your questions only");
-	System.out.println("[5] Remove your Question");
-	System.out.println("[6] Quit");
+	System.out.println("[5] Show  only your claimed questions");
+	System.out.println("[6] Remove your Question");
+	System.out.println("[7] Quit");
     }
 
   
@@ -297,7 +298,7 @@ public class Client {
 	}
 	return true;
     }
-    public void HelpListOptions(boolean show, boolean delete, boolean claim, boolean showOwn){
+    public void HelpListOptions(boolean show, boolean delete, boolean claim, boolean showOwn,boolean showOwnClaims){
 	Scanner in = new Scanner(System.in);    	
 	String helpList = "";
 	String notClaimedList = "";
@@ -345,6 +346,16 @@ public class Client {
 		}
 		System.out.print(own);
 	    }
+	    if (showOwnClaims == true){
+			try {
+			    own = servers.replicatedPrintOwnClaimsOnly(this.stubList);
+			}
+			catch (Exception e) {
+			    System.err.println("Client exception: " + e.toString());
+			    e.printStackTrace();
+			}
+			System.out.print(own);
+		    }
 
 	    String input = in.nextLine();
 	    String info = "";
@@ -403,21 +414,23 @@ public class Client {
 		break;
 	    case 2:
 		//  answer_question
-		HelpListOptions(false, false, true, false);
+		HelpListOptions(false, false, true, false, false);
 		//System.out.println("You have answered the question! Good job! :)");
 		break;
 	    case 3:
 		// show list
-		HelpListOptions(true, false, false, false);
+		HelpListOptions(true, false, false, false, false);
 		break;
 	    case 4:
-		HelpListOptions(false, false, false, true);
+		HelpListOptions(false, false, false, true, false);
 		break;
 	    case 5:
-		HelpListOptions(false, true, false, false);
+	    HelpListOptions(false, false , false, false, true);
+	    case 6:
+		HelpListOptions(false, true, false, false, false);
 		System.out.println("Your question has now been removed from the system!");
 		break;
-	    case 6:
+	    case 7:
 		// TODO: should_quit = exit();
 		System.out.println("Bye bye! :)");
 		System.exit(0);

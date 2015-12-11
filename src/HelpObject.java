@@ -7,11 +7,12 @@ public class HelpObject{
   private String userName;
   private String other;
   private String clientAddress;
+  private String claimAddress;
   private String questionID;
   private boolean claimed;
   private boolean polled;
   
-  public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress, String questionID){
+  public HelpObject(String courseName, String title, String message, String location, String userName, String other, String clientAddress,String questionID){
     this.courseName = courseName;
     this.title = title;
     this.message = message;
@@ -26,6 +27,7 @@ public class HelpObject{
     this.clientAddress = clientAddress;
     this.questionID =questionID;
     this.polled = false;
+    this.claimAddress = "";
   }
 
 
@@ -47,6 +49,9 @@ public class HelpObject{
   public String getClientAddress(){
     return this.clientAddress;
   }
+  public String getClaimAddress(){
+	    return this.claimAddress;
+	  }
   public boolean isClaimed(){
 	  return this.claimed;
   }
@@ -69,7 +74,9 @@ public class HelpObject{
       String IP = this.clientAddress;
       return IP;
     }
-
+  public void setClaimAddress(String address){
+	  this.claimAddress = address;
+  }
   public void claim(boolean claim){
     //if(claim == false)
     this.claimed = claim;

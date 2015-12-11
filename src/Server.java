@@ -38,11 +38,24 @@ public class Server extends RemoteServer implements Studyhelper{
     
 
     public String claimHelpObject(String questionID){
+    	
 	for (int i = 0; i < this.helpList.size(); i++){
 	    if (this.helpList.get(i).getQuestionID().equals(questionID)){
 		if (!(this.helpList.get(i).isClaimed())){ //if object can be claimed then claim
+			try{
 		    this.helpList.get(i).claim(true);
-		    return("The question is now claimed by claimhelpobject");
+		    
+		    String claimAddress = RemoteServer.getClientHost();
+		    this.helpList.get(i).setClaimAddress(claimAddress);
+		    
+		    
+		    return("The question is now claimed by claimhelpobject and IP: " + claimAddress);
+		}
+		catch (Exception e) {
+			
+		    System.err.println("Could not resolve client IP: " + e.toString());
+		    	
+		}  
 		}
 		else{
 		    return("The question has already been claimed");
@@ -173,6 +186,23 @@ public class Server extends RemoteServer implements Studyhelper{
 	}
 	return printedList;
     }
+    
+    public String printOwnClaimsOnly(){
+    	String address = "";
+    	String printedList = "";
+    	try {
+    	    address = RemoteServer.getClientHost();
+    	}
+    	catch (Exception e) {
+    	    System.err.println("Could not resolve client IP: " + e.toString());
+    	}
+    	for (int i = 0; i < this.helpList.size(); i++) {
+    	    if (address.equals(this.helpList.get(i).getClaimAddress())){
+    		printedList = (printedList + this.helpList.get(i).basicInfoString() + "\n");
+    	    }
+    	}
+    	return printedList;
+        }
   
     public static void main(String args[]) {
     	
