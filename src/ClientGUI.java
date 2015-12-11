@@ -2,12 +2,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.lang.*;
 import java.awt.*;
-
 import javax.swing.*;
-
 import java.util.*;
 import java.awt.event.*;
-
 import javax.swing.border.*;
 
 
@@ -34,7 +31,7 @@ public class ClientGUI extends JFrame implements ActionListener{
 	answerQuestion = new JButton("Answer Question");
 	showQuestions  = new JButton("Show All Questions");
 	myQuestions    = new JButton("Show my questions");
-	myClaims           = new JButton("My Claims");
+	myClaims       = new JButton("My Claims");
 	
 	answerQuestion.addActionListener(this);
 	addQuestion.addActionListener(this);
@@ -338,12 +335,12 @@ public class ClientGUI extends JFrame implements ActionListener{
 
 
     	    }
-    	    System.out.println("Before args.length > 1");
+    	    //System.out.println("Before args.length > 1");
     	    if (args.length > 1) { //More than one argument given
     	    
 
     		for (int i = 0; i < args.length; i = i+2) {
-    		    System.out.println("for");
+    		    //System.out.println("for");
     		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
     		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
     		}
