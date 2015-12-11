@@ -10,6 +10,7 @@ public class Client {
     private int numberOfServers = 1; //TODO
     private int numberOfQuestions;
     protected LinkedList<Boolean> claimedList = new LinkedList();
+    protected LinkedList<Studyhelper> stubList = new LinkedList();
 
   
     private Client(int numServers) {
@@ -17,7 +18,7 @@ public class Client {
 	this.numberOfServers = numServers;
 	this.numberOfQuestions = 0;
     }
-    private Replication servers = new Replication(this.numberOfServers, this.serverTries);
+    protected Replication servers = new Replication(this.numberOfServers, this.serverTries);
 
 
 
@@ -130,7 +131,7 @@ public class Client {
 	  }
     
     */  
-    public void addQuestion(LinkedList<Studyhelper> stubList){
+    public void addQuestion(){
 	int i = 1;
 	int j;
 	Scanner in = new Scanner(System.in);    	
@@ -222,7 +223,7 @@ public class Client {
 			try{
 			    //stub.addHelpObject(courseName, title, question, location, userName, other);
 			    
-			    servers.replicatedAddHelpObject(stubList, 1, courseName, title, question, location, userName, other);
+			    servers.replicatedAddHelpObject(this.stubList, 1, courseName, title, question, location, userName, other);
 			} catch (Exception e) {
 			    System.err.println("Client exception: " + e.toString());
 			    e.printStackTrace();
@@ -270,7 +271,7 @@ public class Client {
 	}
 	return true;
     }
-    public void HelpListOptions(LinkedList<Studyhelper> stubList, boolean show, boolean delete, boolean claim, boolean showOwn){
+    public void HelpListOptions(boolean show, boolean delete, boolean claim, boolean showOwn){
 	Scanner in = new Scanner(System.in);    	
 	String helpList = "";
 	String notClaimedList = "";
@@ -283,8 +284,8 @@ public class Client {
 	    if(claim ==true){System.out.println("Press corresponding number to claim help request");}
 	    if(showOwn == true){System.out.println("These are your questions");}
 	    try{  
-		notClaimedList = servers.replicatedPrintNotClaimedList(stubList);
-		helpList = servers.replicatedPrintHelpList(stubList);
+		notClaimedList = servers.replicatedPrintNotClaimedList(this.stubList);
+		helpList = servers.replicatedPrintHelpList(this.stubList);
 	    } catch (Exception e) {
 		System.err.println("Client exception: " + e.toString());
 		e.printStackTrace();
@@ -297,7 +298,7 @@ public class Client {
 	    }
 	    if (showOwn == true){
 		try {
-		    own = servers.replicatedPrintOwnQuestionsOnly(stubList);
+		    own = servers.replicatedPrintOwnQuestionsOnly(this.stubList);
 		}
 		catch (Exception e) {
 		    System.err.println("Client exception: " + e.toString());
@@ -314,7 +315,7 @@ public class Client {
 		String claimedOrNot="";
 		if(show == true){
 		    try{
-			info = servers.replicatedPrintExtendedInfoID(stubList, input);
+			info = servers.replicatedPrintExtendedInfoID(this.stubList, input);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
@@ -324,7 +325,7 @@ public class Client {
 		if(delete == true){
 		    String temp = ""; // change this later if we can use clientaddress as argument or not
 		    try{
-			servers.replicatedDeleteHelpObject(stubList, input);
+			servers.replicatedDeleteHelpObject(this.stubList, input);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
@@ -333,7 +334,7 @@ public class Client {
 		}
 		if(claim == true){
 		    try{
-			claimedOrNot = servers.replicatedClaimHelpObject(stubList, input);
+			claimedOrNot = servers.replicatedClaimHelpObject(this.stubList, input);
 		    } catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
@@ -353,28 +354,28 @@ public class Client {
  
     }
   
-    public void intface(LinkedList<Studyhelper> stubList) {
+    public void intface() {
 	boolean should_quit = false;
 	while (!should_quit) {
 	    mainMenu();
 	    switch(getInput()){
 	    case 1: 
-		addQuestion(stubList);
+		addQuestion();
 		break;
 	    case 2:
 		//  answer_question
-		HelpListOptions(stubList, false, false, true, false);
+		HelpListOptions(false, false, true, false);
 		//System.out.println("You have answered the question! Good job! :)");
 		break;
 	    case 3:
 		// show list
-		HelpListOptions(stubList, true, false, false, false);
+		HelpListOptions(true, false, false, false);
 		break;
 	    case 4:
-		HelpListOptions(stubList, false, false, false, true);
+		HelpListOptions(false, false, false, true);
 		break;
 	    case 5:
-		HelpListOptions(stubList, false, true, false, false);
+		HelpListOptions(false, true, false, false);
 		System.out.println("Your question has now been removed from the system!");
 		break;
 	    case 6:
@@ -389,27 +390,27 @@ public class Client {
     }
 
     public static void main(String[] args) {
-	LinkedList<Studyhelper> stubList = new LinkedList();
+	
 	Client client  = new Client(args.length/2);
 	client.servers.updateReplicas(client.numberOfServers, client.serverTries);
 
 	try {
 	    if (args.length == 0) { //No argument given
 		Registry registry = LocateRegistry.getRegistry();
-		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, stubList);
+		client.stubList.add((Studyhelper) registry.lookup("Studyhelper"));
+		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, client.stubList);
 		client.servers.replicatedThreadStart(threadList);
-		client.intface(stubList);
+		client.intface();
 
 	    }
 	
 	    else if (args.length == 1){ //One  argument given
 		String host = args[0];
 		Registry registry = LocateRegistry.getRegistry(host);   
-		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, stubList);
+		client.stubList.add((Studyhelper) registry.lookup("Studyhelper"));
+		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, client.stubList);
 		client.servers.replicatedThreadStart(threadList);
-		client.intface(stubList);
+		client.intface();
 
 	    }
 	    if (args.length > 1) { //More than one argument given
@@ -417,11 +418,11 @@ public class Client {
 
 		for (int i = 0; i < args.length; i = i+2) {
 		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
-		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
+		    client.stubList.add((Studyhelper) registry.lookup("Studyhelper"));
 		}
-		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, stubList);
+		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, client.stubList);
 		client.servers.replicatedThreadStart(threadList);
-		client.intface(stubList);
+		client.intface();
 
 		
 		

@@ -28,9 +28,19 @@ public class ClientThread extends Thread implements Runnable{
 	    return true;
 	}
 	return false;
-	
-	
     }
+
+    private boolean checkIfServerIsUp() {
+	for (int i = 0; i < this.client.servers.numberOfServers; i++) {
+	    if (this.client.stubList.get(i) == stub) {
+		if (!this.client.servers.serverUpList.get(i)) {
+		    return false;
+		}
+	    }
+	}	
+	return true;
+    }
+
     @Override
     public void run(){
 	String claimedID = "";
@@ -47,14 +57,19 @@ public class ClientThread extends Thread implements Runnable{
       
 	    if(this.client.getNumberOfQuestions() > 0){  
 		try{
-		    claimedID = this.stub.helpObjectClaimedID();
+		    if (this.checkIfServerIsUp()) {
+			claimedID = this.stub.helpObjectClaimedID();
+		    }
+		    else {
+			claimedID = "TEST";
+		    }
 		}
 		catch(Exception e){
-		    System.err.println("helpObjectClaimedID FAILED");
+		    //System.err.println("helpObjectClaimedID FAILED");
 		}
 		if(!(claimedID.equals("TEST"))){ //def-programmering? 
 		    if (this.checkIfClaimMessageIsSent(claimedID)) {
-			System.out.println("Your question [" + claimedID + "]Has been claimed!");
+			System.out.println("Your question [" + claimedID + "]Has been claimed!\n");
 			this.client.decrementNumberOfQuestions();
 		    }
 		}

@@ -8,9 +8,9 @@ import java.util.*;
 
 
 public class Replication  {
-    private int numberOfServers = 1;
+    protected int numberOfServers = 1;
     private int serverTimeout = 3;
-    private LinkedList<Boolean> serverUpList = new LinkedList();
+    protected LinkedList<Boolean> serverUpList = new LinkedList();
     private LinkedList<Integer> serverTriesList = new LinkedList();
     protected Replication(int numServers, int serverTries) {
 	this.numberOfServers = numServers;
@@ -206,5 +206,7 @@ public class Replication  {
 	}
     }
 
+
+    
 }
   
