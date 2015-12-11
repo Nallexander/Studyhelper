@@ -7,7 +7,7 @@ public class ClientThread extends Thread implements Runnable{
     public Client client;
     public Studyhelper stub;
     private boolean running;
-    private LinkedList<Boolean> claimedList = new LinkedList();
+
   
     public ClientThread(Client client, Studyhelper stub){
 	this.client = client;
@@ -16,14 +16,15 @@ public class ClientThread extends Thread implements Runnable{
     }
 
     protected synchronized boolean checkIfClaimMessageIsSent(String claimedString) { 
+	
 	int claimedInt = Integer.parseInt(claimedString);
 	for (int i = 0; i <= claimedInt; i++) {
-	    if (claimedList.size() < i+1) {
-		claimedList.add(false);
+	    if (this.client.claimedList.size() < i) {
+		this.client.claimedList.add(false);
 	    }	
 	}
-	if (!claimedList.get(claimedInt)) {
-	    claimedList.set(claimedInt, true);
+	if (!this.client.claimedList.get(claimedInt-1)) {
+	    this.client.claimedList.set(claimedInt-1, true);
 	    return true;
 	}
 	return false;
@@ -51,7 +52,6 @@ public class ClientThread extends Thread implements Runnable{
 		catch(Exception e){
 		    System.err.println("helpObjectClaimedID FAILED");
 		}
-        
 		if(!(claimedID.equals("TEST"))){ //def-programmering? 
 		    if (this.checkIfClaimMessageIsSent(claimedID)) {
 			System.out.println("Your question [" + claimedID + "]Has been claimed!");

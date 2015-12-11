@@ -9,6 +9,7 @@ public class Client {
     private int serverTries = 3;
     private int numberOfServers = 1; //TODO
     private int numberOfQuestions;
+    protected LinkedList<Boolean> claimedList = new LinkedList();
 
   
     private Client(int numServers) {
