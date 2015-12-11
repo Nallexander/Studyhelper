@@ -18,7 +18,7 @@ public class Server extends RemoteServer implements Studyhelper{
 
     public int getNumberOfUnclaimedQuestions() {
 	int num = 0; 
-	try {
+	//try {
 
 	    for (int i = 0; i < this.helpList.size(); i++) {
 	    
@@ -27,10 +27,10 @@ public class Server extends RemoteServer implements Studyhelper{
 		    num++;
 		}
 	    }
-	}
-	catch (ServerNotActiveException e) {
+	    //}
+	/*catch (ServerNotActiveException e) {
 	    System.err.println("getNumberOfUnclaimedQuestions does not work");
-	}
+	    }*/
 	return num;
     }
 	
