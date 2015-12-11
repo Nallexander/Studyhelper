@@ -193,11 +193,16 @@ public class Replication  {
     protected int replicatedGetNumberOfUnclaimedQuestions(List<Studyhelper> stubList) {
 	setTriesToZero();	
 	int return_int = 0;
+
 	for (int i = 0; i < this.serverUpList.size(); i++) {
+
 	    if (this.serverUpList.get(i) == true) {
+
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
+			System.out.print("getNumStart" + return_int);
 			return_int = stubList.get(i).getNumberOfUnclaimedQuestions();
+			System.out.print("getNumEnd" + return_int);
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {

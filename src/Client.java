@@ -20,9 +20,13 @@ public class Client {
 
 	this.numberOfServers = numServers;
 
-	this.numberOfQuestions = servers.replicatedGetNumberOfUnclaimedQuestions(this.stubList);
-	System.out.println("fetnu\n" + this.numberOfQuestions);
+	this.numberOfQuestions = 0;
+
 	
+    }
+
+    public void updateNumberOfQuestions() {
+	this.numberOfQuestions = servers.replicatedGetNumberOfUnclaimedQuestions(this.stubList);
     }
 
     public synchronized void getAccess(){
@@ -428,6 +432,7 @@ public class Client {
 	
 	Client client  = new Client(args.length/2);
 	client.servers.updateReplicas(client.numberOfServers, client.serverTries);
+	client.updateNumberOfQuestions();
 
 	try {
 	    if (args.length == 0) { //No argument given
