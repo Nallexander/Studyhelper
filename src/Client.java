@@ -296,7 +296,6 @@ public class Client {
 	    String info = "";
 	    if(isInteger(input)){
 		int intPut = Integer.parseInt(input);
-		String info = "";
 		String claimedOrNot="";
 		if(show==true){
 		    try{
