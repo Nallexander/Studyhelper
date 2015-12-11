@@ -17,7 +17,7 @@ public class Server extends RemoteServer implements Studyhelper{
     }
 
     public int getNumberOfUnclaimedQuestions() {
-	int num = 0; 
+	int num = 1; 
 	//try {
 
 	    for (int i = 0; i < this.helpList.size(); i++) {
