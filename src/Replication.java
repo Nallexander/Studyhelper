@@ -33,144 +33,159 @@ public class Replication  {
 	}
     }
     
-	protected void setTriesToZero() {
-	    for (int i = 0; i < serverTriesList.size(); i++) {
-		serverTriesList.set(i, 0);
-	    }
+    protected void setTriesToZero() {
+	for (int i = 0; i < serverTriesList.size(); i++) {
+	    serverTriesList.set(i, 0);
 	}
-
-	protected void replicatedAddHelpObject(List<Studyhelper> stubList, int method, String courseName, String title, String question, String location, String userName, String other) {
-	    setTriesToZero();
-	    for (int i = 0; i < this.serverUpList.size(); i++) {
-		System.out.println("uplistsize: " + this.serverUpList.size() + "current server: " + this.serverUpList.get(i));
-		if (this.serverUpList.get(i) == true) {
-		    while (this.serverTriesList.get(i) < serverTimeout) {
-			System.out.println("while-loop " + i + " " + this.serverTriesList.get(i));
-			try{
-			    stubList.get(i).addHelpObject(courseName, title, question, location, userName, other);
-			    this.serverTriesList.set(i, serverTimeout + 1);
-			}
-			catch (Exception e) {
-			    this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
-			}
-		    }
-		    if (this.serverTriesList.get(i) == serverTimeout) {
-			this.serverUpList.set(i, false);
-		    }
-		}
-	    }
-	}
-
-	protected boolean replicatedDeleteHelpObject(List<Studyhelper> stubList, String questionID) {
-	    setTriesToZero();
-	    boolean return_bool = false;
-	    for (int i = 0; i < this.serverUpList.size(); i++) {
-		if (this.serverUpList.get(i) == true) {
-		    while (this.serverTriesList.get(i) < serverTimeout) {
-			try{
-			    return_bool = stubList.get(i).deleteHelpObject(questionID);
-			    this.serverTriesList.set(i, serverTimeout + 1);
-			}
-			catch (Exception e) {
-			    this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
-			}
-		    }
-		    if (this.serverTriesList.get(i) == serverTimeout) {
-			this.serverUpList.set(i, false);
-		    }
-		}
-	    }
-	    return return_bool;
-	}
-
-	protected String replicatedClaimHelpObject(List<Studyhelper> stubList, String questionID) {
-	    setTriesToZero();
-	    String return_stri = "";
-	    for (int i = 0; i < this.serverUpList.size(); i++) {
-		if (this.serverUpList.get(i) == true) {
-		    while (this.serverTriesList.get(i) < serverTimeout) {
-			try{
-			    return_stri = stubList.get(i).claimHelpObject(questionID);
-			    this.serverTriesList.set(i, serverTimeout + 1);
-			}
-			catch (Exception e) {
-			    this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
-			}
-		    }
-		    if (this.serverTriesList.get(i) == serverTimeout) {
-			this.serverUpList.set(i, false);
-		    }
-		}
-	    }
-	    return return_stri;
-	}
-
-	protected String replicatedPrintHelpList(List<Studyhelper> stubList) {
-	    setTriesToZero();
-	    String return_stri = "Error";
-	    for (int i = 0; i < this.serverUpList.size(); i++) {
-		if (this.serverUpList.get(i) == true) {
-		    while (this.serverTriesList.get(i) < serverTimeout) {
-			try{
-			    return_stri = stubList.get(i).printHelpList();
-			    this.serverTriesList.set(i, serverTimeout + 1);
-			}
-			catch (Exception e) {
-			    this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
-			}
-		    }
-		    if (this.serverTriesList.get(i) == serverTimeout) {
-			this.serverUpList.set(i, false);
-		    }
-		}
-	    }
-	    return return_stri;
-	}
-
-	protected String replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
-	    setTriesToZero();	
-	    String return_stri = "";
-	    for (int i = 0; i < this.serverUpList.size(); i++) {
-		if (this.serverUpList.get(i) == true) {
-		    while (this.serverTriesList.get(i) < serverTimeout) {
-			try{
-			    return_stri = stubList.get(i).printNotClaimedList();
-			    this.serverTriesList.set(i, serverTimeout + 1);
-			}
-			catch (Exception e) {
-			    this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
-			}
-		    }
-		    if (this.serverTriesList.get(i) == serverTimeout) {
-			this.serverUpList.set(i, false);
-		    }
-		}
-	    }
-	    return return_stri;
-	}
-
-	protected String replicatedPrintExtendedInfoID(List<Studyhelper> stubList, String ID) {
-	    setTriesToZero();
-	    String return_stri = "";
-	    for (int i = 0; i < this.serverUpList.size(); i++) {
-		if (this.serverUpList.get(i) == true) {
-		    while (this.serverTriesList.get(i) < serverTimeout) {
-			try{
-			    return_stri = stubList.get(i).printExtendedInfoID(ID);
-			    this.serverTriesList.set(i, serverTimeout + 1);
-			}
-			catch (Exception e) {
-			    this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
-			}
-		    }
-		    if (this.serverTriesList.get(i) == serverTimeout) {
-			this.serverUpList.set(i, false);
-		    }
-		}
-	    }
-	    return return_stri;
-	}
-
-
     }
+
+    protected void replicatedAddHelpObject(List<Studyhelper> stubList, int method, String courseName, String title, String question, String location, String userName, String other) {
+	setTriesToZero();
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    System.out.println("uplistsize: " + this.serverUpList.size() + "current server: " + this.serverUpList.get(i));
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    System.out.println("while-loop " + i + " " + this.serverTriesList.get(i));
+		    try{
+			stubList.get(i).addHelpObject(courseName, title, question, location, userName, other);
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+    }
+
+    protected boolean replicatedDeleteHelpObject(List<Studyhelper> stubList, String questionID) {
+	setTriesToZero();
+	boolean return_bool = false;
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			return_bool = stubList.get(i).deleteHelpObject(questionID);
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+	return return_bool;
+    }
+
+    protected String replicatedClaimHelpObject(List<Studyhelper> stubList, String questionID) {
+	setTriesToZero();
+	String return_stri = "";
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			return_stri = stubList.get(i).claimHelpObject(questionID);
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+	return return_stri;
+    }
+
+    protected String replicatedPrintHelpList(List<Studyhelper> stubList) {
+	setTriesToZero();
+	String return_stri = "Error";
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			return_stri = stubList.get(i).printHelpList();
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+	return return_stri;
+    }
+
+    protected String replicatedPrintNotClaimedList(List<Studyhelper> stubList) {
+	setTriesToZero();	
+	String return_stri = "";
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			return_stri = stubList.get(i).printNotClaimedList();
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+	return return_stri;
+    }
+
+    protected String replicatedPrintExtendedInfoID(List<Studyhelper> stubList, String ID) {
+	setTriesToZero();
+	String return_stri = "";
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			return_stri = stubList.get(i).printExtendedInfoID(ID);
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+	return return_stri;
+    }
+
+
+    protected LinkedList<Thread> replicatedNewThread(Client client, LinkedList<Studyhelper> stubList) {
+	LinkedList<Thread> threadList = new LinkedList();
+	for (int i = 0; i < stubList.size(); i++) {
+	    threadList.add(new Thread(new ClientThread(client, (Studyhelper) stubList.get(i))));     
+	}
+
+	return threadList;
+    }
+
+
+    protected void replicatedThreadStart(LinkedList<Thread> threadList) {
+	for (int i = 0; i < threadList.size(); i++) {
+	    threadList.get(i).start();
+	}
+    }
+}
   
