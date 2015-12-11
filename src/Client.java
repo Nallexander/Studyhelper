@@ -412,12 +412,10 @@ public class Client {
 		client.intface(stubList);
 
 	    }
-	    System.out.println("Before args.length > 1");
 	    if (args.length > 1) { //More than one argument given
 	    
 
 		for (int i = 0; i < args.length; i = i+2) {
-		    System.out.println("for");
 		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
 		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
 		}
