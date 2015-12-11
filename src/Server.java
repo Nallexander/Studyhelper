@@ -22,7 +22,8 @@ public class Server extends RemoteServer implements Studyhelper{
 
 	    for (int i = 0; i < this.helpList.size(); i++) {
 	    
-		if (!this.helpList.get(i).isClaimed() && (RemoteServer.getClientHost().equals(this.helpList.get(i).getClientAddress()))) {
+		if (!this.helpList.get(i).isClaimed()){ //&&
+		    //(RemoteServer.getClientHost().equals(this.helpList.get(i).getClientAddress()))) {
 		    num++;
 		}
 	    }
