@@ -124,6 +124,7 @@ public class Server extends RemoteServer implements Studyhelper{
     }
     return printedList;
   }
+
   public String printNotClaimedList(){
     String printedList = "";
     for (int i = 0; i < this.helpList.size(); i++){
@@ -134,7 +135,23 @@ public class Server extends RemoteServer implements Studyhelper{
     return printedList;
   }
     
-
+    public String printOwnQuestionsOnly(){
+      String address = "";
+      String printedList = "";
+      try {
+	  address = RemoteServer.getClientHost();
+      }
+      catch (Exception e) {
+	  System.err.println("Could not resolve client IP: " + e.toString());
+      }
+      for (int i = 0; i < this.helpList.size(); i++) {
+	  if (address == this.helpList.get(i).getClientAddress()){
+	      printedList = (printedList + this.helpList.get(i).basicInfoString() + "\n");
+	  }
+      }
+      return printedList;
+  }
+  
   public static void main(String args[]) {
     	
     try {
