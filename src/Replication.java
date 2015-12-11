@@ -13,7 +13,6 @@ public class Replication  {
     private LinkedList<Boolean> serverUpList = new LinkedList();
     private LinkedList<Integer> serverTriesList = new LinkedList();
     protected Replication(int numServers, int serverTries) {
-	System.out.println("numServers: " + numServers);
 	this.numberOfServers = numServers;
 	this.serverTimeout = serverTries;
 
@@ -42,10 +41,8 @@ public class Replication  {
     protected void replicatedAddHelpObject(List<Studyhelper> stubList, int method, String courseName, String title, String question, String location, String userName, String other) {
 	setTriesToZero();
 	for (int i = 0; i < this.serverUpList.size(); i++) {
-	    System.out.println("uplistsize: " + this.serverUpList.size() + "current server: " + this.serverUpList.get(i));
 	    if (this.serverUpList.get(i) == true) {
 		while (this.serverTriesList.get(i) < serverTimeout) {
-		    System.out.println("while-loop " + i + " " + this.serverTriesList.get(i));
 		    try{
 			stubList.get(i).addHelpObject(courseName, title, question, location, userName, other);
 			this.serverTriesList.set(i, serverTimeout + 1);
