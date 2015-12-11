@@ -171,6 +171,27 @@ public class Replication  {
 	return return_stri;
     }
 
+    protected String replicatedPrintOwnQuestionsOnly(List<Studyhelper> stubList) {
+	setTriesToZero();	
+	String return_stri = "";
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			return_stri = stubList.get(i).printOwnQuestionsOnly();
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+	return return_stri;
+    }
 
     protected LinkedList<Thread> replicatedNewThread(Client client, LinkedList<Studyhelper> stubList) {
 	LinkedList<Thread> threadList = new LinkedList();

@@ -12,4 +12,5 @@ public interface Studyhelper extends Remote {
   String printNotClaimedList() throws RemoteException;
   String printExtendedInfoID(String questionID) throws RemoteException;
   String helpObjectClaimedID() throws RemoteException;
+  String printOwnQuestionsOnly() throws RemoteException;
 }
