@@ -124,23 +124,17 @@ public class ClientGUI extends JFrame implements ActionListener{
             int    option       = 3;
 	    JComboBox<String> questionCombo = new JComboBox<String>();
 	    if (this.operation.equals("NOTCLAIMED")){
-	    	System.out.println("Not claimed lst");
-	        System.out.println("Enter here plsssss");
 		questionList = servers.replicatedPrintNotClaimedList(theStubList);
 		System.out.println(questionList);
 		
 	    }
 	    if (this.operation.equals("MYQUESTIONS")){
-	    	System.out.println("Do this");
 	    	questionList = servers.replicatedPrintOwnQuestionsOnly(theStubList);
-	    	System.out.println("Done that");
 	    	this.aBuffer.setText("");
 	    	System.out.println(questionList);
 		this.aBuffer.append(questionList);
-		System.out.println("Enter here");
 	    }
 	    if (this.operation.equals("SHOWALL")){
-	    	System.out.println("LINE 121 ClientGUI");
 	    	questionList = servers.replicatedPrintHelpList(theStubList);
 	    }
 	    LinkedList<String> questionsLinkedL = cutString(questionList);
@@ -165,10 +159,10 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    if (questionCombo.getItemCount() == 0){
 	    	option = JOptionPane.showOptionDialog(null, message0, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[3]);
 	    }
-	    if (option != cancel && questionsLinkedL.size() > 0 ){
+	    if (option != cancel && questionCombo.getItemCount() > 0 ){
 	    	
 		int    selectedIndex    = questionCombo.getSelectedIndex();
-	    	String anotherString    = questionsLinkedL.get(selectedIndex);
+	    String anotherString    = questionsLinkedL.get(selectedIndex);
 		String theID            = findIDInString(anotherString);
 		
 		if (option == expand){ 
@@ -227,7 +221,6 @@ public class ClientGUI extends JFrame implements ActionListener{
 	UIManager.put("OptionPane.background", paneBG);
 	UIManager.put("Panel.background", panelBG);
 	if (option == JOptionPane.OK_OPTION) {
-	    System.out.println("LINE 205 ClientGUI");
 	    String courseName = jCourse.getText();
 	    String title      = jTitle.getText();
 	    String question   = jQuestion.getText();
@@ -235,12 +228,10 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    String username   = jUsername.getText();
 	    String other      = jOther.getText();
 	    try{
-		//servers.AddHelpObject(this.theBestStub,courseName, title, question, location, username, other);
 	    	this.aBuffer.setText("");
 		this.aBuffer.append(username);
 		servers.replicatedAddHelpObject(theStubList,1,courseName, title, question, location, username, other);
                 incrementNumberOfQuestions();
-                System.out.println("Number of questions" + this.numberOfQuestions);
 	    } catch (Exception e) {
                 System.err.println("Client exception: " + e.toString());
                 e.printStackTrace();
