@@ -377,8 +377,8 @@ public class Client {
 	    if (args.length == 0) { //No argument given
 		Registry registry = LocateRegistry.getRegistry();
 		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-		Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
-		thread.start();	 
+		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, stubList);
+		client.servers.replicatedThreadStart(threadList);
 		client.intface(stubList);
 
 	    }
@@ -387,8 +387,8 @@ public class Client {
 		String host = args[0];
 		Registry registry = LocateRegistry.getRegistry(host);   
 		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-		Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
-		thread.start();	 
+		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, stubList);
+		client.servers.replicatedThreadStart(threadList);
 		client.intface(stubList);
 
 	    }
@@ -401,9 +401,8 @@ public class Client {
 		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
 		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
 		}
-		client.servers.replicatedNewThread(client, stubList);
-		//Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
-		//thread.start();	 
+		LinkedList<Thread> threadList = client.servers.replicatedNewThread(client, stubList);
+		client.servers.replicatedThreadStart(threadList);
 		client.intface(stubList);
 
 		
