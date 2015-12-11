@@ -113,6 +113,7 @@ public class ClientGUI extends JFrame implements ActionListener{
     	add(this.myQuestions);
     	add(this.myClaims);
         add(this.aBuffer);
+        this.aBuffer.setEditable(false);
     }
     
     public void viewTheQuestions(){
@@ -129,16 +130,18 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    
 	    if (this.operation.equals("NOTCLAIMED")){
 		questionList = servers.replicatedPrintNotClaimedList(theStubList);
-		System.out.println(questionList);
+		this.aBuffer.setText("");
+		this.aBuffer.append(questionList);
 		}
 	    if (this.operation.equals("MYQUESTIONS")){
 	    	questionList = servers.replicatedPrintOwnQuestionsOnly(theStubList);
 	    	this.aBuffer.setText("");
-	    	System.out.println(questionList);
 		this.aBuffer.append(questionList);
 	    }
 	    if (this.operation.equals("SHOWALL")){
 	    	questionList = servers.replicatedPrintHelpList(theStubList);
+	    	this.aBuffer.setText("");
+			this.aBuffer.append(questionList);
 	    }
 	    
 	    
@@ -210,6 +213,8 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    String[] options0 = new String[] {"Cancel"};
 	    JComboBox<String> questionCombo = new JComboBox<String>();
 	    questionList = servers.replicatedPrintOwnClaimsOnly(theStubList);
+	    this.aBuffer.setText("");
+		this.aBuffer.append(questionList);
    
     
     
