@@ -8,7 +8,8 @@ import java.lang.*;
 public class Client {
     private int serverTries = 3;
     private int numberOfServers = 1; //TODO
-    private synchronized int numberOfQuestions;
+    private int numberOfQuestions;
+    private boolean access = true;
     protected LinkedList<Boolean> claimedList = new LinkedList();
     protected LinkedList<Studyhelper> stubList = new LinkedList();
 
@@ -20,17 +21,33 @@ public class Client {
     }
     protected Replication servers = new Replication(this.numberOfServers, this.serverTries);
 
+    public synchronized void getAccess(){
+	if (this.access) {
+	    this.access = false;
+	}
+    }
 
+    public synchronized void releaseAccess(){
+	this.access = true;
+	
+    }
 
     public synchronized int getNumberOfQuestions(){
-	return this.numberOfQuestions;
+	this.getAccess();
+	int numQ = this.numberOfQuestions;
+	this.releaseAccess();
+	return numQ;
     }
     public synchronized void decrementNumberOfQuestions(){
+	this.getAccess();
 	this.numberOfQuestions = this.numberOfQuestions - 1;
+	this.releaseAccess();
     }
 
     public synchronized void incrementNumberOfQuestions(){
+	this.getAccess();
 	this.numberOfQuestions = this.numberOfQuestions + 1;
+	this.releaseAccess();
     }
 
   
