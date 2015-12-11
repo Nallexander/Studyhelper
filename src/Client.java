@@ -19,7 +19,10 @@ public class Client {
     private Client(int numServers) {
 
 	this.numberOfServers = numServers;
+
 	this.numberOfQuestions = servers.replicatedGetNumberOfUnclaimedQuestions(this.stubList);
+	System.out.println("fetnu\n" + this.numberOfQuestions);
+	
     }
 
     public synchronized void getAccess(){
