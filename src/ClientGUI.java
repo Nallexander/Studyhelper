@@ -19,8 +19,9 @@ public class ClientGUI extends JFrame implements ActionListener{
     public JButton addQuestion;
     public JButton answerQuestion;
     public JButton showQuestions;
-    public JButton removeQuestion;
+    //public JButton removeQuestion;
     public JButton quit;
+    public JButton myQuestions;
     public JTextArea aBuffer = new JTextArea(13,37);
     public LinkedList<Studyhelper> theStubList;
     LinkedList<String> notClaimedLList;
@@ -34,12 +35,14 @@ public class ClientGUI extends JFrame implements ActionListener{
 	addQuestion    = new JButton("Add Question");
 	answerQuestion = new JButton("Answer Question");
 	showQuestions  = new JButton("Show All Questions");
-	removeQuestion = new JButton("Remove Question");
+	//removeQuestion = new JButton("Remove Question");
+	myQuestions    = new JButton("Show my questions");
 	quit           = new JButton("Quit");
 	answerQuestion.addActionListener(this);
 	addQuestion.addActionListener(this);
 	showQuestions.addActionListener(this);
-	removeQuestion.addActionListener(this);
+	//removeQuestion.addActionListener(this);
+	myQuestions.addActionListener(this);
 	this.aBuffer.append("Weolcome to StudyHelper, what do you want to do?\n Press the corresponding button above ");
 	this.theStubList = stubb;
     }
@@ -108,7 +111,8 @@ public class ClientGUI extends JFrame implements ActionListener{
     	add(this.addQuestion);
     	add(this.answerQuestion);
     	add(this.showQuestions);
-    	add(this.removeQuestion);
+    	//add(this.removeQuestion);
+    	add(this.myQuestions);
         
         add(this.aBuffer);
     }
@@ -118,11 +122,25 @@ public class ClientGUI extends JFrame implements ActionListener{
 	try {
 	    String questionList = "";
 	    String title = "";
+	    int expand=0;
+	    int claim =1;
+	    int remove = 2;
+	    int cancel =3;
 	    JComboBox<String> questionCombo = new JComboBox<String>();
 	    if (this.operation.equals("NOTCLAIMED")){
+	    	System.out.println("Not claimed lst");
 		questionList = servers.replicatedPrintNotClaimedList(theStubList);
+		
 	    }
-	    else{
+	    if (this.operation.equals("MYQUESTIONS")){
+	    	System.out.println("Do this");
+	    	questionList = servers.replicatedPrintOwnQuestionsOnly(theStubList);
+	    	System.out.println("Done that");
+	    	this.aBuffer.setText("");
+	    	System.out.println(questionList);
+			this.aBuffer.append(questionList);
+	    }
+	    if (this.operation.equals("SHOWALL")){
 	    	System.out.println("LINE 121 ClientGUI");
 	    	questionList = servers.replicatedPrintHelpList(theStubList);
 	    }
@@ -137,34 +155,32 @@ public class ClientGUI extends JFrame implements ActionListener{
 		"Woop",questionCombo
    					
 	    };
-	    String[] options = new String[] {"Expand", "Claim", "Cancel"};
-	    title = "Select question to view or claim";
-	    if(this.operation.equals("REMOVE")){
-	    	title = "Select question to view or remove";
-	      options[1] = "Remove";
-	    }
+	    String[] options = new String[] {"Expand", "Claim","Remove","Cancel"};
+	    title = "Select question to view, claim or remove (if the question is yours)";
+	    if(this.operation.equals("MYQUESTIONS")){
+	    title = "Select question to view or remove, or try to claim if you want to test";
 	    
-	    int option = JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[2]);
-	    if (option == JOptionPane.YES_OPTION){ 
-		int selectedIndex = questionCombo.getSelectedIndex();
-		String anotherString =questionsLinkedL.get(selectedIndex);
-		String theID = findIDInString(anotherString);
+	    }
+	    int option = JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
+	    if (option != cancel){
+	    	
+	    int selectedIndex = questionCombo.getSelectedIndex();
+	    	String anotherString =questionsLinkedL.get(selectedIndex);
+			String theID = findIDInString(anotherString);
+		
+	    if (option == expand){ 
 		String expandedQuestion =servers.replicatedPrintExtendedInfoID(theStubList, theID);
 		this.aBuffer.setText("");
 		this.aBuffer.append(expandedQuestion);
 	    }
-	    if(option == JOptionPane.NO_OPTION){	
-		int selectedIndex = questionCombo.getSelectedIndex();
-		String anotherString =questionsLinkedL.get(selectedIndex);
-		String theID = findIDInString(anotherString);
-		if(this.operation.equals("REMOVE")){
-			servers.replicatedDeleteHelpObject(theStubList,theID);	
-    	}
-    	else{
-		String claimedOrNot = "";
-		claimedOrNot = servers.replicatedClaimHelpObject(theStubList,theID);
-		this.aBuffer.setText("");
-		this.aBuffer.append(claimedOrNot);  			 
+	    if(option == claim){
+	    	String claimedOrNot = "";
+			claimedOrNot = servers.replicatedClaimHelpObject(theStubList,theID);
+			this.aBuffer.setText("");
+			this.aBuffer.append(claimedOrNot);  
+	    }
+	    if (option==remove){
+	    	servers.replicatedDeleteHelpObject(theStubList,theID);
 	    }
 	    }
 	}
@@ -312,9 +328,15 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    this.operation = "SHOWALL";
 	    viewTheQuestions();
 	}
+	/*
 	if(pressed.equals(removeQuestion)){
 	    this.operation = "REMOVE";
 	    viewTheQuestions();
+	}
+	*/
+	if(pressed.equals(myQuestions)){
+		this.operation="MYQUESTIONS";
+		viewTheQuestions();
 	}
     }
 }
