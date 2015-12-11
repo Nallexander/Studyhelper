@@ -19,7 +19,7 @@ public class ClientGUI extends JFrame implements ActionListener{
     public  JButton    addQuestion;
     public  JButton    answerQuestion;
     public  JButton    showQuestions;
-    public  JButton    quit;
+    public  JButton    myClaims;
     public  JButton    myQuestions;
     public  JTextArea  aBuffer = new JTextArea(13,37);
     public  LinkedList <Studyhelper> theStubList;
@@ -34,11 +34,13 @@ public class ClientGUI extends JFrame implements ActionListener{
 	answerQuestion = new JButton("Answer Question");
 	showQuestions  = new JButton("Show All Questions");
 	myQuestions    = new JButton("Show my questions");
-	quit           = new JButton("Quit");
+	myClaims           = new JButton("My Claims");
+	
 	answerQuestion.addActionListener(this);
 	addQuestion.addActionListener(this);
 	showQuestions.addActionListener(this);
 	myQuestions.addActionListener(this);
+	myClaims.addActionListener(this);
 	this.aBuffer.append("Weolcome to StudyHelper, what do you want to do?\n Press the corresponding button above ");
 	this.theStubList = stubb;
     }
@@ -109,6 +111,7 @@ public class ClientGUI extends JFrame implements ActionListener{
     	add(this.answerQuestion);
     	add(this.showQuestions);
     	add(this.myQuestions);
+    	add(this.myClaims);
         add(this.aBuffer);
     }
     
@@ -121,13 +124,13 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    int    claim        = 1;
 	    int    remove       = 2;
 	    int    cancel       = 3;
-            int    option       = 3;
+        int    option       = 3;
 	    JComboBox<String> questionCombo = new JComboBox<String>();
+	    
 	    if (this.operation.equals("NOTCLAIMED")){
 		questionList = servers.replicatedPrintNotClaimedList(theStubList);
 		System.out.println(questionList);
-		
-	    }
+		}
 	    if (this.operation.equals("MYQUESTIONS")){
 	    	questionList = servers.replicatedPrintOwnQuestionsOnly(theStubList);
 	    	this.aBuffer.setText("");
@@ -137,6 +140,8 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    if (this.operation.equals("SHOWALL")){
 	    	questionList = servers.replicatedPrintHelpList(theStubList);
 	    }
+	    
+	    
 	    LinkedList<String> questionsLinkedL = cutString(questionList);
 		
 	    for(int i = 0; i < questionsLinkedL.size();i++)
@@ -147,17 +152,21 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    Object[] message  = {"Choose one question from the list",questionCombo};		
 	    Object[] message0 = {"There is no such available questions",""};	
 	    String[] options  = new String[] {"Expand", "Claim","Remove","Cancel"};
-	    title             = "Select question to view, claim or remove (if the question is yours)";
+	    String[] options0 = new String[] {"Cancel"};
+	    title     = "Select question to view, claim or remove (if the question is yours)";
+	    
 	    if(this.operation.equals("MYQUESTIONS")){
 		title = "My questions";
 	    
 	    }
 	    
+	    
 	    if (questionCombo.getItemCount() > 0){
 		option = JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[3]);
+          
 	    }
 	    if (questionCombo.getItemCount() == 0){
-	    	option = JOptionPane.showOptionDialog(null, message0, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[3]);
+	    	option = JOptionPane.showOptionDialog(null, message0, title,JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options0,options[0]);
 	    }
 	    if (option != cancel && questionCombo.getItemCount() > 0 ){
 	    	
@@ -188,6 +197,54 @@ public class ClientGUI extends JFrame implements ActionListener{
 	}
 	return;
     }
+    
+    
+    public void viewOwnClaims(){
+    	try{
+    
+    	String questionList = "";
+	    String title        = "";
+	    int expand          = 0;
+	    int cancel          = 1;
+	    String[] options = new String[] {"Expand","Cancel"};
+	    String[] options0 = new String[] {"Cancel"};
+	    JComboBox<String> questionCombo = new JComboBox<String>();
+	    questionList = servers.replicatedPrintOwnClaimsOnly(theStubList);
+   
+    
+    
+    LinkedList<String> questionsLinkedL = cutString(questionList);
+	
+    for(int i = 0; i < questionsLinkedL.size();i++)
+	{
+	    questionCombo.addItem(questionsLinkedL.get(i));
+	}
+    Object[] message  = {"Choose one question from the list",questionCombo};		
+    Object[] message0 = {"No claims by you to show"};
+    title     = "Your Claims";
+    setVisible(true);
+	    if (questionCombo.getItemCount() > 0){
+			int option = JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[1]);
+			if (option == expand){
+	    	
+			int    selectedIndex    = questionCombo.getSelectedIndex();
+		    String anotherString    = questionsLinkedL.get(selectedIndex);
+			String theID            = findIDInString(anotherString); 
+			    String expandedQuestion =servers.replicatedPrintExtendedInfoID(theStubList, theID);
+			    this.aBuffer.setText("");
+			    this.aBuffer.append(expandedQuestion);
+			  }
+	    }
+	    else {
+	    	int option = JOptionPane.showOptionDialog(null, message0, title,JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options0,options[0]);
+	    }
+    	}
+	    catch (Exception e) {
+		    System.err.println("Client exception: " + e.toString());
+		    e.printStackTrace();
+		}
+		return;
+	    }
    
     public void questionForm(){
 	    JTextArea jUsername = new JTextArea(1,1);
@@ -315,6 +372,10 @@ public class ClientGUI extends JFrame implements ActionListener{
 	if(pressed.equals(myQuestions)){
 	    this.operation="MYQUESTIONS";
 	    viewTheQuestions();
+	}
+	if(pressed.equals(myClaims)){
+	    this.operation = "MYCLAIMS";
+	    viewOwnClaims();
 	}
         if(pressed.equals(showQuestions)){
 	    this.operation = "SHOWALL";
