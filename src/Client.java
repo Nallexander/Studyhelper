@@ -293,7 +293,7 @@ public class Client {
 	    }
 
 	    String input = in.nextLine();
-
+	    String info = "";
 	    if(isInteger(input)){
 		int intPut = Integer.parseInt(input);
 		String info = "";
@@ -330,8 +330,11 @@ public class Client {
 	    if (input.equals("b")) {
 		return;  
 	    }
-	    else
+	     if(!(isInteger(input)) &&
+	     (!(input.equals("b"))) && 
+	     !(info.equals("This question does not exist anymore, it has been deleted or claimed"))){
 		System.out.println("Invalid operation, please try again");
+	     }
 	}
  
     }
