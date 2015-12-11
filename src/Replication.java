@@ -190,6 +190,28 @@ public class Replication  {
 	return return_stri;
     }
 
+    protected int replicatedGetNumberOfUnclaimedQuestions(List<Studyhelper> stubList) {
+	setTriesToZero();	
+	int return_int = 0;
+	for (int i = 0; i < this.serverUpList.size(); i++) {
+	    if (this.serverUpList.get(i) == true) {
+		while (this.serverTriesList.get(i) < serverTimeout) {
+		    try{
+			return_int = stubList.get(i).getNumberOfUnclaimedQuestions();
+			this.serverTriesList.set(i, serverTimeout + 1);
+		    }
+		    catch (Exception e) {
+			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+		    }
+		}
+		if (this.serverTriesList.get(i) == serverTimeout) {
+		    this.serverUpList.set(i, false);
+		}
+	    }
+	}
+	return return_int;
+    }
+
     protected LinkedList<Thread> replicatedNewThread(Client client, LinkedList<Studyhelper> stubList) {
 	LinkedList<Thread> threadList = new LinkedList();
 	for (int i = 0; i < stubList.size(); i++) {

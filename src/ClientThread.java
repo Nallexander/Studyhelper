@@ -57,7 +57,7 @@ public class ClientThread extends Thread implements Runnable{
 	    }
 
 
-      
+	    System.out.println(this.client.getNumberOfQuestions());
 	    if(this.client.getNumberOfQuestions() > 0){  
 		try{
 		    if (this.checkIfServerIsUp()) {

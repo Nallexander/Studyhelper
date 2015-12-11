@@ -2,6 +2,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface Studyhelper extends Remote {
+    int getNumberOfUnclaimedQuestions() throws RemoteException;
     String sayHello() throws RemoteException;
     String printSizeHelpList() throws RemoteException;
     String claimHelpObject(String questionID) throws RemoteException;

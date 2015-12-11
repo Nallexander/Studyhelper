@@ -7,19 +7,20 @@ import java.lang.*;
 
 public class Client {
     private int serverTries = 3;
-    private int numberOfServers = 1; //TODO
+    private int numberOfServers = 1; 
     private int numberOfQuestions;
     private boolean access = true;
     protected LinkedList<Boolean> claimedList = new LinkedList();
     protected LinkedList<Studyhelper> stubList = new LinkedList();
 
   
+    protected Replication servers = new Replication(this.numberOfServers, this.serverTries);
+
     private Client(int numServers) {
 
 	this.numberOfServers = numServers;
 	this.numberOfQuestions = 0;
     }
-    protected Replication servers = new Replication(this.numberOfServers, this.serverTries);
 
     public synchronized void getAccess(){
 	if (this.access) {
