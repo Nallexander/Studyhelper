@@ -64,7 +64,8 @@ public class Client {
     }
     public int getInput() {
 	Scanner scan = new Scanner(System.in);
-	String  stringin=scan.nextLine();
+	String  stringin = scan.nextLine();
+	 if(stringin.equals("")){return 0;}
 	if (isNumeric(stringin)){
 	    int input = Integer.parseInt(stringin);
 	    return input ;
@@ -308,9 +309,22 @@ public class Client {
 		System.err.println("Client exception: " + e.toString());
 		e.printStackTrace();
 	    }
-	    if ((show == true) || (delete == true)){
+	    if (show == true){
 		System.out.print(helpList);
 	    }
+	    
+	     if(delete == true){
+		try {
+		    own = servers.replicatedPrintOwnQuestionsOnly(this.stubList);
+		}
+		catch (Exception e) {
+		    System.err.println("Client exception: " + e.toString());
+		    e.printStackTrace();
+		}
+                System.out.println(own);
+
+            }
+	    
 	    if (claim == true){
 		System.out.print(notClaimedList);
 	    }
