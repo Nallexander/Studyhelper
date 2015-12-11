@@ -285,7 +285,6 @@ public class Client {
 	    try{  
 		notClaimedList = servers.replicatedPrintNotClaimedList(stubList);
 		helpList = servers.replicatedPrintHelpList(stubList);
-		own = servers.replicatedPrintOwnQuestionsOnly(stubList);
 	    } catch (Exception e) {
 		System.err.println("Client exception: " + e.toString());
 		e.printStackTrace();
@@ -297,6 +296,13 @@ public class Client {
 		System.out.print(notClaimedList);
 	    }
 	    if (showOwn == true){
+		try {
+		    own = servers.replicatedPrintOwnQuestionsOnly(stubList);
+		}
+		catch (Exception e) {
+		    System.err.println("Client exception: " + e.toString());
+		    e.printStackTrace();
+		}
 		System.out.print(own);
 	    }
 
