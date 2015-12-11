@@ -8,7 +8,7 @@ import java.lang.*;
 public class Client {
     private int serverTries = 3;
     private int numberOfServers = 1; //TODO
-    private int numberOfQuestions;
+    private synchronized int numberOfQuestions;
     protected LinkedList<Boolean> claimedList = new LinkedList();
     protected LinkedList<Studyhelper> stubList = new LinkedList();
 
