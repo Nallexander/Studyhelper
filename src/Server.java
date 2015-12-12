@@ -50,6 +50,8 @@ public class Server extends RemoteServer implements Studyhelper{
     	    System.err.println("Woops: " + e.toString());
     	    	
     	}  
+    	return false;
+    }
     
 
     public String claimHelpObject(String questionID){
@@ -64,7 +66,7 @@ public class Server extends RemoteServer implements Studyhelper{
 		    this.helpList.get(i).setClaimAddress(claimAddress);
 		    
 		    
-		    return("The question is now claimed by claimhelpobject and IP: " + claimAddress);
+		    return("You have claimed the question with ID " + questionID);
 		}
 		catch (Exception e) {
 			
@@ -73,7 +75,7 @@ public class Server extends RemoteServer implements Studyhelper{
 		}  
 		}
 		else{
-		    return("The question has already been claimed");
+		    return("The question with ID " + questionID + " has already been claimed");
 		}
 	    }
 	}

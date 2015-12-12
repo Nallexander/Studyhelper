@@ -48,13 +48,50 @@ public class ClientGUI extends JFrame implements ActionListener{
     public void updateNumberOfQuestions() {
     	this.numberOfQuestions = servers.replicatedGetNumberOfUnclaimedQuestions(this.theStubList);
         }
-    public void printConfirm(String confirmMessage) {	
-        Object[] message0 = {confirmMessage};
-        String[] options0 = {"Cancel"};
-        String title     = "Notification";
-        setVisible(true);
-        int option = JOptionPane.showOptionDialog(null, message0, title,JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options0,options0[0]);
-        }
+    
+    
+    
+    
+    public void confirmPopUp(String confirmMessage,String confirmOption) {	
+    	
+    	Object paneBG  = UIManager.get("OptionPane.background");
+    	Object panelBG = UIManager.get("Panel.background");
+    	Object[] message0 = {confirmMessage};
+    	String[] options0 = {"OK"};
+    	String title ="Pop Up";
+    	if(confirmOption.equals("CONFIRM")){
+    	UIManager.put("OptionPane.background", new Color(0,0,200));
+    	UIManager.put("Panel.background", new Color(0,0,200));
+    	options0[0] = "OK! :)";
+        title     = "Notification";
+    	}
+    	else if (confirmOption.equals("FAIL") || confirmOption.equals("EMPTY")){
+    		UIManager.put("OptionPane.background", new Color(200,0,0));
+    		UIManager.put("Panel.background", new Color(200,0,0));
+    	if(confirmOption.equals("EMPTY")){
+    		options0[0] ="OK";
+    	    title     = "Empty";
+    	}
+    		
+    	    else{
+    	    	options0[0] = "OK :(";
+        	    title     = "Woops";
+    	    }
+    	}
+    	else if (confirmOption.equals("SUCCESS")){
+    		UIManager.put("OptionPane.background", new Color(0,200,0));
+    		UIManager.put("Panel.background", new Color(0,200,0));
+    		options0[0] = "Woho :)";
+            title     = "Success";
+    	}
+    	setVisible(true);
+    	int option = JOptionPane.showOptionDialog(null,new JLabel("<html><h2><font color='white'>"+confirmMessage+"</font>"), title,JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options0,options0[0]);
+    	UIManager.put("OptionPane.background", paneBG);
+     	UIManager.put("Panel.background", panelBG);
+    }
+        
+
+
 
         public synchronized void getAccess(){
     	if (this.access) {
@@ -175,10 +212,8 @@ public class ClientGUI extends JFrame implements ActionListener{
 		    questionCombo.addItem(questionsLinkedL.get(i));
 		}
 	    setVisible(true);
-	    Object[] message  = {"Choose one question from the list",questionCombo};		
-	    Object[] message0 = {"There is no such available questions",""};	
+	    Object[] message  = {"Choose one question from the list",questionCombo};			
 	    String[] options  = new String[] {"Expand", "Claim","Remove","Cancel"};
-	    String[] options0 = new String[] {"Cancel"};
 	    title     = "Select question to view, claim or remove (if the question is yours)";
 	    
 	    if(this.operation.equals("MYQUESTIONS")){
@@ -192,7 +227,7 @@ public class ClientGUI extends JFrame implements ActionListener{
           
 	    }
 	    if (questionCombo.getItemCount() == 0){
-	    	option = JOptionPane.showOptionDialog(null, message0, title,JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options0,options[0]);
+	    	confirmPopUp("There are no such questions avialable","EMPTY");
 	    }
 	    if (option != cancel && questionCombo.getItemCount() > 0 ){
 	    	
@@ -208,8 +243,13 @@ public class ClientGUI extends JFrame implements ActionListener{
 		if(option == claim){
 		    String claimedOrNot = "";
 		    claimedOrNot = servers.replicatedClaimHelpObject(theStubList,theID);
-		    this.aBuffer.setText("");
-		    this.aBuffer.append(claimedOrNot);  
+		    if (claimedOrNot.startsWith("You have claimed")){
+		       confirmPopUp(claimedOrNot,"SUCCESS");
+		    	
+		    }
+		    else{
+		    	confirmPopUp(claimedOrNot,"FAIL");
+		}
 		}
 		if (option==remove){
 		    servers.replicatedDeleteHelpObject(theStubList,theID);
@@ -275,13 +315,20 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    }
    
     public void questionForm(){
+
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
 	    JTextArea jUsername = new JTextArea(1,1);
         JTextArea jCourse   = new JTextArea(1,1);
         JTextArea jTitle    = new JTextArea(1,1);
         JTextArea jLocation = new JTextArea(1,1);
         JTextArea jOther    = new JTextArea(3,1);
 	    JTextArea jQuestion = new JTextArea(5,1);
-	
+	    jUsername.setBorder(border);
+	    jCourse.setBorder(border);
+	    jTitle.setBorder(border);
+	    jLocation.setBorder(border);
+	    jQuestion.setBorder(border);
+	    jOther.setBorder(border);
         enableNormalTabbing(jUsername);
         enableNormalTabbing(jCourse);
         enableNormalTabbing(jTitle);
@@ -289,11 +336,11 @@ public class ClientGUI extends JFrame implements ActionListener{
         enableNormalTabbing(jOther);
         enableNormalTabbing(jQuestion);
         
-	Object paneBG  = UIManager.get("OptionPane.background");
+	/*Object paneBG  = UIManager.get("OptionPane.background");
 	Object panelBG = UIManager.get("Panel.background");
 	UIManager.put("OptionPane.background", new Color(0,200,0));
 	UIManager.put("Panel.background", new Color(0,200,0));
-		
+		*/
 	Object[] message = {
 	    "Username", jUsername,
 	    "Course",   jCourse,
@@ -303,8 +350,9 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    "Other",    jOther
 	};
 	int option = JOptionPane.showConfirmDialog(null, message,"Send question", JOptionPane.OK_CANCEL_OPTION);
-	UIManager.put("OptionPane.background", paneBG);
+	/*UIManager.put("OptionPane.background", paneBG);
 	UIManager.put("Panel.background", panelBG);
+	*/
 	if (option == JOptionPane.OK_OPTION) {
 	    String courseName = jCourse.getText();
 	    String title      = jTitle.getText();
@@ -313,8 +361,6 @@ public class ClientGUI extends JFrame implements ActionListener{
 	    String username   = jUsername.getText();
 	    String other      = jOther.getText();
 	    try{
-	    	this.aBuffer.setText("");
-		this.aBuffer.append(username);
 		servers.replicatedAddHelpObject(theStubList,1,courseName, title, question, location, username, other);
                 incrementNumberOfQuestions();
 	    } catch (Exception e) {
@@ -356,15 +402,11 @@ public class ClientGUI extends JFrame implements ActionListener{
 		client.mainmenu();
 		LinkedList<Thread> threadList = client.servers.replicatedNewGUIThread(client,stubList);
 		client.servers.replicatedThreadStart(threadList); 
-
-
     	    }
-    	    //System.out.println("Before args.length > 1");
     	    if (args.length > 1) { //More than one argument given
     	    
 
     		for (int i = 0; i < args.length; i = i+2) {
-    		    //System.out.println("for");
     		    Registry registry = LocateRegistry.getRegistry(args[i], Integer.parseInt(args[i+1])); 
     		    stubList.add((Studyhelper) registry.lookup("Studyhelper"));
     		}
