@@ -34,7 +34,22 @@ public class Server extends RemoteServer implements Studyhelper{
 	return num;
     }
 	
-	
+    public boolean checkIfClaimed(String questionID){
+    	try{
+    	for (int i = 0; i < this.helpList.size(); i++){
+    	    if (this.helpList.get(i).getQuestionID().equals(questionID)){
+    		if ((this.helpList.get(i).isClaimed())){ //if object can be claimed then claim
+    			return true;
+    		}
+    	    }
+    	}
+    		return false;
+    }
+    	catch (Exception e) {
+    		
+    	    System.err.println("Woops: " + e.toString());
+    	    	
+    	}  
     
 
     public String claimHelpObject(String questionID){

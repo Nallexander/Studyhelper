@@ -13,6 +13,8 @@ public class ClientGUI extends JFrame implements ActionListener{
     private int        numberOfQuestions = 0;
     private int        serverTries       = 3;
     private int        numberOfServers   = 1;
+    protected LinkedList<Boolean> claimedList = new LinkedList();
+    private boolean access = true;
     public  JButton    addQuestion;
     public  JButton    answerQuestion;
     public  JButton    showQuestions;
@@ -43,25 +45,49 @@ public class ClientGUI extends JFrame implements ActionListener{
     }
     public Replication servers = new Replication(this.numberOfServers, this.serverTries);
     
-    public synchronized int getNumberOfQuestions(){
-    	return this.numberOfQuestions;
-    }
-    
-    public synchronized void decrementNumberOfQuestions(){
-    	this.numberOfQuestions = this.numberOfQuestions - 1;
-    }
+    public void updateNumberOfQuestions() {
+    	this.numberOfQuestions = servers.replicatedGetNumberOfUnclaimedQuestions(this.theStubList);
+        }
+    public void printConfirm(String confirmMessage) {	
+        Object[] message0 = {confirmMessage};
+        String[] options0 = {"Cancel"};
+        String title     = "Notification";
+        setVisible(true);
+        int option = JOptionPane.showOptionDialog(null, message0, title,JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options0,options0[0]);
+        }
 
-    public synchronized void incrementNumberOfQuestions(){
+        public synchronized void getAccess(){
+    	if (this.access) {
+    	    this.access = false;
+    	}
+        }
+
+        public synchronized void releaseAccess(){
+    	this.access = true;
+    	
+        }
+
+        public synchronized int getNumberOfQuestions(){
+    	this.getAccess();
+    	int numQ = this.numberOfQuestions;
+    	this.releaseAccess();
+    	return numQ;
+        }
+        public synchronized void decrementNumberOfQuestions(){
+    	this.getAccess();
+    	this.numberOfQuestions = this.numberOfQuestions - 1;
+    	this.releaseAccess();
+        }
+
+        public synchronized void incrementNumberOfQuestions(){
+    	this.getAccess();
     	this.numberOfQuestions = this.numberOfQuestions + 1;
-    }
-        
-    public void getClaimedIDFromThread(String clientID){
-	this.aBuffer.append(clientID);
-    }
+    	this.releaseAccess();
+        }
 	
     public LinkedList<String> cutString(String bigString){
     	String             littleString = "";
-    	LinkedList<String> linkedL      = new LinkedList();
+    	LinkedList<String> linkedL      = new LinkedList<String>();
     	int i = 0;
     	int j = 0;
     	while(i + 1 < bigString.length()){
@@ -303,21 +329,19 @@ public class ClientGUI extends JFrame implements ActionListener{
     }
 	
     public static void main(String[] args){
-    	LinkedList<Studyhelper> stubList = new LinkedList();
+    	LinkedList<Studyhelper> stubList = new LinkedList<Studyhelper>();
     	ClientGUI client =new ClientGUI(stubList,args.length/2);
     	try {
     	    if  (args.length == 0) { //No argument given
     		Registry registry = LocateRegistry.getRegistry();
     		stubList.add((Studyhelper) registry.lookup("Studyhelper"));
-    		//Thread thread = new Thread(new ClientThread(client, (Studyhelper) stubList.get(0)));
-    		//thread.start();
     		client.servers.updateReplicas(client.numberOfServers, client.serverTries);
     		client.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		client.setSize(700,700);
 		client.setVisible(true);
 		client.mainmenu();
-		//Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
-    		//thread.start();	 
+		LinkedList<Thread> threadList = client.servers.replicatedNewGUIThread(client, stubList);
+		client.servers.replicatedThreadStart(threadList); 
 
     	    }
     	
@@ -330,8 +354,8 @@ public class ClientGUI extends JFrame implements ActionListener{
 		client.setSize(700,700);
 		client.setVisible(true);
 		client.mainmenu();
-		//Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
-    		//thread.start();	 
+		LinkedList<Thread> threadList = client.servers.replicatedNewGUIThread(client,stubList);
+		client.servers.replicatedThreadStart(threadList); 
 
 
     	    }
@@ -349,8 +373,8 @@ public class ClientGUI extends JFrame implements ActionListener{
 		client.setSize(700,700);
 		client.setVisible(true);
 		client.mainmenu();
-		//Thread thread = new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(0)));
-    		//thread.start();    
+		LinkedList<Thread> threadList = client.servers.replicatedNewGUIThread(client, stubList);
+		client.servers.replicatedThreadStart(threadList);
 	    }
 
     	} catch (Exception e) {

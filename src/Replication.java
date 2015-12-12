@@ -247,6 +247,15 @@ public class Replication  {
 
 	return threadList;
     }
+    
+    protected LinkedList<Thread> replicatedNewGUIThread(ClientGUI client, LinkedList<Studyhelper> stubList) {
+    	LinkedList<Thread> threadList = new LinkedList<Thread>();
+    	for (int i = 0; i < stubList.size(); i++) {
+    	    threadList.add(new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(i))));     
+    	}
+
+    	return threadList;
+        }
 
 
     protected void replicatedThreadStart(LinkedList<Thread> threadList) {
