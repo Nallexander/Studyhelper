@@ -189,15 +189,42 @@ public class Replication  {
 	}
 	return return_stri;
     }
+    
+    protected String replicatedPrintOwnClaimsOnly(List<Studyhelper> stubList){
+    	setTriesToZero();	
+    	String return_stri = "";
+    	for (int i = 0; i < this.serverUpList.size(); i++) {
+    	    if (this.serverUpList.get(i) == true) {
+    		while (this.serverTriesList.get(i) < serverTimeout) {
+    		    try{
+    			return_stri = stubList.get(i).printOwnClaimsOnly();
+    			this.serverTriesList.set(i, serverTimeout + 1);
+    		    }
+    		    catch (Exception e) {
+    			this.serverTriesList.set(i, (this.serverTriesList.get(i) + 1));
+    		    }
+    		}
+    		if (this.serverTriesList.get(i) == serverTimeout) {
+    		    this.serverUpList.set(i, false);
+    		}
+    	    }
+    	}
+    	return return_stri;
+        }
 
     protected int replicatedGetNumberOfUnclaimedQuestions(List<Studyhelper> stubList) {
 	setTriesToZero();	
 	int return_int = 0;
+
 	for (int i = 0; i < this.serverUpList.size(); i++) {
+
 	    if (this.serverUpList.get(i) == true) {
+
 		while (this.serverTriesList.get(i) < serverTimeout) {
 		    try{
+			System.out.print("getNumStart" + return_int);
 			return_int = stubList.get(i).getNumberOfUnclaimedQuestions();
+			System.out.print("getNumEnd" + return_int);
 			this.serverTriesList.set(i, serverTimeout + 1);
 		    }
 		    catch (Exception e) {
@@ -220,6 +247,15 @@ public class Replication  {
 
 	return threadList;
     }
+    
+    protected LinkedList<Thread> replicatedNewGUIThread(ClientGUI client, LinkedList<Studyhelper> stubList) {
+    	LinkedList<Thread> threadList = new LinkedList<Thread>();
+    	for (int i = 0; i < stubList.size(); i++) {
+    	    threadList.add(new Thread(new ClientGUIThread(client, (Studyhelper) stubList.get(i))));     
+    	}
+
+    	return threadList;
+        }
 
 
     protected void replicatedThreadStart(LinkedList<Thread> threadList) {

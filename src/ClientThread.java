@@ -36,7 +36,7 @@ public class ClientThread extends Thread implements Runnable{
 	for (int i = 0; i < this.client.servers.numberOfServers; i++) {
 	    if (this.client.stubList.get(i) == stub) {
 		if (!this.client.servers.serverUpList.get(i)) {
-		    Thread.currentThread().interrupt();
+		    
 		    return false;
 		}
 	    }
