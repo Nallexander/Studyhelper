@@ -25,10 +25,10 @@ public class ClientThread extends Thread implements Runnable{
 	}
 	if (!this.client.claimedList.get(claimedInt)) {
 	    this.client.claimedList.set(claimedInt, true);
-	    System.out.println("not claimed, claimedInt: " + claimedInt);
+	    //System.out.println("not claimed, claimedInt: " + claimedInt);
 	    return true;
 	}
-	System.out.println("claimed, claimedInt: " + claimedInt);
+	//System.out.println("claimed, claimedInt: " + claimedInt);
 	return false;
     }
 
@@ -57,20 +57,20 @@ public class ClientThread extends Thread implements Runnable{
 	    }
 
 
-	    System.out.println(this.client.getNumberOfQuestions());
+	    //System.out.println(this.client.getNumberOfQuestions());
 	    if(this.client.getNumberOfQuestions() > 0){  
 		try{
 		    if (this.checkIfServerIsUp()) {
-			System.out.println("Server up");
+			//System.out.println("Server up");
 			claimedID = this.stub.helpObjectClaimedID();
 		    }
 		    else {
-			System.out.println("Server down");
+			//System.out.println("Server down");
 			claimedID = "TEST";
 		    }
 		}
 		catch(Exception e){
-		    //System.err.println("helpObjectClaimedID FAILED");
+		    System.err.println("helpObjectClaimedID FAILED");
 		}
 		if(!(claimedID.equals("TEST"))){ //def-programmering? 
 		    if (this.checkIfClaimMessageIsSent(claimedID)) {

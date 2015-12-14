@@ -38,7 +38,7 @@ public class HelpObject{
       if (this.claimed){
       taken = "Yes";
       }
-      String info = "ID: "+ qID + " Claimed: " + taken + " Course: " + course + " Subject: " + sub + "\n";
+      String info = "ID: "+ qID + " Claimed: " + taken + " Course: " + course + " Title: " + sub + "\n";
       return info;
   }
   public String getQuestionID(){
